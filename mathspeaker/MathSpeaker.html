@@ -22,6 +22,12 @@ body, div, td {
 	display: block;
 	margin: 0px auto 16px auto;
 }
+
+.math-speaker .math {
+  margin-left: 2em;
+  padding-bottom: 4px;
+  border-bottom: 1px dotted green;
+}
 </style>
 <script>
   // Copyright 2014-2018 Volker Sorge
@@ -1536,14 +1542,15 @@ body, div, td {
 
   const speakMath = function(mathId) {
 	  const mathElement = window.document.getElementById(mathId);
-	  window.speechSynthesis.speak(new SpeechSynthesisUtterance(SRE.toSpeech(mathElement.outerHTML)));
+	  const mathml = mathElement.getAttribute('data-mathml');
+	  window.speechSynthesis.speak(new SpeechSynthesisUtterance(SRE.toSpeech(mathml)));
   }
 </script>
-<script src="./MathJax.js?delayStartupUntil=configured"></script>
+<script src="./MathJax.js?config=MML_HTMLorMML-full"></script>
 <body id="body">
-	<p>Example with quadratic equations...</p>
-	<div class="math-speaker" onclick="speakMath('math1')">
-	<math id="math1" display="block">
+	<p>Tap the quadratic equation to hear the math described.</p>
+	<div class="math-speaker" onclick="speakMath('MathJax-Element-1-Frame')">
+	<math id="math1">
   <mstyle displaystyle="true">
   <mi> x </mi>
   <mo> = </mo>
@@ -1569,8 +1576,8 @@ body, div, td {
     </mrow>
   </mfrac>
 </math></div>
-<p>A more advanced example...</p>
-<div class="math-speaker" onclick="speakMath('math2')">
+<p>Tap the math below to hear it described.</p>
+<div class="math-speaker" onclick="speakMath('MathJax-Element-2-Frame')">
 <math id="math2">
 <mstyle displaystyle="true">
   <mrow>
@@ -1583,7 +1590,7 @@ body, div, td {
    <mtable columnalign='left'>
     <mtr>
      <mtd>
-      <mtext>&#x2009;&#x2009;&#x2009;&#x2009;&#x2009;&#x2009;&#x2009;</mtext>
+      <mtext>&#x2009;&#x2009;&#x2009;&#x2009;</mtext>
       <mn>4</mn>
       <mi>x</mi>
       <mo>+</mo>
@@ -1595,7 +1602,7 @@ body, div, td {
        <mi>x</mi>
        <mn>3</mn>
       </msup>
-      <mtext>&#x2003;&#x2009;&#x2009;</mtext><mtext>for&nbsp;</mtext>
+      <mtext>&#x2003;&#x2009;</mtext><mtext>for&nbsp;</mtext>
       <mi>x</mi>
       <mo>&#x2265;</mo><mn>0</mn>
      </mtd>

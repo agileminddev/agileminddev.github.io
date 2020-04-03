@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html lang="en">
 <html>
 
 <head>
@@ -106,12 +106,17 @@
       padding: 3px;
     }
 
+    textarea,
     input {
       padding: 5px 8px;
     }
 
     input:not(:focus):invalid {
       outline: 2px solid red;
+    }
+
+    textarea {
+      width: 100%;
     }
 
     button {
@@ -124,12 +129,17 @@
       if (current) {
         current.className = 'hide';
       }
-      document.getElementById(choice + '.section').className = 'show';
+      var element = document.getElementById(choice + '.section') || document.getElementById('text.section')
+      element.className = 'show';
+    }
+
+    function init() {
+      toggle_to(window.location.hash.substring(1) || 'text');
     }
   </script>
 </head>
 
-<body>
+<body onload="init()">
   <div class="wrapper">
     <header>
       <h1>Varying scenarios to understand how screen readers behave</h1>
@@ -142,7 +152,7 @@
       </ul>
     </nav>
     <div aria-live="polite">
-      <section id="text.section" class="show">
+      <section id="text.section" class="hide">
         <h2>Phrases</h2>
         <p>Algebra I, Algebra II, Algebra III, and Algebra IV.</p>
         <p>An IV is used to deliver fluids directly into a vein.</p>
@@ -219,11 +229,11 @@
       </section>
       <section id="form.section" class="hide">
         <h2>Forms</h2>
-        <form>
+        <form action="#form">
           <ul>
             <li>
               <label for="name">Name:</label>
-              <input id="name" type="text" name="textfield" required /> (required)
+              <input id="name" type="text" name="name" required /> (required)
             </li>
             <li>
               <label for="phone">Phone:</label>
@@ -257,6 +267,19 @@
                 <input id="venmo" type="radio" name="payment" value="venmo" />
                 <label for="venmo">Venmo</label>
               </fieldset>
+            </li>
+            <li>
+              <textarea id="notes" name="notes" placeholder="Notes" rows="3"></textarea>
+            </li>
+            <li>
+              <label for="customer">Have you visited us before?</label>
+              <select id="customer" name="customer" required>
+                <option value="new">I am a new customer</option>
+                <optgroup label="I am a returning customer">
+                  <option value="old-here">I have been to this location</option>
+                  <option value="old-other">I have been to a different location</option>
+                </optgroup>
+              </select>
             </li>
             <li>
               <input type="submit" name="submit" value="Submit" />

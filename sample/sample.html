@@ -151,144 +151,146 @@
         <li><a href="#" onclick="toggle_to('form')">Forms</a></li>
       </ul>
     </nav>
-    <div aria-live="polite">
-      <section id="text.section" class="hide">
-        <h2>Phrases</h2>
-        <p>Algebra I, Algebra II, Algebra III, and Algebra IV.</p>
-        <p>An IV is used to deliver fluids directly into a vein.</p>
-        <p>I was married in MCMXCIV, so add that to the MIX.</p>
-        <p>Some equations take the form <i>ax<sup>2</sup> + bx + c = 0</i>.</p>
-        <p>Circumference of a circle = πd or 2πr</p>
-        <p>d = &#8730;<span style="border-top: 1px solid black">(x<sub>2</sub> - x<sub>1</sub>)<sup>2</sup> + (y<sub>2</sub> - y<sub>1</sub>)<sup>2</sup></span></p>
-        <p>If B is in the interior of ∠AXD , then m∠AXB + m∠BXD = m∠AXD.</p>
-        <p>ΑΦΩ is a national co-ed service fraternity.</p>
-        <p>Α Φ Ω is a national co-ed service fraternity.</p>
-      </section>
-      <section id="image.section" class="hide">
-        <h2>Images</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Alt tag</th>
-              <th>Title tag</th>
-              <th>Aria tag</th>
-              <th>Image</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>No</td>
-              <td>No</td>
-              <td>No</td>
-              <td><img src="TEXAS_official_seal.svg" height="100" width="100" /></td>
-            </tr>
-            <tr>
-              <td>No</td>
-              <td>No</td>
-              <td>Yes</td>
-              <td><img src="TEXAS_official_seal.svg" height="100" width="100" aria-label="This is the ARIA tag" /></td>
-            </tr>
-            <tr>
-              <td>No</td>
-              <td>Yes</td>
-              <td>No</td>
-              <td><img src="TEXAS_official_seal.svg" height="100" width="100" title="This is the title tag" /></td>
-            </tr>
-            <tr>
-              <td>No</td>
-              <td>Yes</td>
-              <td>Yes</td>
-              <td><img src="TEXAS_official_seal.svg" height="100" width="100" title="This is the title tag" aria-label="This is the ARIA tag" /></td>
-            </tr>
-            <tr>
-              <td>Yes</td>
-              <td>No</td>
-              <td>No</td>
-              <td><img src="TEXAS_official_seal.svg" height="100" width="100" alt="This is the alt tag" /></td>
-            </tr>
-            <tr>
-              <td>Yes</td>
-              <td>No</td>
-              <td>Yes</td>
-              <td><img src="TEXAS_official_seal.svg" height="100" width="100" alt="This is the alt tag" aria-label="This is the ARIA tag" /></td>
-            </tr>
-            <tr>
-              <td>Yes</td>
-              <td>Yes</td>
-              <td>No</td>
-              <td><img src="TEXAS_official_seal.svg" height="100" width="100" alt="This is the alt tag" title="This is the title tag" /></td>
-            </tr>
-            <tr>
-              <td>Yes</td>
-              <td>Yes</td>
-              <td>Yes</td>
-              <td><img src="TEXAS_official_seal.svg" height="100" width="100" alt="This is the alt tag" title="This is the title tag" aria-label="This is the ARIA tag" /></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <section id="form.section" class="hide">
-        <h2>Forms</h2>
-        <form action="#form">
-          <ul>
-            <li>
-              <label for="name">Name:</label>
-              <input id="name" type="text" name="name" required /> (required)
-            </li>
-            <li>
-              <label for="phone">Phone:</label>
-              <input id="phone" type="tel" name="phone" pattern="\(?\d{3}(?:[\s.-]|\)\s?)?\d{3}(?:[\s.-])?\d{4}" placeholder="###-###-####" />
-            </li>
-            <li>
-              <fieldset>
-                <legend>Select your pizza toppings:</legend>
-                <input id="ham" type="checkbox" name="toppings" value="ham" />
-                <label for="ham">Ham</label>
-                <br />
-                <input id="pepperoni" type="checkbox" name="toppings" value="pepperoni" />
-                <label for="pepperoni">Pepperoni</label>
-                <br />
-                <input id="mushrooms" type="checkbox" name="toppings" value="mushrooms" />
-                <label for="mushrooms">Mushrooms</label>
-                <br />
-                <input id="olives" type="checkbox" name="toppings" value="olives" />
-                <label for="olives">Olives</label>
-              </fieldset>
-            </li>
-            <li>
-              <fieldset>
-                <legend>Choose a payment method:</legend>
-                <input id="cash" type="radio" name="payment" value="cash" />
-                <label for="cash">Cash</label>
-                <br />
-                <input id="paypal" type="radio" name="payment" value="paypal" />
-                <label for="paypal">PayPal</label>
-                <br />
-                <input id="venmo" type="radio" name="payment" value="venmo" />
-                <label for="venmo">Venmo</label>
-              </fieldset>
-            </li>
-            <li>
-              <textarea id="notes" name="notes" placeholder="Notes" rows="3"></textarea>
-            </li>
-            <li>
-              <label for="customer">Have you visited us before?</label>
-              <select id="customer" name="customer" required>
-                <option value="new">I am a new customer</option>
-                <optgroup label="I am a returning customer">
-                  <option value="old-here">I have been to this location</option>
-                  <option value="old-other">I have been to a different location</option>
-                </optgroup>
-              </select>
-            </li>
-            <li>
-              <input type="submit" name="submit" value="Submit" />
-              <input type="reset" name="reset" value="Reset" />
-            </li>
-          </ul>
-        </form>
-      </section>
-    </div>
+    <main>
+      <div aria-live="polite">
+        <section id="text.section" class="hide">
+          <h2>Phrases</h2>
+          <p>Algebra I, Algebra II, Algebra III, and Algebra IV.</p>
+          <p>An IV is used to deliver fluids directly into a vein.</p>
+          <p>I was married in MCMXCIV, so add that to the MIX.</p>
+          <p>Some equations take the form <i>ax<sup>2</sup> + bx + c = 0</i>.</p>
+          <p>Circumference of a circle = πd or 2πr</p>
+          <p>d = &#8730;<span style="border-top: 1px solid black">(x<sub>2</sub> - x<sub>1</sub>)<sup>2</sup> + (y<sub>2</sub> - y<sub>1</sub>)<sup>2</sup></span></p>
+          <p>If B is in the interior of ∠AXD , then m∠AXB + m∠BXD = m∠AXD.</p>
+          <p>ΑΦΩ is a national co-ed service fraternity.</p>
+          <p>Α Φ Ω is a national co-ed service fraternity.</p>
+        </section>
+        <section id="image.section" class="hide">
+          <h2>Images</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Alt tag</th>
+                <th>Title tag</th>
+                <th>Aria tag</th>
+                <th>Image</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>No</td>
+                <td>No</td>
+                <td>No</td>
+                <td><img src="TEXAS_official_seal.svg" height="100" width="100" /></td>
+              </tr>
+              <tr>
+                <td>No</td>
+                <td>No</td>
+                <td>Yes</td>
+                <td><img src="TEXAS_official_seal.svg" height="100" width="100" aria-label="This is the ARIA tag" /></td>
+              </tr>
+              <tr>
+                <td>No</td>
+                <td>Yes</td>
+                <td>No</td>
+                <td><img src="TEXAS_official_seal.svg" height="100" width="100" title="This is the title tag" /></td>
+              </tr>
+              <tr>
+                <td>No</td>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td><img src="TEXAS_official_seal.svg" height="100" width="100" title="This is the title tag" aria-label="This is the ARIA tag" /></td>
+              </tr>
+              <tr>
+                <td>Yes</td>
+                <td>No</td>
+                <td>No</td>
+                <td><img src="TEXAS_official_seal.svg" height="100" width="100" alt="This is the alt tag" /></td>
+              </tr>
+              <tr>
+                <td>Yes</td>
+                <td>No</td>
+                <td>Yes</td>
+                <td><img src="TEXAS_official_seal.svg" height="100" width="100" alt="This is the alt tag" aria-label="This is the ARIA tag" /></td>
+              </tr>
+              <tr>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>No</td>
+                <td><img src="TEXAS_official_seal.svg" height="100" width="100" alt="This is the alt tag" title="This is the title tag" /></td>
+              </tr>
+              <tr>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td><img src="TEXAS_official_seal.svg" height="100" width="100" alt="This is the alt tag" title="This is the title tag" aria-label="This is the ARIA tag" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id="form.section" class="hide">
+          <h2>Forms</h2>
+          <form action="#form">
+            <ul>
+              <li>
+                <label for="name">Name:</label>
+                <input id="name" type="text" name="name" required /> (required)
+              </li>
+              <li>
+                <label for="phone">Phone:</label>
+                <input id="phone" type="tel" name="phone" pattern="\(?\d{3}(?:[\s.-]|\)\s?)?\d{3}(?:[\s.-])?\d{4}" placeholder="###-###-####" />
+              </li>
+              <li>
+                <fieldset>
+                  <legend>Select your pizza toppings:</legend>
+                  <input id="ham" type="checkbox" name="toppings" value="ham" />
+                  <label for="ham">Ham</label>
+                  <br />
+                  <input id="pepperoni" type="checkbox" name="toppings" value="pepperoni" />
+                  <label for="pepperoni">Pepperoni</label>
+                  <br />
+                  <input id="mushrooms" type="checkbox" name="toppings" value="mushrooms" />
+                  <label for="mushrooms">Mushrooms</label>
+                  <br />
+                  <input id="olives" type="checkbox" name="toppings" value="olives" />
+                  <label for="olives">Olives</label>
+                </fieldset>
+              </li>
+              <li>
+                <fieldset>
+                  <legend>Choose a payment method:</legend>
+                  <input id="cash" type="radio" name="payment" value="cash" />
+                  <label for="cash">Cash</label>
+                  <br />
+                  <input id="paypal" type="radio" name="payment" value="paypal" />
+                  <label for="paypal">PayPal</label>
+                  <br />
+                  <input id="venmo" type="radio" name="payment" value="venmo" />
+                  <label for="venmo">Venmo</label>
+                </fieldset>
+              </li>
+              <li>
+                <textarea id="notes" name="notes" placeholder="Notes" rows="3"></textarea>
+              </li>
+              <li>
+                <label for="customer">Have you visited us before?</label>
+                <select id="customer" name="customer" required>
+                  <option value="new">I am a new customer</option>
+                  <optgroup label="I am a returning customer">
+                    <option value="old-here">I have been to this location</option>
+                    <option value="old-other">I have been to a different location</option>
+                  </optgroup>
+                </select>
+              </li>
+              <li>
+                <input type="submit" name="submit" value="Submit" />
+                <input type="reset" name="reset" value="Reset" />
+              </li>
+            </ul>
+          </form>
+        </section>
+      </div>
+    </main>
   </div>
 </body>
 

@@ -68,6 +68,10 @@
       padding: 10px;
     }
 
+    nav > ul {
+        font-size: larger;
+    }
+
     .show {
       display: block;
     }
@@ -119,8 +123,87 @@
       width: 100%;
     }
 
-    button {
+    form > button {
       margin-left: 150px;
+    }
+
+
+    .calculator {
+      border-style: solid;
+      border-radius: 12px;
+      margin: 2em;
+      overflow: hidden;
+    }
+
+    .calculator button {
+      border: 0;
+      border-radius: 0;
+      font-size: 1em;
+      font-family: Helvetica-Light, "Arial Mt Std Light", Helvetica, sans-serif;
+    }
+
+    .calculator-display {
+      background-color: #222222;
+      color: #fff;
+      font-size: 2em;
+      padding: 0.5em 0.75em;
+      text-align: right;
+    }
+
+    .calculator-keys {
+      background-color: #999;
+      display: grid;
+      grid-gap: 1px;
+      grid-template-columns: repeat(4, 1fr);
+      font-size: 1.5em;
+    }
+
+    .calculator-keys > * {
+      background-color: #fff;
+      padding: 0.5em 1.25em;
+      position: relative;
+      text-align: center;
+    }
+
+    .calculator-keys > button:focus {
+      box-shadow: inset 0 0 0.5em #3a97f9;
+      outline: 2px dotted transparent;
+      outline-offset: 2px;
+    }
+
+    .calculator-keys > *:active::before {
+      background-color: rgba(0, 0, 0, 0.2);
+      opacity: 0.3;
+      content: "";
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      position: absolute;
+      z-index: 1;
+    }
+
+    .key-number-png > img {
+      height: 0.8em;
+    }
+
+    .key-number-svg {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .key-number-svg > svg {
+      height: 45px;
+    }
+
+    .key-operator {
+      background-color: #eee;
+    }
+
+    .key-equal {
+      background-image: linear-gradient(to bottom, #fe886a85, #ff7033);
+      grid-column: -2;
+      grid-row: 2 / span 4;
     }
   </style>
   <script>
@@ -145,14 +228,15 @@
       <h1>Varying scenarios to understand how screen readers behave</h1>
     </header>
     <nav>
-      <ul>
-        <li><a href="#" onclick="toggle_to('text')">Phrases</a></li>
-        <li><a href="#" onclick="toggle_to('image')">Images</a></li>
-        <li><a href="#" onclick="toggle_to('form')">Forms</a></li>
+    <ul aria-controls="main-content" role="tablist" aria-label="Content selection">
+        <li role="presentation"><a href="#" onclick="toggle_to('text')">Phrases</a></li>
+        <li role="presentation"><a href="#" onclick="toggle_to('image')">Images</a></li>
+        <li role="presentation"><a href="#" onclick="toggle_to('form')">Forms</a></li>
+        <li role="presentation"><a href="#" onclick="toggle_to('calculator')">Calculator</a></li>
       </ul>
     </nav>
     <main>
-      <div aria-live="polite">
+      <div id="main-content" aria-live="polite">
         <section id="text.section" class="hide">
           <h2>Phrases</h2>
           <h3>Roman Numerals</h3>
@@ -295,6 +379,252 @@
               </li>
             </ul>
           </form>
+        </section>
+        <section id="calculator.section" class="hide">
+          <h2>Accessible Calculator</h2>
+          <p>
+            Once the calculator has focus, use the arrow keys to change the selected button. The space bar or return key will activate the selection as if it had been clicked.
+            When using a screen reader, the display will be read aloud when it changes.
+            The 7, 8, and 9 buttons are PNG images, the 4, 5, and 6 buttons are SVG images, and the rest are normal text.
+          </p>
+          <div role="region" aria-label="Calculator" class="calculator">
+            <div id="calculator-display" class="calculator-display" aria-label="Total" aria-live="polite" aria-atomic="true">0</div>
+            <div tabindex="0" class="calculator-keys" aria-controls="calculator-display">
+              <button tabindex="-1" class="key-operator" data-action="add" title="Add" aria-label="Add" data-rowindex="1" data-colindex="1">+</button>
+              <button tabindex="-1" class="key-operator" data-action="subtract" title="Subtract" aria-label="Subtract" data-rowindex="1" data-colindex="2">&minus;</button>
+              <button tabindex="-1" class="key-operator" data-action="multiply" title="Multiply" aria-label="Multiply" data-rowindex="1" data-colindex="3">&times;</button>
+              <button tabindex="-1" class="key-operator" data-action="divide" title="Divide" aria-label="Divide" data-rowindex="1" data-colindex="4">&div;</button>
+              <button tabindex="-1" class="key-number-png" data-content="7" aria-label="7" data-rowindex="2" data-colindex="1"><img src="7.png" alt="7" role="presentation" /></button>
+              <button tabindex="-1" class="key-number-png" data-content="8" aria-label="8" data-rowindex="2" data-colindex="2"><img src="8.png" alt="8" role="presentation" /></button>
+              <button tabindex="-1" class="key-number-png" data-content="9" aria-label="9" data-rowindex="2" data-colindex="3"><img src="9.png" alt="9" role="presentation" /></button>
+              <button tabindex="-1" class="key-number-svg" data-content="4" aria-label="4" data-rowindex="3" data-colindex="1">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 30">
+                  <path d="M 31.963 16.915 L 31.963 18.085 L 30.263 18.085 L 30.263 20.715 L 29.023 20.715 L 29.023 18.085 L 23.473 18.085 L 23.473 16.955 L 28.893 9.235 L 30.263 9.235 L 30.263 16.915 L 31.963 16.915 Z M 24.763 16.915 L 29.023 16.915 L 29.023 13.115 C 29.023 12.368 29.05 11.525 29.103 10.585 L 29.043 10.585 C 28.79 11.085 28.553 11.502 28.333 11.835 L 24.763 16.915 Z" style="white-space: pre;" />
+                </svg>
+              </button>
+              <button tabindex="-1" class="key-number-svg" data-content="5" aria-label="5" data-rowindex="3" data-colindex="2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 30">
+                  <path d="M 27.707 13.683 C 28.914 13.683 29.86 13.983 30.547 14.583 C 31.24 15.176 31.587 15.993 31.587 17.033 C 31.587 18.213 31.21 19.14 30.457 19.813 C 29.704 20.486 28.664 20.823 27.337 20.823 C 26.05 20.823 25.07 20.616 24.397 20.203 L 24.397 18.953 C 24.764 19.186 25.217 19.37 25.757 19.503 C 26.297 19.636 26.83 19.703 27.357 19.703 C 28.277 19.703 28.99 19.486 29.497 19.053 C 30.004 18.62 30.257 17.996 30.257 17.183 C 30.257 15.583 29.28 14.783 27.327 14.783 C 26.834 14.783 26.17 14.86 25.337 15.013 L 24.667 14.583 L 25.097 9.243 L 30.777 9.243 L 30.777 10.433 L 26.207 10.433 L 25.917 13.863 C 26.517 13.743 27.114 13.683 27.707 13.683 Z" style="white-space: pre;" />
+                </svg>
+              </button>
+              <button tabindex="-1" class="key-number-svg" data-content="6" aria-label="6" data-rowindex="3" data-colindex="3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 30">
+                  <path d="M 23.888 15.779 C 23.888 13.532 24.325 11.852 25.198 10.739 C 26.071 9.626 27.361 9.069 29.068 9.069 C 29.661 9.069 30.125 9.119 30.458 9.219 L 30.458 10.339 C 30.058 10.206 29.601 10.139 29.088 10.139 C 27.861 10.139 26.925 10.522 26.278 11.289 C 25.638 12.049 25.285 13.249 25.218 14.889 L 25.318 14.889 C 25.891 13.989 26.795 13.539 28.028 13.539 C 29.055 13.539 29.865 13.849 30.458 14.469 C 31.051 15.089 31.348 15.932 31.348 16.999 C 31.348 18.186 31.021 19.119 30.368 19.799 C 29.721 20.479 28.848 20.819 27.748 20.819 C 26.561 20.819 25.621 20.372 24.928 19.479 C 24.235 18.592 23.888 17.359 23.888 15.779 Z M 27.728 19.709 C 28.468 19.709 29.041 19.479 29.448 19.019 C 29.861 18.552 30.068 17.879 30.068 16.999 C 30.068 16.239 29.878 15.642 29.498 15.209 C 29.118 14.782 28.548 14.569 27.788 14.569 C 27.321 14.569 26.891 14.666 26.498 14.859 C 26.111 15.046 25.801 15.309 25.568 15.649 C 25.335 15.989 25.218 16.342 25.218 16.709 C 25.218 17.242 25.321 17.742 25.528 18.209 C 25.741 18.669 26.038 19.036 26.418 19.309 C 26.805 19.576 27.241 19.709 27.728 19.709 Z" style="white-space: pre;" />
+                </svg>
+              </button>
+              <button tabindex="-1" data-content="1" data-rowindex="4" data-colindex="1">1</button>
+              <button tabindex="-1" data-content="2" data-rowindex="4" data-colindex="2">2</button>
+              <button tabindex="-1" data-content="3" data-rowindex="4" data-colindex="3">3</button>
+              <button tabindex="-1" data-content="0" data-rowindex="5" data-colindex="1">0</button>
+              <button tabindex="-1" data-action="decimal" aria-label="Decimal point" data-rowindex="5" data-colindex="2">.</button>
+              <button tabindex="-1" data-action="clear" title="Clear all" aria-label="Clear all" data-rowindex="5" data-colindex="3">AC</button>
+              <button tabindex="-1" class="key-equal" data-action="calculate" title="Calculate" aria-label="Calculate" data-rowindex="2" data-colindex="4" aria-rowspan="4">=</button>
+            </div>
+          </div>
+          <script>
+            // Operation basics borrowed from blog post "How to build a calculator" at https://zellwk.com/blog/calculator-part-3
+            // keyboard logic all me...
+
+
+            // do the math
+            function calculate(n1, operator, n2) {
+              const firstNum = parseFloat(n1)
+              const secondNum = parseFloat(n2)
+              if (operator === 'add') return firstNum + secondNum
+              if (operator === 'subtract') return firstNum - secondNum
+              if (operator === 'multiply') return firstNum * secondNum
+              if (operator === 'divide') return firstNum / secondNum
+            }
+
+            function getKeyType(key) {
+              const { action } = key.dataset
+              if (!action) return 'number'
+              if (
+                action === 'add' ||
+                action === 'subtract' ||
+                action === 'multiply' ||
+                action === 'divide'
+              ) return 'operator'
+              // For everything else, return the action
+              return action
+            }
+
+            function createResultString(key, displayedNum, state) {
+              const keyType = getKeyType(key)
+              const {
+                firstValue,
+                operator,
+                modValue,
+                previousKeyType
+              } = state
+
+              if (keyType === 'number') {
+                const keyContent = key.dataset.content
+                return displayedNum === '0' ||
+                  previousKeyType === 'operator' ||
+                  previousKeyType === 'calculate'
+                  ? keyContent
+                  : displayedNum + keyContent
+              }
+
+              if (keyType === 'decimal') {
+                if (!displayedNum.includes('.')) return displayedNum + '.'
+                if (previousKeyType === 'operator' || previousKeyType === 'calculate') return '0.'
+                return displayedNum
+              }
+
+              if (keyType === 'operator') {
+                return firstValue &&
+                  operator &&
+                  previousKeyType !== 'operator' &&
+                  previousKeyType !== 'calculate'
+                  ? calculate(firstValue, operator, displayedNum)
+                  : displayedNum
+              }
+
+              if (keyType === 'clear') return 0
+
+              if (keyType === 'calculate') {
+                return firstValue
+                  ? previousKeyType === 'calculate'
+                    ? calculate(displayedNum, operator, modValue)
+                    : calculate(firstValue, operator, displayedNum)
+                  : displayedNum
+              }
+            }
+
+            function updateCalculatorState(key, calculator, calculatedValue, displayedNum) {
+              const keyType = getKeyType(key)
+              const {
+                firstValue,
+                operator,
+                modValue,
+                previousKeyType
+              } = calculator.dataset
+
+              calculator.dataset.previousKeyType = keyType
+
+              if (keyType === 'operator') {
+                calculator.dataset.operator = key.dataset.action
+                calculator.dataset.firstValue = firstValue &&
+                  operator &&
+                  previousKeyType !== 'operator' &&
+                  previousKeyType !== 'calculate'
+                  ? calculatedValue
+                  : displayedNum
+              }
+
+              if (keyType === 'calculate') {
+                calculator.dataset.modValue = firstValue && previousKeyType === 'calculate'
+                  ? modValue
+                  : displayedNum
+              }
+
+              if (keyType === 'clear') {
+                calculator.dataset.firstValue = ''
+                calculator.dataset.modValue = ''
+                calculator.dataset.operator = ''
+                calculator.dataset.previousKeyType = ''
+              }
+            }
+
+            // set the focus to a particular button
+            function setFocus(x, y) {
+              // watch for equal key span
+              const logicalX = (x >= 2 && y == 4) ? 2 : x;
+              const key = keys.querySelector("button[data-rowindex='" + logicalX + "'][data-colindex='" + y + "']")
+              if (!key) return
+
+              keys.dataset.focusRow = x
+              keys.dataset.focusCol = y
+              key.focus()
+            }
+
+            // move the focus to a relative button
+            function moveFocus(xDiff, yDiff) {
+              setFocus(parseInt(keys.dataset.focusRow) + xDiff, parseInt(keys.dataset.focusCol) + yDiff)
+            }
+
+            // is the equals button active?
+            function isEqualsSelected() {
+              return keys.dataset.focusRow >= 2 && keys.dataset.focusCol == 4
+            }
+
+            // handle a keypress
+            function keyPressed(e) {
+              switch (e.key) {
+                case 'ArrowUp':
+                  if (isEqualsSelected()) setFocus(1, 4)
+                  else moveFocus(-1, 0)
+                  return true
+
+                case 'ArrowDown':
+                  if (!isEqualsSelected()) moveFocus(1, 0)
+                  return true
+
+                case 'ArrowLeft':
+                  moveFocus(0, -1)
+                  return true
+
+                case 'ArrowRight':
+                  moveFocus(0, 1)
+                  return true
+
+                case 'Home':
+                  if (e.ctrlKey) setFocus(1, 1)
+                  else setFocus(keys.dataset.focusRow, 1)
+                  return true
+
+                case 'End':
+                  if (e.ctrlKey) setFocus(5, 4)
+                  else setFocus(keys.dataset.focusRow, 4)
+                  return true
+
+                case 'PageUp':
+                  setFocus(1, keys.dataset.focusCol)
+                  return true
+
+                case 'PageDown':
+                  setFocus(5, keys.dataset.focusCol)
+                  return true
+              }
+              return false
+            }
+
+            // get calculator elements
+            const calculator = document.querySelector('.calculator')
+            const display = calculator.querySelector('.calculator-display')
+            const keys = calculator.querySelector('.calculator-keys')
+
+            // initial focus position (the 7 key)
+            keys.dataset.focusRow = 2
+            keys.dataset.focusCol = 1
+
+            // logic for a button click
+            keys.addEventListener('click', e => {
+              if (!e.target.matches('button')) return
+
+              const key = e.target
+              const displayedNum = display.textContent
+              const resultString = createResultString(key, displayedNum, calculator.dataset)
+
+              display.textContent = resultString
+              updateCalculatorState(key, calculator, resultString, displayedNum)
+              setFocus(key.dataset.rowindex, key.dataset.colindex)
+            })
+
+            // logic for the button group getting focus
+            keys.addEventListener('focus', e => {
+              moveFocus(0, 0)
+            })
+
+            // logic for a keyboard press
+            keys.addEventListener('keydown', e => {
+              if (event.defaultPrevented) return
+              const handled = keyPressed(e)
+              if (handled) event.preventDefault()
+            })
+          </script>
         </section>
       </div>
     </main>

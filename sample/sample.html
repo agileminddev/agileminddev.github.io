@@ -390,35 +390,35 @@
           <div role="region" aria-label="Calculator" class="calculator">
             <div id="calculator-display" class="calculator-display" aria-label="Total" aria-live="polite" aria-atomic="true">0</div>
             <div tabindex="0" class="calculator-keys" aria-controls="calculator-display">
-              <button tabindex="-1" class="key-operator" data-action="add" title="Add" aria-label="Add" data-rowindex="1" data-colindex="1">+</button>
-              <button tabindex="-1" class="key-operator" data-action="subtract" title="Subtract" aria-label="Subtract" data-rowindex="1" data-colindex="2">&minus;</button>
-              <button tabindex="-1" class="key-operator" data-action="multiply" title="Multiply" aria-label="Multiply" data-rowindex="1" data-colindex="3">&times;</button>
-              <button tabindex="-1" class="key-operator" data-action="divide" title="Divide" aria-label="Divide" data-rowindex="1" data-colindex="4">&div;</button>
-              <button tabindex="-1" class="key-number-png" data-content="7" aria-label="7" data-rowindex="2" data-colindex="1"><img src="7.png" alt="7" role="presentation" /></button>
-              <button tabindex="-1" class="key-number-png" data-content="8" aria-label="8" data-rowindex="2" data-colindex="2"><img src="8.png" alt="8" role="presentation" /></button>
-              <button tabindex="-1" class="key-number-png" data-content="9" aria-label="9" data-rowindex="2" data-colindex="3"><img src="9.png" alt="9" role="presentation" /></button>
-              <button tabindex="-1" class="key-number-svg" data-content="4" aria-label="4" data-rowindex="3" data-colindex="1">
+              <button id="Plus" tabindex="-1" class="key-operator" data-action="add" title="Add" aria-label="Add" data-rowindex="1" data-colindex="1">+</button>
+              <button id="Minus" tabindex="-1" class="key-operator" data-action="subtract" title="Subtract" aria-label="Subtract" data-rowindex="1" data-colindex="2">&minus;</button>
+              <button id="Star" tabindex="-1" class="key-operator" data-action="multiply" title="Multiply" aria-label="Multiply" data-rowindex="1" data-colindex="3">&times;</button>
+              <button id="Slash" tabindex="-1" class="key-operator" data-action="divide" title="Divide" aria-label="Divide" data-rowindex="1" data-colindex="4">&div;</button>
+              <button id="Digit7" tabindex="-1" class="key-number-png" data-content="7" aria-label="7" data-rowindex="2" data-colindex="1"><img src="7.png" alt="7" role="presentation" /></button>
+              <button id="Digit8" tabindex="-1" class="key-number-png" data-content="8" aria-label="8" data-rowindex="2" data-colindex="2"><img src="8.png" alt="8" role="presentation" /></button>
+              <button id="Digit9" tabindex="-1" class="key-number-png" data-content="9" aria-label="9" data-rowindex="2" data-colindex="3"><img src="9.png" alt="9" role="presentation" /></button>
+              <button id="Digit4" tabindex="-1" class="key-number-svg" data-content="4" aria-label="4" data-rowindex="3" data-colindex="1">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 30">
                   <path d="M 31.963 16.915 L 31.963 18.085 L 30.263 18.085 L 30.263 20.715 L 29.023 20.715 L 29.023 18.085 L 23.473 18.085 L 23.473 16.955 L 28.893 9.235 L 30.263 9.235 L 30.263 16.915 L 31.963 16.915 Z M 24.763 16.915 L 29.023 16.915 L 29.023 13.115 C 29.023 12.368 29.05 11.525 29.103 10.585 L 29.043 10.585 C 28.79 11.085 28.553 11.502 28.333 11.835 L 24.763 16.915 Z" style="white-space: pre;" />
                 </svg>
               </button>
-              <button tabindex="-1" class="key-number-svg" data-content="5" aria-label="5" data-rowindex="3" data-colindex="2">
+              <button id="Digit5" tabindex="-1" class="key-number-svg" data-content="5" aria-label="5" data-rowindex="3" data-colindex="2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 30">
                   <path d="M 27.707 13.683 C 28.914 13.683 29.86 13.983 30.547 14.583 C 31.24 15.176 31.587 15.993 31.587 17.033 C 31.587 18.213 31.21 19.14 30.457 19.813 C 29.704 20.486 28.664 20.823 27.337 20.823 C 26.05 20.823 25.07 20.616 24.397 20.203 L 24.397 18.953 C 24.764 19.186 25.217 19.37 25.757 19.503 C 26.297 19.636 26.83 19.703 27.357 19.703 C 28.277 19.703 28.99 19.486 29.497 19.053 C 30.004 18.62 30.257 17.996 30.257 17.183 C 30.257 15.583 29.28 14.783 27.327 14.783 C 26.834 14.783 26.17 14.86 25.337 15.013 L 24.667 14.583 L 25.097 9.243 L 30.777 9.243 L 30.777 10.433 L 26.207 10.433 L 25.917 13.863 C 26.517 13.743 27.114 13.683 27.707 13.683 Z" style="white-space: pre;" />
                 </svg>
               </button>
-              <button tabindex="-1" class="key-number-svg" data-content="6" aria-label="6" data-rowindex="3" data-colindex="3">
+              <button id="Digit6" tabindex="-1" class="key-number-svg" data-content="6" aria-label="6" data-rowindex="3" data-colindex="3">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 30">
                   <path d="M 23.888 15.779 C 23.888 13.532 24.325 11.852 25.198 10.739 C 26.071 9.626 27.361 9.069 29.068 9.069 C 29.661 9.069 30.125 9.119 30.458 9.219 L 30.458 10.339 C 30.058 10.206 29.601 10.139 29.088 10.139 C 27.861 10.139 26.925 10.522 26.278 11.289 C 25.638 12.049 25.285 13.249 25.218 14.889 L 25.318 14.889 C 25.891 13.989 26.795 13.539 28.028 13.539 C 29.055 13.539 29.865 13.849 30.458 14.469 C 31.051 15.089 31.348 15.932 31.348 16.999 C 31.348 18.186 31.021 19.119 30.368 19.799 C 29.721 20.479 28.848 20.819 27.748 20.819 C 26.561 20.819 25.621 20.372 24.928 19.479 C 24.235 18.592 23.888 17.359 23.888 15.779 Z M 27.728 19.709 C 28.468 19.709 29.041 19.479 29.448 19.019 C 29.861 18.552 30.068 17.879 30.068 16.999 C 30.068 16.239 29.878 15.642 29.498 15.209 C 29.118 14.782 28.548 14.569 27.788 14.569 C 27.321 14.569 26.891 14.666 26.498 14.859 C 26.111 15.046 25.801 15.309 25.568 15.649 C 25.335 15.989 25.218 16.342 25.218 16.709 C 25.218 17.242 25.321 17.742 25.528 18.209 C 25.741 18.669 26.038 19.036 26.418 19.309 C 26.805 19.576 27.241 19.709 27.728 19.709 Z" style="white-space: pre;" />
                 </svg>
               </button>
-              <button tabindex="-1" data-content="1" data-rowindex="4" data-colindex="1">1</button>
-              <button tabindex="-1" data-content="2" data-rowindex="4" data-colindex="2">2</button>
-              <button tabindex="-1" data-content="3" data-rowindex="4" data-colindex="3">3</button>
-              <button tabindex="-1" data-content="0" data-rowindex="5" data-colindex="1">0</button>
-              <button tabindex="-1" data-action="decimal" aria-label="Decimal point" data-rowindex="5" data-colindex="2">.</button>
-              <button tabindex="-1" data-action="clear" title="Clear all" aria-label="Clear all" data-rowindex="5" data-colindex="3">AC</button>
-              <button tabindex="-1" class="key-equal" data-action="calculate" title="Calculate" aria-label="Calculate" data-rowindex="2" data-colindex="4" aria-rowspan="4">=</button>
+              <button id="Digit1" tabindex="-1" data-content="1" data-rowindex="4" data-colindex="1">1</button>
+              <button id="Digit2" tabindex="-1" data-content="2" data-rowindex="4" data-colindex="2">2</button>
+              <button id="Digit3" tabindex="-1" data-content="3" data-rowindex="4" data-colindex="3">3</button>
+              <button id="Digit0" tabindex="-1" data-content="0" data-rowindex="5" data-colindex="1">0</button>
+              <button id="Period" tabindex="-1" data-action="decimal" aria-label="Decimal point" data-rowindex="5" data-colindex="2">.</button>
+              <button id="Escape" tabindex="-1" data-action="clear" title="Clear all" aria-label="Clear all" data-rowindex="5" data-colindex="3">AC</button>
+              <button id="Equal" tabindex="-1" class="key-equal" data-action="calculate" title="Calculate" aria-label="Calculate" data-rowindex="2" data-colindex="4" aria-rowspan="4">=</button>
             </div>
           </div>
           <script>
@@ -553,6 +553,32 @@
             // handle a keypress
             function keyPressed(e) {
               switch (e.key) {
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '5':
+                case '7':
+                case '8':
+                case '9':
+                case '0':
+                case '.':
+                case 'Escape':
+                case '=':
+                case '/':
+                case '-':
+                  document.getElementById(e.code).click()
+                  return true
+
+                case '+':
+                  document.getElementById('Plus').click()
+                  return true
+
+                case '*':
+                  document.getElementById('Star').click()
+                  return true
+
                 case 'ArrowUp':
                   if (isEqualsSelected()) setFocus(1, 4)
                   else moveFocus(-1, 0)

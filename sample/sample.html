@@ -1,7 +1,7 @@
 <!DOCTYPE html lang="en">
 <html>
 
-<head>
+<head lang="en-US">
   <meta charset="UTF-8" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
@@ -9,6 +9,22 @@
   <link rel="icon" href="../favicon.ico" type="image/x-icon" />
   <title>Screen Reader Examples</title>
   <style>
+    a#skip {
+      position: fixed;
+      top: 1em;
+      left: -999px;
+      overflow:hidden;
+      text-decoration: none;
+      color: #000;
+      background-color: #FFF;
+      padding: 5px;
+    }
+
+    a#skip:focus,
+    a#skip:active {
+      left: 1em;
+    }
+
     .wrapper {
       width: 960px;
       margin: 0 auto;
@@ -49,9 +65,9 @@
 
     header,
     section {
-      border: 1px solid rgba(41, 128, 185, 0.8);
+      border: 0.125em solid rgba(41, 128, 185, 0.8);
       margin-bottom: 10px;
-      border-radius: 3px;
+      border-radius: 1em;
     }
 
     header,
@@ -65,11 +81,43 @@
 
     nav,
     section {
-      padding: 10px;
+      padding: 0 10px 10px;
     }
 
     nav > ul {
-        font-size: larger;
+      font-size: larger;
+      list-style: none;
+      text-align: center;
+      padding-top: 0;
+      padding-left: 0;
+      margin-top: 0;
+    }
+
+    nav > ul > li {
+      margin: 10px 0;
+      border-radius: 1em;
+    }
+
+    nav > ul > li:first-child {
+      margin-top: 5px;
+    }
+
+    nav > ul > li.active {
+      box-shadow: 0 0 0 0.25em rgba(41, 128, 185, 0.8);
+    }
+
+    nav > ul > li:focus-within,
+    nav > ul > li:hover {
+      background-color: rgba(41, 128, 185, 0.3);
+    }
+
+    nav > ul > li > a {
+      text-decoration: none;
+      color: #000;
+    }
+
+    nav > ul > li > a:focus {
+      outline: none;
     }
 
     .show {
@@ -100,7 +148,7 @@
       padding: 0px;
     }
 
-    form > ul li {
+    form > ul > li {
       padding: 12px;
       position: relative;
     }
@@ -208,12 +256,23 @@
   </style>
   <script>
     function toggle_to(choice) {
-      var current = document.querySelector('section.show');
+      // hide and show the requested section...
+      var current = document.querySelector('section.show')
       if (current) {
-        current.className = 'hide';
+        current.className = 'hide'
       }
       var element = document.getElementById(choice + '.section') || document.getElementById('text.section')
-      element.className = 'show';
+      element.className = 'show'
+
+      // ...then update the associated tab
+      current = document.querySelector('li.active')
+      if (current) {
+        current.className = ''
+        current.querySelector('a:first-of-type').setAttribute('aria-selected', false);
+      }
+      element = document.getElementById(choice + '.tab') || document.getElementById('text.tab')
+      element.className = 'active'
+      element.querySelector('a:first-of-type').setAttribute('aria-selected', true);
     }
 
     function init() {
@@ -223,16 +282,18 @@
 </head>
 
 <body onload="init()">
+  <a id="skip" href="#main-content">Skip to content</a>
   <div class="wrapper">
     <header>
       <h1>Varying scenarios to understand how screen readers behave</h1>
     </header>
     <nav>
     <ul aria-controls="main-content" role="tablist" aria-label="Content selection">
-        <li role="presentation"><a href="#" onclick="toggle_to('text')">Phrases</a></li>
-        <li role="presentation"><a href="#" onclick="toggle_to('image')">Images</a></li>
-        <li role="presentation"><a href="#" onclick="toggle_to('form')">Forms</a></li>
-        <li role="presentation"><a href="#" onclick="toggle_to('calculator')">Calculator</a></li>
+        <li role="presentation" id="text.tab"><a href="#" onclick="toggle_to('text')" role="tab" aria-selected="false">Phrases</a></li>
+        <li role="presentation" id="lang.tab"><a href="#" onclick="toggle_to('lang')" role="tab" aria-selected="false">Languages</a></li>
+        <li role="presentation" id="image.tab"><a href="#" onclick="toggle_to('image')" role="tab" aria-selected="false">Images</a></li>
+        <li role="presentation" id="form.tab"><a href="#" onclick="toggle_to('form')" role="tab" aria-selected="false">Forms</a></li>
+        <li role="presentation" id="calculator.tab"><a href="#" onclick="toggle_to('calculator')" role="tab" aria-selected="false">Calculator</a></li>
       </ul>
     </nav>
     <main>
@@ -245,8 +306,8 @@
           <p>I was married in MCMXCIV, so add that to the MIX.</p>
           <h3>Math without MathML</h3>
           <p>Some equations take the form <i>ax<sup>2</sup> + bx + c = 0</i>. (inline math)</p>
-	  <p>Some equations take the form <span aria-label="a x squared plus b x plus c equals zero" role="math"><i>ax<sup>2</sup> + bx + c = 0</i></span>. (span with aria label)</p>
-	  <p>Some equations take the form <img src="FFFFFF-0.png" aria-label="A X squared plus B X plus C equals zero" alt="math" /><span aria-hidden="true" role="presentation"><i>ax<sup>2</sup> + bx + c = 0</i></span>. (image and aria-hidden)</p>
+          <p>Some equations take the form <span aria-label="a x squared plus b x plus c equals zero" role="math"><i>ax<sup>2</sup> + bx + c = 0</i></span>. (span with aria label)</p>
+          <p>Some equations take the form <img src="FFFFFF-0.png" aria-label="A X squared plus B X plus C equals zero" alt="math" /><span aria-hidden="true" role="presentation"><i>ax<sup>2</sup> + bx + c = 0</i></span>. (image and aria-hidden)</p>
           <h3>Geometry</h3>
           <p>Circumference of a circle = πd or 2πr</p>
           <p>If B is in the interior of ∠AXD , then m∠AXB + m∠BXD = m∠AXD.</p>
@@ -255,6 +316,23 @@
           <p>Α Φ Ω is a national co-ed service fraternity.</p>
           <h3>Fake Math</h3>
           <p>d = &#8730;<span style="border-top: 1px solid black">(x<sub>2</sub> - x<sub>1</sub>)<sup>2</sup> + (y<sub>2</sub> - y<sub>1</sub>)<sup>2</sup></span></p>
+        </section>
+        <section id="lang.section" class="hide">
+          <h2>Languages</h2>
+          <h3><span role="none">&#x1F1FA;&#x1F1F8;</span> English</h3>
+          <p>This sentence is in English.</p>
+          <h3><span role="none">&#x1F1EC;&#x1F1E7;</span> British English</h3>
+          <p lang="en-GB">This sentence should be read with a British accent.</p>
+          <h3><span role="none">&#x1F1F2;&#x1F1FD;</span> Spanish</h3>
+          <p lang="es-MX">Esta oraci&oacute;n es en espa&ntilde;ol.</p>
+          <h3><span role="none">&#x1F1EB;&#x1F1F7;</span> French</h3>
+          <p lang="fr">Cette phrase est en fran&ccedil;ais.</p>
+          <h3><span role="none">&#x1F3F4;&#xE0067;&#xE0062;&#xE0077;&#xE006C;&#xE0073;&#xE007F; Welsh</h3>
+          <p lang="cy">Mae’r frawddeg hon yng Nghymraeg.</p>
+          <h3><span role="none">&#x1F1EF;&#x1F1F5;</span> Japanese</h3>
+          <p lang="jp">この文は日本語です。</p>
+          <h3><span role="none">&#x1F1E6;&#x1F1EA;</span> Arabic</h3>
+          <p dir="rtl" lang="ar">هذه الجملة باللغة العربية.</p>
         </section>
         <section id="image.section" class="hide">
           <h2>Images</h2>

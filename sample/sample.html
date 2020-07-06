@@ -1,7 +1,7 @@
 <!DOCTYPE html lang="en">
-<html>
+<html lang="en-US">
 
-<head lang="en-US">
+<head>
   <meta charset="UTF-8" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
@@ -282,14 +282,15 @@
 
     function init() {
       toggle_to(window.location.hash.substring(1) || 'text');
+      canvasStart(); // this really belongs somewhere else...
     }
   </script>
 </head>
 
 <body onload="init()">
-  <a id="skip" href="#main-content">Skip to content</a>
   <div class="wrapper">
     <header>
+      <a id="skip" href="#main-content">Skip to content</a>
       <h1>Varying scenarios to understand how screen readers behave</h1>
     </header>
     <nav>
@@ -737,6 +738,7 @@
           </script>
         </section>
         <section id="canvas.section" class="hide">
+          <p>This is a canvas with drawn buttons, but enabled with keyboard and screen reader functionality.</p>
           <canvas role="figure" aria-label="Three roaming blue(ish) discs with controls to either speed up or slow down their movement">
             <!-- these shadow buttons allow keyboard control and screen reader functionality for accessibility -->
             <button id="slower" onclick="this.focus(); Disc.slower()">Slower</button>
@@ -747,8 +749,6 @@
             const c = canvas.getContext('2d')
 
             class Disc {
-              static speed = 5
-
               static slower() {
                 if (Disc.speed > 1)
                   --Disc.speed
@@ -792,6 +792,7 @@
                 this.y += this.velocity.y * Disc.speed * 2
               }
             }
+            Disc.speed = 5
 
             class Button {
               constructor(x, y, height, width, text, mirrorId) {
@@ -960,7 +961,8 @@
             // activate the canvas animation
             function canvasStart() {
               canvas.setAttribute('height', "400px")
-              canvas.setAttribute('width', (canvas.parentElement.clientWidth - 20) + "px")
+              canvas.setAttribute('width', "725px")
+              // canvas.setAttribute('width', (canvas.parentElement.clientWidth - 20) + "px")
 
               discs = []
               const colors = ["rgba(129, 207, 224, 0.5)", "rgba(25, 181, 254, 0.5)", "rgba(65, 131, 215, 0.5)"]
@@ -977,20 +979,6 @@
             // done animation
             function canvasStop() {
               discs = null
-            }
-
-            // start/stop canvas animation when visible
-            if (window.IntersectionObserver) {
-              var observer = new IntersectionObserver(function(entries) {
-                if (entries[0].intersectionRatio) {
-                  canvasStart()
-                } else {
-                  canvasStop()
-                }
-              }, {
-                root: document.body
-              })
-              observer.observe(canvas)
             }
           </script>
         </section>

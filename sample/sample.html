@@ -253,6 +253,11 @@
       grid-column: -2;
       grid-row: 2 / span 4;
     }
+
+    canvas {
+            border: solid 1px blue;
+            margin-top: 10px;
+    }
   </style>
   <script>
     function toggle_to(choice) {
@@ -294,6 +299,7 @@
         <li role="presentation" id="image.tab"><a href="#" onclick="toggle_to('image')" role="tab" aria-selected="false">Images</a></li>
         <li role="presentation" id="form.tab"><a href="#" onclick="toggle_to('form')" role="tab" aria-selected="false">Forms</a></li>
         <li role="presentation" id="calculator.tab"><a href="#" onclick="toggle_to('calculator')" role="tab" aria-selected="false">Calculator</a></li>
+        <li role="presentation" id="canvas.tab"><a href="#" onclick="toggle_to('canvas')" role="tab" aria-selected="false">Canvas</a></li>
       </ul>
     </nav>
     <main>
@@ -728,6 +734,264 @@
               const handled = keyPressed(e)
               if (handled) event.preventDefault()
             })
+          </script>
+        </section>
+        <section id="canvas.section" class="hide">
+          <canvas role="figure" aria-label="Three roaming blue(ish) discs with controls to either speed up or slow down their movement">
+            <!-- these shadow buttons allow keyboard control and screen reader functionality for accessibility -->
+            <button id="slower" onclick="this.focus(); Disc.slower()">Slower</button>
+            <button id="faster" onclick="this.focus(); Disc.faster()">Faster</button>
+          </canvas>
+          <script>
+            const canvas = document.querySelector('canvas')
+            const c = canvas.getContext('2d')
+
+            class Disc {
+              static speed = 5
+
+              static slower() {
+                if (Disc.speed > 1)
+                  --Disc.speed
+              }
+
+              static faster() {
+                if (Disc.speed < 9)
+                  ++Disc.speed
+              }
+
+              constructor(x, y, radius, color) {
+                this.x = x
+                this.y = y
+                this.radius = radius
+                this.color = color
+                this.velocity = {
+                  x: (Math.random() - 0.5),
+                  y: (Math.random() - 0.5)
+                }
+              }
+
+              draw() {
+                c.beginPath()
+                c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+                c.fillStyle = this.color
+                c.fill()
+                c.closePath()
+              }
+
+              update() {
+                this.draw()
+
+                if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+                  this.velocity.x = -this.velocity.x
+                }
+                if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+                  this.velocity.y = -this.velocity.y
+                }
+
+                this.x += this.velocity.x * Disc.speed * 2
+                this.y += this.velocity.y * Disc.speed * 2
+              }
+            }
+
+            class Button {
+              constructor(x, y, height, width, text, mirrorId) {
+                this.x = x
+                this.y = y
+                this.height = height
+                this.width = width
+                this.text = text
+                this.mirrorId = mirrorId
+                this.pressed = false
+                this.focussed = false
+              }
+
+              draw() {
+                c.beginPath()
+                c.fillStyle = "lightgrey"
+                c.fillRect(this.x, this.y, this.width, this.height)
+                c.strokeStyle = this.pressed ? "grey" : "black"
+                c.strokeRect(this.x, this.y, this.width, this.height)
+                c.textAlign = "center"
+                c.textBaseline = "middle"
+                c.fillStyle = "black"
+                c.font = "16pt sans-serif"
+                c.fillText(this.text, this.x + this.width / 2, this.y + this.height / 2)
+                if (this.focussed) {
+                  c.strokeStyle = "blue"
+                  c.strokeRect(this.x - 2, this.y - 2, this.width + 4, this.height + 4)
+                }
+                c.closePath()
+              }
+
+              contains(pos) {
+                return pos.x > this.x && pos.x < this.x + this.width && pos.y < this.y + this.height && pos.y > this.y
+              }
+
+              focus() {
+                this.focussed = true
+              }
+
+              blur() {
+                this.focussed = false
+              }
+
+              up() {
+                this.pressed = false
+              }
+
+              down() {
+                this.pressed = true
+              }
+
+              click() {
+                document.getElementById(this.mirrorId).click()
+              }
+
+            }
+
+            // all the floating circles
+            let discs = null
+
+            // visible and shadow buttons
+            const htmlButtonSlow = document.getElementById("slower")
+            const htmlButtonFast = document.getElementById("faster")
+            const canvasButtonSlow = new Button(10, 10, 50, 90, "Slower", htmlButtonSlow.id)
+            const canvasButtonFast = new Button(10, 70, 50, 90, "Faster", htmlButtonFast.id)
+            const buttons = [canvasButtonSlow, canvasButtonFast]
+
+            // make events on shadow buttons also take effect on visual ones
+            htmlButtonSlow.addEventListener("focus", function(e) {
+              canvasButtonSlow.focus()
+            })
+            htmlButtonSlow.addEventListener("blur", function(e) {
+              canvasButtonSlow.blur()
+            })
+            htmlButtonFast.addEventListener("focus", function(e) {
+              canvasButtonFast.focus()
+            })
+            htmlButtonFast.addEventListener("blur", function(e) {
+              canvasButtonFast.blur()
+            })
+            htmlButtonSlow.addEventListener("keydown", function(e) {
+              if (["Enter", "Space"].includes(e.code)) {
+                canvasButtonSlow.down()
+              }
+            })
+            htmlButtonSlow.addEventListener("keyup", function(e) {
+              if (["Enter", "Space"].includes(e.code)) {
+                canvasButtonSlow.up()
+              }
+            })
+            htmlButtonFast.addEventListener("keydown", function(e) {
+              if (["Enter", "Space"].includes(e.code)) {
+                canvasButtonFast.down()
+              }
+            })
+            htmlButtonFast.addEventListener("keyup", function(e) {
+              if (["Enter", "Space"].includes(e.code)) {
+                canvasButtonFast.up()
+              }
+            })
+
+            // main animation function
+            function animate() {
+              if (discs == null) {
+                // no discs to draw, so just clear canvas and exit animation loop
+                c.clearRect(0, 0, canvas.width, canvas.height)
+              } else {
+                requestAnimationFrame(animate)
+                c.clearRect(0, 0, canvas.width, canvas.height)
+                discs.forEach(disc => {
+                  disc.update()
+                })
+                buttons.forEach(button => {
+                  button.draw()
+                })
+
+                c.beginPath()
+                c.textAlign = "center"
+                c.textBaseline = "middle"
+                c.fillStyle = "black"
+                c.font = "16pt sans-serif"
+                c.fillText("Speed: " + Disc.speed, 55, 155)
+                c.closePath()
+              }
+            }
+
+            function getMousePos(e) {
+              var rect = canvas.getBoundingClientRect()
+              return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+              }
+            }
+
+            function handleMouse(e) {
+              if (discs == null)
+                return
+
+              e.preventDefault()
+              e.stopPropagation()
+
+              const pos = getMousePos(e)
+
+              buttons.forEach(button => {
+                if (button.contains(pos)) {
+                  switch (e.type) {
+                    case "click":
+                      button.click()
+                      break
+                    case "mouseup":
+                      button.up()
+                      break
+                    case "mousedown":
+                      button.down()
+                      break
+                  }
+                }
+              })
+            }
+
+            // check mouse events for canvas buttons
+            canvas.addEventListener("click", handleMouse)
+            canvas.addEventListener("mouseup", handleMouse)
+            canvas.addEventListener("mousedown", handleMouse)
+
+            // activate the canvas animation
+            function canvasStart() {
+              canvas.setAttribute('height', "400px")
+              canvas.setAttribute('width', (canvas.parentElement.clientWidth - 20) + "px")
+
+              discs = []
+              const colors = ["rgba(129, 207, 224, 0.5)", "rgba(25, 181, 254, 0.5)", "rgba(65, 131, 215, 0.5)"]
+              for (let i = 0; i < 3; ++i) {
+                const radius = Math.random() * 25 + 25
+                const x = Math.random() * (canvas.width - 2 * radius) + radius
+                const y = Math.random() * (canvas.height - 2 * radius) + radius
+                discs.push(new Disc(x, y, radius, colors[i]))
+              }
+
+              animate()
+            }
+
+            // done animation
+            function canvasStop() {
+              discs = null
+            }
+
+            // start/stop canvas animation when visible
+            if (window.IntersectionObserver) {
+              var observer = new IntersectionObserver(function(entries) {
+                if (entries[0].intersectionRatio) {
+                  canvasStart()
+                } else {
+                  canvasStop()
+                }
+              }, {
+                root: document.body
+              })
+              observer.observe(canvas)
+            }
           </script>
         </section>
       </div>

@@ -7,6 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+
     <style>
       body {
         font-family: 'Lato', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
@@ -43,6 +44,12 @@
         background-color: #FFD2D2;
       }
     </style>
+
+    <!-- MathJax MathML 3 experimental support to enable mstack and mlondiv -->
+    <!-- Sadly, the SRE doesn't understand these tags, though.
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({MathML: {extensions: ["mml3.js"]}});</script>
+    -->
+
     <script src="./sre_browser.js"></script>
     <script>
       function getMathML() {
@@ -122,7 +129,7 @@
 
         // update version on page and log actual settings
         document.getElementById("version").innerHTML = SRE.version;
-        console.log(SRE.engineSetup());
+        console.log("SRE configuration", SRE.engineSetup());
       }
     </script>
     <script src="./MathJax.js?config=MML_SVG-full"></script>

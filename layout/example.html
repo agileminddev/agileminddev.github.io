@@ -256,16 +256,30 @@
       width: 100%;
       box-sizing: border-box;
       padding-bottom: 8px;
+
       border: 1px red solid;
     }
     
     .production-col3-item {
       width: -webkit-fill-available;
       width: -moz-available;
-      width: stretch;
+
       border: 1px green solid;
     }
     
+
+    .production-col3-item table {
+      margin: auto;
+      vertical-align: middle;
+    }
+
+    .production-col3-item table td {
+      vertical-align: middle;
+    }
+
+    .production-col3-item p > img {
+      display: inline-block;
+    }
 
     /**** alignment tweaks */
     
@@ -356,39 +370,34 @@
       -ms-grid-columns: 1fr !important;
       grid-template-columns: 1fr !important;
     }
-    
+
+
     .landscape .production-col3-container,
+    .landscape .production-col3-container.production-col3-fallback-single {
+      -ms-grid-columns: 1fr !important;
+      grid-template-columns: 1fr !important;
+    }
+
     .landscape .production-col3-container.production-col3-fallback-double {
       -ms-grid-columns: auto auto !important;
       grid-template-columns: auto auto !important;
     }
-    
-    .landscape .production-col3-container.production-container-h-left,
+
     .landscape .production-col3-container.production-col3-fallback-double.production-container-h-left {
       -ms-grid-columns: auto 1fr !important;
       grid-template-columns: auto 1fr !important;
     }
-    
-    .landscape .production-col3-container.production-container-h-right,
+
     .landscape .production-col3-container.production-col3-fallback-double.production-container-h-right {
       -ms-grid-columns: 1fr auto !important;
       grid-template-columns: 1fr auto !important;
     }
-    
-    .landscape .production-col3-container.production-container-h-left.production-container-h-right,
+
     .landscape .production-col3-container.production-col3-fallback-double.production-container-h-left.production-container-h-right {
       -ms-grid-columns: 1fr 1fr !important;
       grid-template-columns: 1fr 1fr !important;
     }
-    
-    .landscape .production-col3-container.production-col3-fallback-single,
-    .landscape .production-col3-container.production-col3-fallback-single.production-container-h-left,
-    .landscape .production-col3-container.production-col3-fallback-single.production-container-h-right,
-    .landscape .production-col3-container.production-col3-fallback-single.production-container-h-left.production-container-h-right {
-      -ms-grid-columns: 1fr !important;
-      grid-template-columns: 1fr !important;
-    }
-    
+
 
     /**** icon mode */
     

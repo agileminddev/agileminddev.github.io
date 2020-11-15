@@ -2588,18 +2588,11 @@ function initMap() {
 function eqfeed_callback(data) {
     map.data.addGeoJson(data);
 
-    // var myLatlng = new google.maps.LatLng(41.9515, -76.5186);
-    // var marker = new google.maps.Marker({
-    //     position: myLatlng,
-    //     title:"Hello World!"
-    // });
-    // marker.setMap(map);
-
     map.data.addListener('mouseover', (event) => {
         if (infoSticky)
             return;
 
-        const myHTML = event.feature.getProperty("District");
+        const myHTML = "District: " + event.feature.getProperty("District") + "<br/>Algebra Classes: " + event.feature.getProperty("Algebra Classes");
         infoWindow.setContent("<div style='width:150px;'>"+myHTML+"</div>");
         // position the infoWindow on the marker
         infoWindow.setPosition(event.feature.getGeometry().get());
@@ -2613,7 +2606,17 @@ function eqfeed_callback(data) {
         infoWindow.close();
     });
 
-    map.data.addListener('click', () => changeSticky(true));
+    map.data.addListener('click', (event) => {
+        let myHTML = "";
+        event.feature.forEachProperty((v, k) => {
+            if (myHTML !== "") {
+                myHTML = myHTML + "<br />";
+            }
+            myHTML = myHTML + k + ": " + v;
+        });
+        infoWindow.setContent("<div style='width:150px;'>"+myHTML+"</div>");
+        changeSticky(true);
+    });
     infoWindow.addListener('closeclick', () => changeSticky(false));
 }
 
@@ -2644,12 +2647,12 @@ function styleFeature(feature) {
             strokeColor: "#fff",
             fillColor: color,
             fillOpacity: 2 / mag,
-            scale: Math.max(1, fraction * 20),
+            scale: 3 + Math.max(1, fraction * 20),
         },
         name: feature.getProperty("Location"),
         zIndex: Math.floor(mag),
     };
-    console.log(style);
+    console.log(feature);
     return style;
 }
 

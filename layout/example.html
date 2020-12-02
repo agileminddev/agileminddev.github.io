@@ -319,42 +319,52 @@
     }
     
     .production-col2-container.production-container-h-left {
+      -ms-grid-columns: auto 1fr;
       grid-template-columns: auto 1fr;
     }
     
     .production-col2-container.production-container-h-right {
+      -ms-grid-columns: 1fr auto;
       grid-template-columns: 1fr auto;
     }
     
     .production-col2-container.production-container-h-left.production-container-h-right {
+      -ms-grid-columns: 1fr 1fr;
       grid-template-columns: 1fr 1fr;
     }
     
     .production-col3-container.production-container-h-left {
+      -ms-grid-columns: auto 1fr 1fr;
       grid-template-columns: auto 1fr 1fr;
     }
     
     .production-col3-container.production-container-h-middle {
+      -ms-grid-columns: 1fr auto 1fr;
       grid-template-columns: 1fr auto 1fr;
     }
     
     .production-col3-container.production-container-h-right {
+      -ms-grid-columns: 1fr 1fr auto;
       grid-template-columns: 1fr 1fr auto;
     }
     
     .production-col3-container.production-container-h-left.production-container-h-middle {
+      -ms-grid-columns: auto auto 1fr;
       grid-template-columns: auto auto 1fr;
     }
     
     .production-col3-container.production-container-h-middle.production-container-h-right {
+      -ms-grid-columns: 1fr auto auto;
       grid-template-columns: 1fr auto auto;
     }
     
     .production-col3-container.production-container-h-left.production-container-h-right {
+      -ms-grid-columns: auto 1fr auto;
       grid-template-columns: auto 1fr auto;
     }
     
     .production-col3-container.production-container-h-left.production-container-h-middle.production-container-h-right {
+      -ms-grid-columns: 1fr 1fr 1fr;
       grid-template-columns: 1fr 1fr 1fr;
     }
     
@@ -362,46 +372,113 @@
     /**** responsive tweaks */
     
     .portrait .production-col2-container {
-      -ms-grid-columns: 1fr !important;
-      grid-template-columns: 1fr !important;
+      -ms-grid-columns: auto !important;
+      grid-template-columns: auto !important;
     }
     
     .portrait .production-col3-container {
-      -ms-grid-columns: 1fr !important;
-      grid-template-columns: 1fr !important;
+      -ms-grid-columns: auto !important;
+      grid-template-columns: auto !important;
     }
 
 
-    .landscape .production-col3-container,
-    .landscape .production-col3-container.production-col3-fallback-single {
-      -ms-grid-columns: 1fr !important;
-      grid-template-columns: 1fr !important;
+    .landscape .production-col2-container,
+    .landscape .production-col2-container.production-col-fallback-single {
+      -ms-grid-columns: auto !important;
+      grid-template-columns: auto !important;
     }
 
-    .landscape .production-col3-container.production-col3-fallback-double {
+    .landscape .production-col2-container.production-col-fallback-double {
       -ms-grid-columns: auto auto !important;
       grid-template-columns: auto auto !important;
     }
 
-    .landscape .production-col3-container.production-col3-fallback-double.production-container-h-left {
+    .landscape .production-col2-container.production-col-fallback-double.production-container-h-left {
       -ms-grid-columns: auto 1fr !important;
       grid-template-columns: auto 1fr !important;
     }
 
-    .landscape .production-col3-container.production-col3-fallback-double.production-container-h-right {
+    .landscape .production-col2-container.production-col-fallback-double.production-container-h-right {
       -ms-grid-columns: 1fr auto !important;
       grid-template-columns: 1fr auto !important;
     }
 
-    .landscape .production-col3-container.production-col3-fallback-double.production-container-h-left.production-container-h-right {
+    .landscape .production-col2-container.production-col-fallback-double.production-container-h-left.production-container-h-right {
       -ms-grid-columns: 1fr 1fr !important;
       grid-template-columns: 1fr 1fr !important;
     }
 
 
+    .landscape .production-col3-container,
+    .landscape .production-col3-container.production-col-fallback-single {
+      -ms-grid-columns: auto !important;
+      grid-template-columns: auto !important;
+    }
+
+    .landscape .production-col3-container.production-col-fallback-double {
+      -ms-grid-columns: auto auto !important;
+      grid-template-columns: auto auto !important;
+    }
+
+    .landscape .production-col3-container.production-col-fallback-double.production-container-h-left {
+      -ms-grid-columns: auto 1fr !important;
+      grid-template-columns: auto 1fr !important;
+    }
+
+    .landscape .production-col3-container.production-col-fallback-double.production-container-h-right {
+      -ms-grid-columns: 1fr auto !important;
+      grid-template-columns: 1fr auto !important;
+    }
+
+    .landscape .production-col3-container.production-col-fallback-double.production-container-h-left.production-container-h-right {
+      -ms-grid-columns: 1fr 1fr !important;
+      grid-template-columns: 1fr 1fr !important;
+    }
+
+    .landscape .production-col3-container.production-col-fallback-triple {
+      -ms-grid-columns: auto auto auto !important;
+      grid-template-columns: auto auto auto !important;
+    }
+
+    .landscape .production-col3-container.production-col-fallback-triple.production-container-h-left {
+      -ms-grid-columns: auto 1fr 1fr !important;
+      grid-template-columns: auto 1fr 1fr !important;
+    }
+    
+    .landscape .production-col3-container.production-col-fallback-triple.production-container-h-middle {
+      -ms-grid-columns: 1fr auto 1fr !important;
+      grid-template-columns: 1fr auto 1fr !important;
+    }
+    
+    .landscape .production-col3-container.production-col-fallback-triple.production-container-h-right {
+      -ms-grid-columns: 1fr 1fr auto !important;
+      grid-template-columns: 1fr 1fr auto !important;
+    }
+    
+    .landscape .production-col3-container.production-col-fallback-triple.production-container-h-left.production-container-h-middle {
+      -ms-grid-columns: auto auto 1fr !important;
+      grid-template-columns: auto auto 1fr !important;
+    }
+    
+    .landscape .production-col3-container.production-col-fallback-triple.production-container-h-middle.production-container-h-right {
+      -ms-grid-columns: 1fr auto auto !important;
+      grid-template-columns: 1fr auto auto !important;
+    }
+    
+    .landscape .production-col3-container.production-col-fallback-triple.production-container-h-left.production-container-h-right {
+      -ms-grid-columns: auto 1fr auto !important;
+      grid-template-columns: auto 1fr auto !important;
+    }
+    
+    .landscape .production-col3-container.production-col-fallback-triple.production-container-h-left.production-container-h-middle.production-container-h-right {
+      -ms-grid-columns: 1fr 1fr 1fr !important;
+      grid-template-columns: 1fr 1fr 1fr !important;
+    }
+
     /**** icon mode */
     
-    .production-icon {
+    .production-icon,
+    .production-icon.production-container-v-center {
       justify-items: start !important;
       -ms-flex-align: center;
       align-items: center;
@@ -410,11 +487,34 @@
       margin: 0;
       box-sizing: border-box;
     }
-    
-    .production-col2-container.production-icon {
-      grid-template-columns: auto 1fr !important;
+
+    .production-icon.production-container-v-stretch {
+      align-items: stretch;
     }
     
+    .production-icon.production-container-v-top {
+      align-items: start;
+    }
+    
+    .production-icon.production-container-v-bottom {
+      align-items: end;
+    }
+
+    .production-col2-container.production-icon,
+    .portrait .production-col2-container.production-icon,
+    .landscape .production-col2-container.production-icon,
+    .landscape .production-col2-container.production-icon.production-col-fallback-single {
+      grid-template-columns: auto auto !important;
+    }
+    
+    .production-col2-container.production-icon.production-container-h-right,
+    .portrait .production-col2-container.production-icon.production-container-h-right,
+    .landscape .production-col2-container.production-icon.production-container-h-right,
+    .landscape .production-col2-container.production-icon.production-col-fallback-single.production-container-h-right {
+      grid-template-columns: auto 1fr !important;
+    }
+
+
     .production-col3-container.production-icon {
       grid-template-columns: auto auto auto !important;
     }
@@ -431,14 +531,24 @@
       grid-template-columns: auto 1fr 1fr !important;
     }
     
-    .portrait .production-col3-container.production-icon {
+    .portrait .production-col3-container.production-icon,
+    .landscape .production-col3-container.production-icon.production-col-fallback-single,
+    .landscape .production-col3-container.production-icon.production-col-fallback-double {
+      grid-template-columns: auto auto !important;
+    }
+    
+    .portrait .production-col3-container.production-icon.production-container-h-right,
+    .landscape .production-col3-container.production-icon.production-col-fallback-single.production-container-h-right,
+    .landscape .production-col3-container.production-icon.production-col-fallback-double.production-container-h-right {
       grid-template-columns: auto 1fr !important;
     }
-    
-    .portrait .production-col3-container.production-icon .production-col3-item:last-child:nth-child(odd) {
+    .portrait .production-col3-container.production-icon .production-col3-item:nth-child(3n),
+    .landscape .production-col3-container.production-icon.production-col-fallback-single .production-col3-item:nth-child(3n),
+    .landscape .production-col3-container.production-icon.production-col-fallback-double .production-col3-item:nth-child(3n) {
       grid-column: span 2;
     }
-    
+
+
     .production-icon > div {
       padding: 4px;
       justify-self: start;
@@ -608,7 +718,7 @@
 
     function fallback_toggle_to(choice) {
       apply_to_all('mck-container', function (element) {
-        toggle_list(choice, element, ['', 'production-col3-fallback-single', 'production-col3-fallback-double']);
+        toggle_list(choice, element, ['', 'production-col-fallback-single', 'production-col-fallback-double', 'production-col-fallback-triple']);
       });
     }
 
@@ -659,7 +769,7 @@
     <div class="toggles">
       <fieldset>
         <legend>Device:</legend>
-        <div class="memo">Screen size for rendered content</div>
+        <div class="memo">Screen size for rendered content.</div>
         <div class="controls">
           <input type="radio" class="force" checked disabled />
           <input type="radio" id="dev1" onclick="device_toggle_to('desktop');" name="toggle" checked />
@@ -679,7 +789,7 @@
       <div class="toggles">
         <fieldset>
           <legend>Vertical alignment method:</legend>
-          <div class="memo">Affects the height and vertial position of cells in a row</div>
+          <div class="memo">Affects the height and vertical position of cells in a row.</div>
           <div class="controls">
             <input type="radio" class="force" checked disabled />
             <input id="valign1" type="radio" onclick="valign_toggle_to('');" name="valign" checked />
@@ -699,7 +809,7 @@
       <div class="toggles">
         <fieldset>
           <legend>Horizontal alignment method:</legend>
-          <div class="memo">Affects the width of cells in a column by trying to make visible as much of the given column as possible with minimal whitespace</div>
+          <div class="memo">Affects the width of cells in a column by trying to make visible as much of the given column as possible with minimal whitespace.</div>
           <div class="controls">
             <input type="checkbox" class="force" checked disabled />
             <input id="halign1" type="checkbox" onclick="halign_toggle(this);" name="production-container-h-left" />
@@ -714,15 +824,17 @@
       <div class="toggles">
         <fieldset>
           <legend>Landscape adaptive fallback method:</legend>
-          <div class="memo">Controls how 3 column layouts behave in landscape mode</div>
+          <div class="memo">Controls how 2 and 3 column layouts behave in landscape mode. 3 column icon layouts are also affected.</div>
           <div class="controls">
             <input type="radio" class="force" checked disabled />
             <input id="landscapefallback1" type="radio" onclick="fallback_toggle_to('');" name="landscapefallback" checked />
             <label for="landscapefallback1">Default</label>
-            <input id="landscapefallback2" type="radio" onclick="fallback_toggle_to('production-col3-fallback-single');" name="landscapefallback" />
+            <input id="landscapefallback2" type="radio" onclick="fallback_toggle_to('production-col-fallback-single');" name="landscapefallback" />
             <label for="landscapefallback2">Single column</label>
-            <input id="landscapefallback3" type="radio" onclick="fallback_toggle_to('production-col3-fallback-double');" name="landscapefallback" />
+            <input id="landscapefallback3" type="radio" onclick="fallback_toggle_to('production-col-fallback-double');" name="landscapefallback" />
             <label for="landscapefallback3">Double column</label>
+            <input id="landscapefallback4" type="radio" onclick="fallback_toggle_to('production-col-fallback-triple');" name="landscapefallback" />
+            <label for="landscapefallback4">Triple column</label>
           </div>
         </fieldset>
       </div>
@@ -888,7 +1000,7 @@
     <div class="tab content7">
 
       <div class="device-wrapper">
-        <p>A 3 column icon layout expects a smallish image on the left and then two columns after that. On a smaller screen, the first two columns stay on the same row and the third bumps to a second row spanning the firs two columns.</p>
+        <p>A 3 column icon layout expects a smallish image on the left and then two columns after that. On a smaller screen, the first two columns stay on the same row and the third bumps to a second row spanning the first two columns. Multiple rows are supported, but the rows much be in groups of three and the first, fourth, seventh, etc. must be icons.</p>
         <div class="mck-container production-col3-container production-icon">
           <div class="production-col3-item">
             <img class="icon" alt="Icon" title="Icon" src="bevo.png" style="width: 48px; height: 48px;" />
@@ -899,10 +1011,6 @@
           <div class="production-col3-item">
             <p>The Love Boat promises something for everyone. Wouldn’t you like to get away? Sometimes you want to go where everybody knows your name. And they’re always glad you came!</p>
           </div>
-        </div>
-
-        <p>Unlike a 2 column icon layout, multiple rows with icons are not supported on small screens in the 3 column version.</p>
-        <div class="mck-container production-col3-container production-icon">
           <div class="production-col3-item">
             <img class="icon" alt="Icon" title="Icon" src="bevo.png" style="width: 48px; height: 48px;" />
           </div>
@@ -996,13 +1104,14 @@
         <br />
         <div class="mck-container production-col2-container">
           <div class="production-col2-item">
-            Eye candy
             <img alt="eye candy" title="eye candy" class="eye_candy" src="batman.png" />
           </div>
           <div class="production-col2-item">
-            Responsive image
             <img alt="responsive" title="responsive image" class="responsive_image" src="superman.png" />
           </div>
+        </div>
+        <br />
+        <div class="mck-container production-col2-container">
           <div class="production-col2-item">
             Secondary 50
             <img alt="secondary 50%" title="secondary 50%" class="secondary_50" src="wonderwoman.png" />

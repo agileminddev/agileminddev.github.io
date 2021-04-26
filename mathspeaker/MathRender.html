@@ -1,154 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Math Reader Example</title>
-    <meta charset="UTF-8" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
-
-    <style>
+<head>
+  <title>Math Speaker</title>
+  <meta charset="UTF-8"/>
+  <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
+  <meta content="no-cache" http-equiv="Pragma"/>
+  <meta content="0" http-equiv="Expires"/>
+  <link href="../favicon.ico" rel="icon" type="image/x-icon"/>
+  <style>
       body {
-        font-family: 'Lato', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
-        margin: 1em;
+          font-family: 'Lato', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+          margin: 1em;
       }
+
       textarea {
-        margin: 1em;
-        width: -webkit-fill-available;
+          margin: 1em;
+          width: -webkit-fill-available;
+          width: -moz-available;
+          width: fill-available;
       }
+
       button {
-        margin-left: 1em;
+          margin-left: 1em;
       }
+
       dl {
-        border: solid #333;
-        margin: 1em;
+          border: solid #333;
+          margin: 1em;
       }
+
       dt {
-        padding: 2px 4px;
-        background: #333;
-        color: #fff;
+          padding: 2px 4px;
+          background: #333;
+          color: #fff;
       }
+
       dd {
-        margin: 0;
-        padding: 1em;
+          margin: 0;
+          padding: 1em;
       }
-      .math-speaker .math {
-        padding-bottom: 4px;
-        border-bottom: 1px dotted green;
-      }
-      #error {
-        padding:10px;
-        margin:10px 0;
-        color: #D8000C;
-        background-color: #FFD2D2;
-      }
-    </style>
 
-    <!-- MathJax MathML 3 experimental support to enable mstack and mlondiv -->
-    <!-- Sadly, the SRE doesn't understand these tags, though.
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({MathML: {extensions: ["mml3.js"]}});</script>
-    -->
+      .math-speaker span {
+          padding-bottom: 4px;
+          border-bottom: 1px dotted green;
+      }
 
-    <script src="./sre_browser.js"></script>
-    <script>
-      function getMathML() {
-        // make sure the string is enclosed by a <math> tag
-        var value = document.getElementById("mathML").value.trim();
-        if (!value.startsWith("<math")) {
-          value = "<math>" + value + "</math>";
-        }
-        return value;
+      pre {
+          margin: 0;
+      }
+
+      .error {
+          padding: 10px;
+          margin: 10px 0;
+          color: #D8000C;
+          background-color: #FFD2D2;
+          font-family: sans-serif;
+      }
+
+      #copy {
+          float: right;
+          margin-right: 1em;
+      }
+
+      #mathML {
+          background: white;
+      }
+
+      #mathML.good {
+          animation: fadeoutGood 1s;
+      }
+
+      #mathML.bad {
+          animation: fadeoutBad 1s;
+      }
+
+      @keyframes fadeoutGood {
+          from { background: green; }
+          to { background: white; }
+      }
+
+      @keyframes fadeoutBad {
+          from { background: red; }
+          to { background: white; }
+      }
+  </style>
+
+  <!-- used for syntax highlighting; see https://highlightjs.org/ -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/xcode.min.css" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+  <!-- used for pretty printing; see http://www.eslinstructor.net/vkbeautify/ -->
+  <script src="./vkbeautify.0.99.00.beta.js"></script>
+
+  <script src="./sre_browser.js"></script>
+  <script>
+      function getProperMathML() {
+          // make sure the returned string is enclosed by a <math> tag
+          var value = document.getElementById("mathML").value.trim();
+          if (!value.toLowerCase().startsWith("<math")) {
+              value = "<math>" + value + "</math>";
+          }
+          return value;
+      }
+
+      function getStrippedMathML() {
+          // lose enclosing <math> tags and extra whitespace
+          var value = document.getElementById("mathML").value.trim();
+          if (value.toLowerCase().startsWith("<math>") && value.toLowerCase().endsWith("</math>")) {
+              // wont work with <math id="xxx"> but close enough for our purposes here
+              value = value.substring(6, value.length - 7);
+          }
+          return value.replace(/>\s+</g, "><").trim();
+      }
+
+      function hideResults() {
+          document.getElementById("error").style.display = "none";
+          document.getElementById("results").style.display = "none";
+          stopSpeaking();
+      }
+
+      function copyMathML() {
+          // encode math string
+          var math = window.btoa(unescape(encodeURIComponent(getStrippedMathML())));
+
+          // build URL
+          var url = new URL(window.location);
+          url.searchParams.set("math", math);
+
+          // copy to clipboard
+          var mathML = document.getElementById("mathML");
+          mathML.addEventListener("animationend", () => {
+                  mathML.classList.remove("good");
+                  mathML.classList.remove("bad");
+              }, true);
+          navigator.clipboard.writeText(url).then(
+              () => { mathML.classList.add("good"); },
+              () => { mathML.classList.add("bad"); });
+      }
+
+      var clearPressed = false;
+
+      function clearMathML() {
+          hideResults();
+          var math = document.getElementById("mathML");
+          var url = new URL(window.location);
+          var param = url.searchParams.get("math");
+          url.searchParams.delete("math");
+          if (!clearPressed) {
+              // get cute with the back button
+              window.history.pushState({"mathML": math.value, "param": param}, "", url.href);
+          }
+          clearPressed = param != null || math.value !== "";
+          math.value = "";
       }
 
       function translateMath() {
-        try {
-          var value = getMathML();
-          var result = SRE.toSpeech(value);
+          try {
+              hideResults();
 
-          // update area for rendered math with input
-          document.getElementById("demo").innerHTML = result;
-          var math = document.getElementById("math1")
-          math.innerHTML = value;
+              // update validation link and translate math
+              var value = updateLink();
+              var result = SRE.toSpeech(value.replace(/<!--[\s\S]*?-->/g, '')); // sre doesn't like comments
 
-          // make results area visble
-          document.getElementById("results").style.display = "block";
+              // render math
+              document.getElementById("demo").innerHTML = result;
+              var math = document.getElementById("math1");
+              math.innerHTML = value;
+              window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, math]);
 
-          // actually render the math
-          MathJax.Hub.Queue(["Typeset",MathJax.Hub,math]);
-        } catch (error) {
-          console.error(error);
-          // hide results area, show error
-          document.getElementById("results").style.display = "none";
-          document.getElementById("error").style.display = "block";
-        }
+              // update the math markup
+              var markup = document.getElementById("markup");
+              markup.innerHTML = vkbeautify.xml(value, 2).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+              hljs.highlightElement(markup);
+
+              // make results area visble
+              document.getElementById("results").style.display = "block";
+
+          } catch (error) {
+              // log exception
+              console.error("Exception while rendering:", error);
+
+              // show error message
+              document.getElementById("error").style.display = "block";
+          }
       }
 
-      var speaking = false;
+      function stopSpeaking() {
+          window.speechSynthesis.cancel();
+      }
 
       function speakMath() {
-        var speech = document.getElementById("demo").innerHTML;
-        if (speech != "" && !speaking) {
-          speaking = true;
-          document.getElementById("translate").disabled = speaking;
-          var speechSynthesisUtterance = new SpeechSynthesisUtterance(speech);
-          window.speechSynthesis.speak(speechSynthesisUtterance);
-          speechSynthesisUtterance.addEventListener('end', (/* event*/) => {
-            speaking = false;
-            document.getElementById("translate").disabled = speaking;
-          });
-        }
+          var speech = document.getElementById("demo").innerHTML;
+          stopSpeaking();
+          if (speech !== "") {
+              var speechSynthesisUtterance = new SpeechSynthesisUtterance(speech);
+              window.speechSynthesis.speak(speechSynthesisUtterance);
+          }
       }
 
       function updateLink() {
-        // remember string for next time
-        var ml = getMathML();
-        localStorage.setItem("math", ml);
+          // remember string for next time page loads
+          localStorage.setItem("math", getStrippedMathML());
 
-        // update link to validator
-        var link = document.getElementById("mathml_link");
-        var url = new URL(link.href);
-        url.search = "?input=" + encodeURIComponent(ml);
-        link.href = url.href;
+          // update link to validator
+          var link = document.getElementById("mathml_link");
+          var url = new URL(link.href);
+          var ml = getProperMathML();
+          url.search = "?input=" + encodeURIComponent(ml);
+          link.href = url.href;
 
-        document.getElementById("error").style.display = "none";
+          return ml;
+      }
+
+      function seedMath(mathML) {
+          // update math from last visit if not on command line
+          var math;
+          if (mathML == null) {
+              var url = new URL(window.location);
+              math = url.searchParams.get("math");
+              if (math == null) {
+                  math = localStorage.getItem("math");
+              } else {
+                  math = decodeURIComponent(escape(window.atob(math)));
+              }
+              if (math != null) {
+                  math = vkbeautify.xml(math, 2);
+              }
+          } else {
+              math = mathML;
+          }
+
+          if (math != null) {
+              document.getElementById("mathML").value = math;
+          } else {
+              // no math looks just like clear was pressed
+              clearPressed = true;
+          }
+
+          return math;
       }
 
       function setup() {
-        // update string from last time
-        var math = localStorage.getItem("math");
-        if (math != null) {
-          document.getElementById("mathML").value = math;
-        }
+          // check command line for speech engine parameters
+          var url = new URL(window.location);
+          var d = url.searchParams.get("domain") || "clearspeak";
+          var s = url.searchParams.get("style") || "default";
+          var x = url.searchParams.get("locale") || "en";
+          SRE.setupEngine({domain: d, style: s, locale: x});
 
-        // check command line for speech engine parameters
-        var url = new URL(window.location);
-        var d = url.searchParams.get("domain") || "clearspeak";
-        var s = url.searchParams.get("style") || "default";
-        SRE.setupEngine({domain:d, style:s});
+          var math = seedMath();
+          window.history.replaceState({"mathML": math || "", "param": url.searchParams.get("math")}, "", url.href);
 
-        // update version on page and log actual settings
-        document.getElementById("version").innerHTML = SRE.version;
-        console.log("SRE configuration", SRE.engineSetup());
+          // update version on page and log actual settings
+          document.getElementById("version").innerHTML = SRE.version;
+          console.log("SRE configuration:", SRE.engineSetup());
+
+          // configure MathJax
+          window.mathjaxConfiguration();
+          window.MathJax.Hub.Configured();
+
+          // allow cmd+enter to translate math
+          document.getElementById("mathML").addEventListener('keydown', function (e) {
+              if (e.keyCode === 13 && e.metaKey) {
+                  translateMath();
+              }
+          });
+
+          // allow enter or space to speak math
+          document.getElementById("math1").addEventListener('keydown', function (e) {
+              if (e.keyCode === 13 || e.keyCode === 32) {
+                  speakMath();
+              }
+          });
+
+          // allow escape to stop speaking
+          document.addEventListener('keydown', function (e) {
+              if (e.keyCode === 27) {
+                  stopSpeaking();
+              }
+          });
+
+          // do we have clipboard access?
+          if (navigator.permissions) { // stupid safari
+              navigator.permissions.query({name:"clipboard-write"})
+                  .then( (p) => { document.getElementById("copy").disabled = false; } );
+          }
       }
-    </script>
-    <script src="./MathJax.js?config=MML_SVG-full"></script>
-  <body onload="setup()">
-    <h1>MathML Speech Generation Test Page</h1>
-    <p>Enter a complete and valid mathML expression in the below entry box and click the "Translate Math" button to view the speech text generated by ZORKOW speech rule engine (<span id="version">???</span>). To hear the generated speech text, click on the rendered math equation.</p>
-    <p>To generate sample MathML and/or validate the entered MathML, please visit <a id="mathml_link" href="https://www.mathmlcentral.com/Tools/ValidateMathML.jsp" target="_blank">mathmlcentral.com</a>.</p>
-    <textarea name="mathML" id="mathML" rows="12" placeholder="Enter valid MathML expression" onchange="updateLink();"></textarea>
-    <br/>
-    <button id="translate" onclick="translateMath()">Evaluate Math</button>
-    <br/>
-    <dl id="results" style="display: none;">
-      <dt>Aria string</dt>
-      <dd id="demo"></dd>
-      <dt>Math rendering</dt>
-      <dd class="math-speaker" id="math1" role="math" onclick="speakMath()" aria-label="math"></dd>
-    </dl>
-<div id="error" style="display: none;">
-   Invalid MathML string.
-</div>
-  </body>
+
+      window.addEventListener("popstate", function (e) {
+          if (e.state) {
+              hideResults();
+              seedMath(e.state.mathML);
+          }
+      });
+  </script>
+  <script src="./MathJax.js"></script>
+</head>
+<body onload="setup()">
+  <h1>MathML Speech Generation Test Page</h1>
+  <p>Enter a complete and valid mathML expression in the below entry box and click the "Evaluate Math" button to view the
+    speech text generated by the <a href="https://github.com/zorkow/speech-rule-engine" target="_blank">Zorkow/speech-rule-engine</a>
+    (<span id="version">???</span>). To hear the generated speech text, click on the rendered math equation.</p>
+  <p>To generate sample MathML and/or validate the entered MathML, please visit <a
+      href="https://www.mathmlcentral.com/Tools/ValidateMathML.jsp" id="mathml_link"
+      target="_blank">mathmlcentral.com</a>.</p>
+  <textarea id="mathML" name="mathML" onchange="updateLink();" placeholder="Enter valid MathML expression"
+            rows="12"></textarea>
+  <br/>
+
+  <button id="translate" onclick="translateMath()">Evaluate Math</button>
+  <button id="clear" onclick="clearMathML()">Clear</button>
+  <button id="copy" onclick="copyMathML()" disabled>Copy URL to Clipboard</button>
+  <br/>
+
+  <dl id="results" style="display: none;">
+    <dt>Aria string</dt>
+    <dd id="demo"></dd>
+    <dt>Math rendering</dt>
+    <dd aria-label="math" class="math-speaker" id="math1" onclick="speakMath()" role="math"></dd>
+    <dt>Math markup</dt>
+    <dd>
+      <pre><code class="language-html" id="markup"></code></pre>
+    </dd>
+  </dl>
+  <div class="error" id="error" style="display: none;">
+    Invalid MathML string.
+  </div>
+</body>
 </html>

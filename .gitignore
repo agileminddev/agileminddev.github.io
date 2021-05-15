@@ -3,3 +3,6 @@
 
 # vim artifacts
 **.swp
+
+# JetBrains artifacts
+**/.idea/

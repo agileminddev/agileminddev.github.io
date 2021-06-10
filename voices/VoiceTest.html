@@ -312,12 +312,13 @@
 
       // most browsers load voices asynchronously...
       synth.onvoiceschanged = () => {
+          console.log('available voices changed...');
           genTable();
       }
 
       function init() {
-          // ...but Firefox ignores onvoiceschanged event and requires explicit call to initialize
-          genTable();
+          // ...but Firefox doesn't load voices until the last second; generating the table will force this if desired, though
+          // genTable();
 
           // sort table when clicking header
           document.querySelectorAll('th:not(.nosort)').forEach((th, position) => {

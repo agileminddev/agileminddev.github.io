@@ -67,22 +67,6 @@ table{
         }
       }
 
-      var speaking = false;
-
-      function speakMath() {
-        var speech = document.getElementById("demo").innerHTML;
-        if (speech != "" && !speaking) {
-          speaking = true;
-          document.getElementById("translate").disabled = speaking;
-          var speechSynthesisUtterance = new SpeechSynthesisUtterance(speech);
-          window.speechSynthesis.speak(speechSynthesisUtterance);
-          speechSynthesisUtterance.addEventListener('end', (/* event*/) => {
-            speaking = false;
-            document.getElementById("translate").disabled = speaking;
-          });
-        }
-      }
-
       function updateLink() {
         var link = document.getElementById("mathml_link");
         var url = new URL(link.href);

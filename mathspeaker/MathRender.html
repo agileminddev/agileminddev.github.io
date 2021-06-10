@@ -184,15 +184,18 @@
           }
       }
 
+      var speechSynthesisUtterance = null;
       function stopSpeaking() {
           window.speechSynthesis.cancel();
+          speechSynthesisUtterance = null;
       }
 
       function speakMath() {
           var speech = document.getElementById("demo").innerHTML;
           stopSpeaking();
           if (speech !== "") {
-              var speechSynthesisUtterance = new SpeechSynthesisUtterance(speech);
+              // store utterance in a global so it won't get garbage collected while being spoken
+              speechSynthesisUtterance = new SpeechSynthesisUtterance(speech);
               window.speechSynthesis.speak(speechSynthesisUtterance);
           }
       }

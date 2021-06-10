@@ -29,11 +29,12 @@ body, div, td {
 <script src="./sre_browser.js"></script>
 <script>
 
-
+  var utterance = new SpeechSynthesisUtterance;
   const speakMath = function(mathId) {
 	  const mathElement = window.document.getElementById(mathId);
 	  const mathml = mathElement.getAttribute('data-mathml');
-	  window.speechSynthesis.speak(new SpeechSynthesisUtterance(SRE.toSpeech(mathml)));
+	  utterance.text = SRE.toSpeech(mathml);
+	  window.speechSynthesis.speak(utterance);
   }
 </script>
 <script src="./MathJax.js?config=MML_HTMLorMML-full"></script>

@@ -12,7 +12,8 @@
           margin-top: 0;
       }
 
-      #buttons {
+      #buttons,
+      #voice {
           height: 2em;
           width: 100vw;
           padding-top: 1em;
@@ -23,20 +24,26 @@
 
       button {
           flex: none;
-      }
-
-      button,
-      input {
           margin-left: 0.5em;
-          margin-right: 0.5em;
       }
 
-      #phrase {
+      input {
           flex: auto;
+          margin-left: 0.5em;
           margin-right: 2em;
       }
 
-      #regex {
+      #chosen {
+          margin-left: 0.5em;
+      }
+
+      #speak.speaking {
+          background-color: #00f;
+          color: #fff;
+          transition: 0.5s background;
+      }
+
+      #regex.hidden {
           display: none;
       }
   </style>
@@ -53,9 +60,10 @@
               for (const pattern of list.split(';')) {
                   const parts = pattern.split('/');
                   if (parts) {
-                      const regex = new RegExp(parts[0].trim(), parts[1].trim() || '');
+                      console.log(parts);
+                      const regex = new RegExp(parts[0].trim(), (parts[1] || '').trim());
                       for (const voice of voices) {
-                          console.log('%o -- %o', regex, voice);
+                          console.log('Processing %o against %o', regex, voice);
                           if (voice && voice.lang === 'en-US' && voice.voiceURI.match(regex)) {
                               return voice;
                           }
@@ -70,11 +78,19 @@
       // global to prevent garbage collection
       let utterThis = null;
 
+      // done speaking, so allow object to be GCed
+      function stop() {
+          utterThis.onend = null;
+          utterThis = null;
+          synth.cancel();
+          document.getElementById('speak').classList.remove('speaking');
+      }
+
       // speak what is in the text box using the selected voice, or the button lang if no voice selected
       function speak(button) {
           if (utterThis) {
               // don't queue up phrases; cancel the current one if in progress
-              synth.cancel();
+              stop();
           }
 
           // decide what to say
@@ -83,7 +99,7 @@
 
           // choose a voice
           const voice = findVoice(document.getElementById('regex').value);
-          document.getElementById('chosen').innerHTML = voice ? `Voice selected: ${voice.name} (${voice.voiceURI})` : 'null';
+          document.getElementById('chosen').innerHTML = voice ? `Voice selected: ${voice.name} (${voice.voiceURI})` : 'Voice selected: <i>null</i>';
           if (voice) {
               utterThis.voice = voice;
               // Android requires lang to be set even when voice is specified
@@ -93,10 +109,8 @@
               utterThis.lang = 'en-US';
           }
 
-          utterThis.onend = () => {
-              // done speaking, so allow object to be GCed
-              utterThis = null;
-          };
+          utterThis.onend = stop;
+          document.getElementById('speak').classList.add('speaking');
 
           console.log('Utterance: ', utterThis);
           synth.speak(utterThis);
@@ -122,22 +136,25 @@
 
       function init() {
           const url = new URL(window.location);
-          if (url.searchParams.get("console") !== null) {
+          if (url.searchParams.get('console') !== null) {
               loadScript('http://cdn.jsdelivr.net/npm/eruda', function() { eruda.init(); });
+          }
+          if (url.searchParams.get('edit') !== null) {
+              document.getElementById('regex').classList.remove('hidden');
           }
       }
   </script>
 </head>
 <body onload="init();">
   <div id="buttons">
-    <button onclick="speak(this)">Speak</button>
+    <button id="speak" onclick="speak(this)">Speak</button>
     <input id="phrase" pattern=".*[A-Za-z0-9].*" placeholder="Phrase to speak" type="text"
-           value="The absolute value of 4 minus 7 equals 3"/>
+           value="The absolute value of 5 minus 7 equals 2"/>
   </div>
   <div id="voice">
-    <input id="regex" placeholder="Semicolon separated regex array" type="text"
+    <input id="regex" class="hidden" placeholder="Semicolon separated regex array" type="text"
            value="samantha.*premium/i;Samantha/i;Google US English;Aria.*Natural;Vicki/i;Zira/i;English.*United States" />
-    <p id="chosen" />
   </div>
+  <p id="chosen" />
 </body>
 </html>

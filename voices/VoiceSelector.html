@@ -105,9 +105,30 @@
       synth.onvoiceschanged = () => {
           console.log('available voices changed...');
       }
+
+      function loadScript(url, callback) {
+          let script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = url;
+
+          // Then bind the event to the callback function.
+          // There are several events for cross browser compatibility.
+          script.onreadystatechange = callback;
+          script.onload = callback;
+
+          // Fire the loading
+          document.head.appendChild(script);
+      }
+
+      function init() {
+          const url = new URL(window.location);
+          if (url.searchParams.get("console") !== null) {
+              loadScript('http://cdn.jsdelivr.net/npm/eruda', function() { eruda.init(); });
+          }
+      }
   </script>
 </head>
-<body>
+<body onload="init();">
   <div id="buttons">
     <button onclick="speak(this)">Speak</button>
     <input id="phrase" pattern=".*[A-Za-z0-9].*" placeholder="Phrase to speak" type="text"

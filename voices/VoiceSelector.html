@@ -137,7 +137,7 @@
       function init() {
           const url = new URL(window.location);
           if (url.searchParams.get('console') !== null) {
-              loadScript('http://cdn.jsdelivr.net/npm/eruda', function() { eruda.init(); });
+              loadScript('//cdn.jsdelivr.net/npm/eruda', function() { eruda.init(); });
           }
           if (url.searchParams.get('edit') !== null) {
               document.getElementById('regex').classList.remove('hidden');

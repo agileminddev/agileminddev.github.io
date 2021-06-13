@@ -64,7 +64,8 @@
                       const regex = new RegExp(parts[0].trim(), (parts[1] || '').trim());
                       for (const voice of voices) {
                           console.log('Processing %o against %o', regex, voice);
-                          if (voice && voice.lang === 'en-US' && voice.voiceURI.match(regex)) {
+                          // lang is supposed to be a BCP 47 formatted code, but some Androids use underscores
+                          if (voice && voice.voiceURI.match(regex) && (!voice.lang || voice.lang.match(/^en.US$/i))) {
                               return voice;
                           }
                       }

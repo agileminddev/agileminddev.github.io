@@ -3,9 +3,11 @@
 <head>
   <title>Math Speaker</title>
   <meta charset="UTF-8"/>
-  <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
-  <meta content="no-cache" http-equiv="Pragma"/>
-  <meta content="0" http-equiv="Expires"/>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-type"/>
+··<meta·content="no-store"·http-equiv="Cache-Control"/>¬
+··<meta·content="no-cache"·http-equiv="Pragma"/>¬
+··<meta·content="0"·http-equiv="Expires"/>¬
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link href="../favicon.ico" rel="icon" type="image/x-icon"/>
   <style>
       body {
@@ -345,6 +347,20 @@
           return math;
       }
 
+      function loadScript(url, callback) {
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = url;
+
+          // Then bind the event to the callback function.
+          // There are several events for cross browser compatibility.
+          script.onreadystatechange = callback;
+          script.onload = callback;
+
+          // Fire the loading
+          document.head.appendChild(script);
+      }
+
       function setup() {
           // check command line for speech engine parameters
           var url = new URL(window.location);
@@ -393,6 +409,11 @@
                   .catch( (ex) => {
                       // stupid firefox
                   } );
+          }
+
+          // load JavaScript console toggle (useful for phones) when "console" present in URL
+          if (url.searchParams.get('console') !== null) {
+              loadScript('//cdn.jsdelivr.net/npm/eruda', function() { eruda.init(); });
           }
       }
 

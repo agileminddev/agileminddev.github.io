@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <title>Voice Selector</title>
-  <meta content="text/html;charset=utf-8" http-equiv="Content-type"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="text/html;charset=utf-8" http-equiv="Content-type" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Cache-Control" content="no-store" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <link href="../favicon.ico" rel="icon" type="image/x-icon"/>
+  <link href="../favicon.ico" rel="icon" type="image/x-icon" />
   <style>
       body {
           font-family: 'Lato', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
@@ -142,7 +142,7 @@
 
       function init() {
           const url = new URL(window.location);
-          // load JvaScript console toggle (useful for phones) when "console" present in URL
+          // load JavaScript console toggle (useful for phones) when "console" present in URL
           if (url.searchParams.get('console') !== null) {
               loadScript('//cdn.jsdelivr.net/npm/eruda', function() { eruda.init(); });
           }

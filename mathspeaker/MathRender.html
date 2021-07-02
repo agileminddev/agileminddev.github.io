@@ -4,9 +4,9 @@
   <title>Math Speaker</title>
   <meta charset="UTF-8"/>
   <meta content="text/html;charset=utf-8" http-equiv="Content-type"/>
-  <meta·content="no-store"·http-equiv="Cache-Control"/>
-  <meta·content="no-cache"·http-equiv="Pragma"/>
-  <meta·content="0"·http-equiv="Expires"/>
+  <meta content="no-store" http-equiv="Cache-Control"/>
+  <meta content="no-cache" http-equiv="Pragma"/>
+  <meta content="0" http-equiv="Expires"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link href="../favicon.ico" rel="icon" type="image/x-icon"/>
   <style>
@@ -279,7 +279,6 @@
       }
 
       var browser = bowser.getParser(window.navigator.userAgent);
-      console.log('Browser: %s', JSON.stringify(browser.parsedResult, null, 4));
       function chokesOnPause() {
           // HACK! But I don't know another way to test for the behavior of window.speechSynthesis.pause() and .resume()
           return browser.satisfies({
@@ -369,7 +368,7 @@
       function forceInputVisible() {
           // force input into view
           document.getElementById("mathML").focus();
-          // and re-log a couple of items that may have been lost (easy to do on phone)
+          // and log a couple of debugish items that may have been lost (easy to do on phone)
           console.log('Browser: %s\nchokesOnPause: %s', JSON.stringify(browser.parsedResult, null, 4), chokesOnPause());
           console.info('SRE configuration: %s', JSON.stringify(SRE.engineSetup(), null, 4));
       }
@@ -439,7 +438,7 @@
           }
 
           // load JavaScript console toggle (useful for phones) when "console" present in URL
-          // note that Eruda doesn't support console.debug, so those are console.log throughout
+          // note that Eruda doesn't support console.debug, so we use console.log instead throughout
           if (url.searchParams.get('console') !== null) {
               loadScript('//cdn.jsdelivr.net/npm/eruda', function() { eruda.init(); });
           }

@@ -283,10 +283,11 @@
       function chokesOnPause() {
           // HACK! But I don't know another way to test for the behavior of window.speechSynthesis.pause() and .resume()
           return browser.satisfies({
-              firefox: ">=66",
-              safari: ">=11",
+              firefox: '>=66',
+              safari: '>=11',
               mobile: {
-                  chrome: ">=63"
+                  chrome: '>=63',
+                  samsung_internet: '>=10'
               }
           });
       }
@@ -365,7 +366,7 @@
           // force input into view
           document.getElementById("mathML").focus();
           // and re-log a couple of items that may have been lost (easy to do on phone)
-          console.log('Browser: %s', JSON.stringify(browser.parsedResult, null, 4));
+          console.log('Browser: %s\nchokesOnPause: %s', JSON.stringify(browser.parsedResult, null, 4), chokesOnPause());
           console.info('SRE configuration: %s', JSON.stringify(SRE.engineSetup(), null, 4));
       }
 

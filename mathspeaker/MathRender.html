@@ -45,6 +45,10 @@
           border-bottom: 1px dotted green;
       }
 
+      .speaking {
+          background-color: #FD2;
+      }
+
       pre {
           margin: 0;
       }
@@ -90,6 +94,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
   <!-- used for pretty printing; see http://www.eslinstructor.net/vkbeautify/ -->
   <script src="./vkbeautify.0.99.00.beta.js"></script>
+  <!-- used for browser detection; see https://github.com/lancedikson/bowser -->
+  <script src="https://unpkg.com/bowser@2.10.0/es5.js"></script>
 
   <script src="./sre_browser.js"></script>
   <script>
@@ -177,26 +183,123 @@
 
           } catch (error) {
               // log exception
-              console.error("Exception while rendering:", error);
+              console.error("Exception while rendering: %s", JSON.stringify(error, null, 4));
 
               // show error message
               document.getElementById("error").style.display = "block";
           }
       }
 
+      // return SpeechSynthesisVoice that matches the given regex array
+      function findVoice(list) {
+          const voices = window.speechSynthesis.getVoices();
+
+          if (list) {
+              for (const pattern of list.split(';')) {
+                  const parts = pattern.split('/');
+                  if (parts) {
+                      const regex = new RegExp(parts[0].trim(), (parts[1] || '').trim());
+                      for (const voice of voices) {
+                          // lang is supposed to be a BCP 47 formatted code, but some Androids use underscores
+                          if (voice && voice.voiceURI.match(regex) && (!voice.lang || voice.lang.match(/^en.US$/i))) {
+                              return voice;
+                          }
+                      }
+                  }
+              }
+          }
+
+          return null;
+      }
+
       var speechSynthesisUtterance = null;
       function stopSpeaking() {
+          cancelPinger();
           window.speechSynthesis.cancel();
           speechSynthesisUtterance = null;
+          document.getElementById("math1").classList.remove('speaking');
       }
 
       function speakMath() {
           var speech = document.getElementById("demo").innerHTML;
           stopSpeaking();
           if (speech !== "") {
+              document.getElementById("math1").classList.add('speaking');
+
               // store utterance in a global so it won't get garbage collected while being spoken
               speechSynthesisUtterance = new SpeechSynthesisUtterance(speech);
+
+              // find voice
+              var voice = findVoice('samantha.*premium/i;Samantha/i;Google US English;Aria.*Natural;Vicki/i;Zira/i;English.*United States');
+              if (voice) {
+                  speechSynthesisUtterance.voice = voice;
+                  // Android requires lang to be set even when voice is specified
+                  speechSynthesisUtterance.lang = voice.lang;
+              } else {
+                  // supplying lang without a voice is supposed to pick an appropriate voice, but only Chrome/Edge seem to behave consistently
+                  speechSynthesisUtterance.lang = 'en-US';
+              }
+
+              // configure interesting events
+              speechSynthesisUtterance.onend = (event) => {
+                  stopSpeaking();
+              };
+              speechSynthesisUtterance.onerror = (event) => {
+                  console.error('Error while speaking: %s', JSON.stringify(event.error, null, 4));
+              };
+
+              // long phrases can abruptly quit in the middle; pinging the synthesizer fixes that
+              startPinger();
+
+              // SpeechSynthesisUtterance doesn't support enumeration, so we have to explicitly create JSON to log
+              console.debug('Speak %s', JSON.stringify({
+                    'text':speechSynthesisUtterance.text,
+                    'lang':speechSynthesisUtterance.lang,
+                    'voice': {
+                          'lang':speechSynthesisUtterance.voice.lang,
+                          'name':speechSynthesisUtterance.voice.name,
+                          'voiceURI':speechSynthesisUtterance.voice.voiceURI,
+                          'localService':speechSynthesisUtterance.voice.localService
+                        },
+                    'volume':speechSynthesisUtterance.volume,
+                    'pitch':speechSynthesisUtterance.pitch,
+                    'rate':speechSynthesisUtterance.rate
+                  }, null, 4));
+
+              // make it so
               window.speechSynthesis.speak(speechSynthesisUtterance);
+          }
+      }
+
+      function isDumbBrowser() {
+          // HACK! But I don't know another way to test for the behavior of window.speechSynthesis.pause() and .resume()
+          var browser = bowser.getParser(window.navigator.userAgent);
+          return ['Safari', 'Firefox'].includes(browser.getBrowserName());
+      }
+
+      var pingTimer = null;
+
+      // pinging the synthesizer periodically keeps it from abruptly stopping during long phrases
+      function pingSpeaker() {
+          // most browsers need a pause followed by an immediate resume to ping, but...
+          if (!isDumbBrowser()) {
+              // firefox pauses for a minimum of 3 seconds, but resume alone keeps speech alive without it
+              // safari just chokes on pause followed by immediate resume, but resume alone keeps speech alive without it
+              // everyone else ignores the resume unless paused 
+              window.speechSynthesis.pause();
+          }
+          window.speechSynthesis.resume();
+          startPinger();
+      }
+
+      function startPinger() {
+          pingTimer = setTimeout(pingSpeaker, 10000);
+      }
+
+      function cancelPinger() {
+          if (pingTimer) {
+              clearTimeout(pingTimer);
+              pingTimer = null;
           }
       }
 
@@ -255,7 +358,8 @@
 
           // update version on page and log actual settings
           document.getElementById("version").innerHTML = SRE.version;
-          console.log("SRE configuration:", SRE.engineSetup());
+          // stringify shows current value rather than a ongoing live value; also allows GC to collect object (logging keeps a handle)
+          console.info('SRE configuration: %s', JSON.stringify(SRE.engineSetup(), null, 4));
 
           // configure MathJax
           window.mathjaxConfiguration();
@@ -285,7 +389,10 @@
           // do we have clipboard access?
           if (navigator.permissions) { // stupid safari
               navigator.permissions.query({name:"clipboard-write"})
-                  .then( (p) => { document.getElementById("copy").disabled = false; } );
+                  .then( (p) => { document.getElementById("copy").disabled = false; } )
+                  .catch( (ex) => {
+                      // stupid firefox
+                  } );
           }
       }
 

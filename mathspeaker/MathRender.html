@@ -233,7 +233,7 @@
               speechSynthesisUtterance = new SpeechSynthesisUtterance(speech);
 
               // find voice
-              var voice = findVoice('samantha.*premium/i;Samantha/i;Google US English;Aria.*Natural;Vicki/i;Zira/i;English.*United States');
+              var voice = findVoice('samantha.*premium/i;Samantha/i;Aria.*Natural;Vicki/i;Zira/i;US English;English.*United States');
               if (voice) {
                   speechSynthesisUtterance.voice = voice;
                   // Android requires lang to be set even when voice is specified
@@ -260,17 +260,17 @@
 
               // SpeechSynthesisUtterance doesn't support enumeration, so we have to explicitly create JSON to log
               console.info('Speak %s', JSON.stringify({
-                    'text':speechSynthesisUtterance.text,
-                    'lang':speechSynthesisUtterance.lang,
-                    'voice': {
-                          'lang':speechSynthesisUtterance.voice.lang,
-                          'name':speechSynthesisUtterance.voice.name,
-                          'voiceURI':speechSynthesisUtterance.voice.voiceURI,
-                          'localService':speechSynthesisUtterance.voice.localService
-                        },
-                    'volume':speechSynthesisUtterance.volume,
-                    'pitch':speechSynthesisUtterance.pitch,
-                    'rate':speechSynthesisUtterance.rate
+                    'text': speechSynthesisUtterance.text,
+                    'lang': speechSynthesisUtterance.lang,
+                    'voice':  speechSynthesisUtterance.voice ? {
+                          'lang': speechSynthesisUtterance.voice.lang,
+                          'name': speechSynthesisUtterance.voice.name,
+                          'voiceURI': speechSynthesisUtterance.voice.voiceURI,
+                          'localService': speechSynthesisUtterance.voice.localService
+                        } : null,
+                    'volume': speechSynthesisUtterance.volume,
+                    'pitch': speechSynthesisUtterance.pitch,
+                    'rate': speechSynthesisUtterance.rate
                   }, null, 4));
 
               // make it so

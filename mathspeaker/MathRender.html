@@ -223,12 +223,7 @@
           document.getElementById("math1").classList.remove('speaking');
       }
 
-      function speakMath() {
-          var speech = document.getElementById("demo").innerHTML;
-          stopSpeaking();
-          if (speech !== "") {
-              document.getElementById("math1").classList.add('speaking');
-
+      function speak(speech) {
               // store utterance in a global so it won't get garbage collected while being spoken
               speechSynthesisUtterance = new SpeechSynthesisUtterance(speech);
 
@@ -275,6 +270,14 @@
 
               // make it so
               window.speechSynthesis.speak(speechSynthesisUtterance);
+      }
+
+      function speakMath() {
+          var speech = document.getElementById("demo").innerHTML;
+          stopSpeaking();
+          if (speech !== "") {
+              document.getElementById("math1").classList.add('speaking');
+              speak(speech);
           }
       }
 

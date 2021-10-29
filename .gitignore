@@ -1,5 +1,5 @@
 # Mac finder artifacts
-.DS_Store
+**/.DS_Store
 
 # vim artifacts
 **.swp

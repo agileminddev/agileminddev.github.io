@@ -1,0 +1,45 @@
+<!DOCTYPE html lang="en">
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User Agent Data</title>
+  <style>
+  </style>
+  <script>
+    function init() {
+      let uaString = navigator.userAgent;
+      document.getElementById('uaString').innerHTML = uaString || 'No UA string';
+      let uaData = navigator.userAgentData;
+      if (!uaData) {
+        document.getElementById('uaData').innerHTML = 'No UA data values';
+        document.getElementById('uaHiEData').innerHTML = 'No UA high entropy data values';
+      } else {
+        let {brands, mobile, platform} = navigator.userAgentData;
+        let uaObj = {brands, mobile, platform};
+        // console.log(`uaObj: ${JSON.stringify(uaObj)}`);
+        document.getElementById('uaData').innerHTML = JSON.stringify(uaObj);
+
+        navigator.userAgentData.getHighEntropyValues(['architecture', 'bitness', 'model', 'platformVersion', 'uaFullVersion', 'fullVersionList'])
+          .then(v => {
+            let {architecture, bitness, model, platformVersion, uaFullVersion, fullVersionList} = v;
+            let uaHiEObj = {architecture, bitness, model, platformVersion, uaFullVersion, fullVersionList, brands, mobile, platform};
+            // console.log(`uaHiEObj: ${JSON.stringify(uaHiEObj)}`);
+            document.getElementById('uaHiEData').innerHTML = JSON.stringify(uaHiEObj);
+          });
+      }
+    }
+  </script>
+</head>
+
+<body onload="init();">
+  <div><b>navigator.userAgent</b><br/><span id="uaString"></span></div>
+  <div><b>navigator.userAgentData</b><br/><span id="uaData"></span></div>
+  <div><b>navigator.userAgentData.getHighEntropyValues</b><br/><span id="uaHiEData"></span></div>
+</body>
+
+</html>

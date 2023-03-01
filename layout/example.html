@@ -12,13 +12,13 @@
       height: 100%;
       min-width: 450px;
     }
-    
+
     .mck-container {} /* this class is used simply as a target for the page controls; it has no bearing on the actual technology explored or implemented */
-    
+
     fieldset > div.controls {
       width: 64%;
     }
-    
+
     fieldset > div.memo {
       width: 33%;
       float: right;
@@ -27,23 +27,23 @@
 
 
     /**** toggles and tabs */
-    
+
     .toggles {
       padding: 1em;
     }
-    
+
     .toggles input {
       display: none;
     }
-    
+
     .toggles input + label {
       display: inline-block;
     }
-    
+
     .toggles input ~ .toggle {
       display: none;
     }
-    
+
     .toggles input + label {
       background: #EEE;
       border: 1px solid #999;
@@ -52,36 +52,37 @@
       cursor: pointer;
       transition: All 250ms ease;
     }
-    
+
     .toggles input:hover + label {
       background: #e5e5e5;
       transition: All 250ms ease;
     }
-    
+
     .toggles input:checked + label {
       background: #FFF;
       box-shadow: inset 0px 0px 5px #c1c1c1;
       outline: none;
       transition: All 250ms ease;
     }
-    
+
     .layout {
       padding-top: 1em;
     }
-    
+
     .layout > input {
       display: none;
     }
-    
+
     .layout > input + label {
       display: inline-block;
     }
-    
+
     .layout > input + label > .view {
       display: none;
     }
-    
+
     .layout > #tab1:checked ~ label > .view.content1,
+    .layout > #tab10:checked ~ label > .view.content10,
     .layout > #tab2:checked ~ label > .view.content2,
     .layout > #tab3:checked ~ label > .view.content3,
     .layout > #tab4:checked ~ label > .view.content4,
@@ -92,12 +93,13 @@
     .layout > #tab9:checked ~ label > .view.content9 {
       display: inline-block;
     }
-    
+
     .layout > input ~ .tab {
       display: none;
     }
-    
+
     .layout > #tab1:checked ~ .tab.content1,
+    .layout > #tab10:checked ~ .tab.content10,
     .layout > #tab2:checked ~ .tab.content2,
     .layout > #tab3:checked ~ .tab.content3,
     .layout > #tab4:checked ~ .tab.content4,
@@ -108,11 +110,11 @@
     .layout > #tab9:checked ~ .tab.content9 {
       display: block;
     }
-    
+
     input.force {
       display: inline-block;
     }
-    
+
     .layout > input + label {
       border: 1px solid #999;
       background: #EEE;
@@ -123,35 +125,35 @@
       cursor: pointer;
       transition: All 250ms ease;
     }
-    
+
     .layout > input:hover + label {
       background: #e5e5e5;
       transition: All 250ms ease;
     }
-    
+
     .layout > input:checked + label {
       background: #FFF;
       border-bottom: 1px solid transparent;
       transition: All 250ms ease;
       padding-right: 4px;
     }
-    
+
     .layout > input ~ .tab {
       border-top: 1px solid #999;
       padding: 12px;
     }
-    
+
     .layout > label:first-of-type {
       margin-left: 4px;
     }
-    
+
     .layout > div.tab {
       border-left: 1px solid #999;
       border-right: 1px solid #999;
       border-bottom: 1px solid #999;
       min-height: 85%;
     }
-    
+
     .layout button.view {
       float: right;
       margin-left: 1em;
@@ -159,41 +161,41 @@
       border: none;
       background: #FFF;
     }
-    
+
 
     /**** devices */
-    
+
     .device-wrapper {
       border: 3px #000 solid;
     }
-    
+
     .desktop {
       max-width: 960px !important;
       min-width: 530px !important;
       min-height: 100% !important;
     }
-    
+
     .portrait {
       /* Samsung Galaxy S9+ */
       width: 360px !important;
       min-height: 740px !important;
     }
-    
+
     .landscape {
       /* Samsung Galaxy S9+ */
       width: 740px !important;
       min-height: 360px !important;
     }
-    
+
     .tablet {
       /* Nexus 7 */
       width: 600px !important;
       min-height: 760px !important;
     }
-    
+
 
     /**** 2 column grid layout */
-    
+
     .production-col2-container {
       display: -ms-grid;
       display: grid;
@@ -209,38 +211,39 @@
       width: 100%;
       box-sizing: border-box;
       padding-bottom: 8px;
+      x-column-gap: 3em;
 
       border: 1px red solid;
     }
-    
+
     .production-col2-item {
       width: -webkit-fill-available;
       width: -moz-available;
 
       border: 1px green solid;
     }
-    
+
     .production-col2-item img {
       margin: auto;
       display: block;
     }
-    
+
     .production-col2-item table {
       margin: auto;
       vertical-align: middle;
     }
-    
+
     .production-col2-item table td {
       vertical-align: middle;
     }
-    
+
     .production-col2-item p > img {
       display: inline-block;
     }
-    
+
 
     /**** 3 column grid layout */
-    
+
     .production-col3-container {
       display: -ms-grid;
       display: grid;
@@ -256,17 +259,18 @@
       width: 100%;
       box-sizing: border-box;
       padding-bottom: 8px;
+      x-column-gap: 3em;
 
       border: 1px red solid;
     }
-    
+
     .production-col3-item {
       width: -webkit-fill-available;
       width: -moz-available;
 
       border: 1px green solid;
     }
-    
+
 
     .production-col3-item table {
       margin: auto;
@@ -282,103 +286,128 @@
     }
 
     /**** alignment tweaks */
-    
+
     .production-container-v-center {
       align-items: center;
     }
-    
+
     .production-container-v-stretch {
       align-items: stretch;
     }
-    
+
     .production-container-v-top {
       align-items: start;
     }
-    
+
     .production-container-v-bottom {
       align-items: end;
     }
-    
+
 
     /**** individual grid items */
-    
+
     .production-cell-v-center {
       align-self: center;
     }
-    
+
     .production-cell-v-stretch {
       align-self: stretch;
     }
-    
+
     .production-cell-v-top {
       align-self: start;
     }
-    
+
     .production-cell-v-bottom {
       align-self: end;
     }
-    
+
     .production-col2-container.production-container-h-left {
       -ms-grid-columns: auto 1fr;
       grid-template-columns: auto 1fr;
     }
-    
+
     .production-col2-container.production-container-h-right {
       -ms-grid-columns: 1fr auto;
       grid-template-columns: 1fr auto;
     }
-    
+
     .production-col2-container.production-container-h-left.production-container-h-right {
       -ms-grid-columns: 1fr 1fr;
       grid-template-columns: 1fr 1fr;
     }
-    
+
     .production-col3-container.production-container-h-left {
       -ms-grid-columns: auto 1fr 1fr;
       grid-template-columns: auto 1fr 1fr;
     }
-    
+
     .production-col3-container.production-container-h-middle {
       -ms-grid-columns: 1fr auto 1fr;
       grid-template-columns: 1fr auto 1fr;
     }
-    
+
     .production-col3-container.production-container-h-right {
       -ms-grid-columns: 1fr 1fr auto;
       grid-template-columns: 1fr 1fr auto;
     }
-    
+
     .production-col3-container.production-container-h-left.production-container-h-middle {
       -ms-grid-columns: auto auto 1fr;
       grid-template-columns: auto auto 1fr;
     }
-    
+
     .production-col3-container.production-container-h-middle.production-container-h-right {
       -ms-grid-columns: 1fr auto auto;
       grid-template-columns: 1fr auto auto;
     }
-    
+
     .production-col3-container.production-container-h-left.production-container-h-right {
       -ms-grid-columns: auto 1fr auto;
       grid-template-columns: auto 1fr auto;
     }
-    
+
     .production-col3-container.production-container-h-left.production-container-h-middle.production-container-h-right {
       -ms-grid-columns: 1fr 1fr 1fr;
       grid-template-columns: 1fr 1fr 1fr;
     }
-    
+
 
     /**** responsive tweaks */
-    
+
     .portrait .production-col2-container {
       -ms-grid-columns: auto !important;
       grid-template-columns: auto !important;
     }
-    
+
     .portrait .production-col3-container {
       -ms-grid-columns: auto !important;
       grid-template-columns: auto !important;
+    }
+
+
+    .portrait .production-col2-item.production-first,
+    .landscape .production-col2-item.production-first {
+      grid-row: 1;
+      -ms-grid-row: 1;
+      grid-column: 1;
+      -ms-grid-column: 1;
+    }
+
+    .portrait .production-col2-item.production-second,
+    .landscape .production-col2-item.production-second {
+      grid-row: 2;
+      -ms-grid-row: 2;
+      grid-column: 1;
+      -ms-grid-column: 1;
+    }
+
+    .landscape .production-col2-container.production-col-fallback-double .production-col2-item.production-first,
+    .landscape .production-col2-container.production-col-fallback-double .production-col2-item.production-second {
+      grid-row: auto;
+      -ms-grid-row: auto;
+      grid-column: auto;
+      -ms-grid-column: auto;
     }
 
 
@@ -444,39 +473,39 @@
       -ms-grid-columns: auto 1fr 1fr !important;
       grid-template-columns: auto 1fr 1fr !important;
     }
-    
+
     .landscape .production-col3-container.production-col-fallback-triple.production-container-h-middle {
       -ms-grid-columns: 1fr auto 1fr !important;
       grid-template-columns: 1fr auto 1fr !important;
     }
-    
+
     .landscape .production-col3-container.production-col-fallback-triple.production-container-h-right {
       -ms-grid-columns: 1fr 1fr auto !important;
       grid-template-columns: 1fr 1fr auto !important;
     }
-    
+
     .landscape .production-col3-container.production-col-fallback-triple.production-container-h-left.production-container-h-middle {
       -ms-grid-columns: auto auto 1fr !important;
       grid-template-columns: auto auto 1fr !important;
     }
-    
+
     .landscape .production-col3-container.production-col-fallback-triple.production-container-h-middle.production-container-h-right {
       -ms-grid-columns: 1fr auto auto !important;
       grid-template-columns: 1fr auto auto !important;
     }
-    
+
     .landscape .production-col3-container.production-col-fallback-triple.production-container-h-left.production-container-h-right {
       -ms-grid-columns: auto 1fr auto !important;
       grid-template-columns: auto 1fr auto !important;
     }
-    
+
     .landscape .production-col3-container.production-col-fallback-triple.production-container-h-left.production-container-h-middle.production-container-h-right {
       -ms-grid-columns: 1fr 1fr 1fr !important;
       grid-template-columns: 1fr 1fr 1fr !important;
     }
 
     /**** icon mode */
-    
+
     .production-icon,
     .production-icon.production-container-v-center {
       justify-items: start !important;
@@ -491,11 +520,11 @@
     .production-icon.production-container-v-stretch {
       align-items: stretch;
     }
-    
+
     .production-icon.production-container-v-top {
       align-items: start;
     }
-    
+
     .production-icon.production-container-v-bottom {
       align-items: end;
     }
@@ -506,7 +535,7 @@
     .landscape .production-col2-container.production-icon.production-col-fallback-single {
       grid-template-columns: auto auto !important;
     }
-    
+
     .production-col2-container.production-icon.production-container-h-right,
     .portrait .production-col2-container.production-icon.production-container-h-right,
     .landscape .production-col2-container.production-icon.production-container-h-right,
@@ -518,25 +547,25 @@
     .production-col3-container.production-icon {
       grid-template-columns: auto auto auto !important;
     }
-    
+
     .production-col3-container.production-icon.production-container-h-middle {
       grid-template-columns: auto auto 1fr !important;
     }
-    
+
     .production-col3-container.production-icon.production-container-h-right {
       grid-template-columns: auto 1fr auto !important;
     }
-    
+
     .production-col3-container.production-icon.production-container-h-middle.production-container-h-right {
       grid-template-columns: auto 1fr 1fr !important;
     }
-    
+
     .portrait .production-col3-container.production-icon,
     .landscape .production-col3-container.production-icon.production-col-fallback-single,
     .landscape .production-col3-container.production-icon.production-col-fallback-double {
       grid-template-columns: auto auto !important;
     }
-    
+
     .portrait .production-col3-container.production-icon.production-container-h-right,
     .landscape .production-col3-container.production-icon.production-col-fallback-single.production-container-h-right,
     .landscape .production-col3-container.production-icon.production-col-fallback-double.production-container-h-right {
@@ -553,58 +582,58 @@
       padding: 4px;
       justify-self: start;
     }
-    
+
 
     /**** images */
-    
+
     .eye_candy,
     .responsive_image {
       width: 100% !important;
       height: auto !important;
       max-width: 700px;
     }
-    
+
     .under700px .secondary_50 {
       width: 50% !important;
       height: auto !important;
     }
-    
+
     .under700px .secondary_60 {
       width: 60% !important;
       height: auto !important;
     }
-    
+
     .under700px .secondary_70 {
       width: 70% !important;
       height: auto !important;
     }
-    
+
     .under700px .secondary_80 {
       width: 80% !important;
       height: auto !important;
     }
-    
+
     .under700px .secondary_90 {
       width: 90% !important;
       height: auto !important;
     }
-    
+
     .under700px .secondary_100 {
       width: 100% !important;
       height: auto !important;
     }
-    
+
     .under700px .eye_candy {
       display: none !important;
     }
-    
+
 
     /** click and reveal hack */
-    
+
     .reveal-and-click-me {
       text-align: center;
     }
-    
+
     .reveal-and-click-me .clickme {
       cursor: pointer;
       padding: 4px 8px 4px 8px;
@@ -614,7 +643,7 @@
       border: 1px solid #bfbfbf;
       width: 5em;
     }
-    
+
     .reveal-and-click-me .reveal {
       border-radius: 5px;
       border: 1px solid #bfbfbf;
@@ -625,15 +654,15 @@
       xwidth: 100%;
       display: none;
     }
-    
+
     .clickme {
       text-align: center;
     }
-    
+
     .reveal {
       text-align: left;
     }
-    
+
     .overlay {
       background: rgba(0, 0, 0, 0.4);
       position: fixed;
@@ -644,7 +673,7 @@
       display: none;
       z-index: 100;
     }
-    
+
     .overlay .source {
       background: rgba(255, 255, 255, 1);
       position: absolute;
@@ -655,7 +684,7 @@
       min-width: 10em;
       min-height: 10em;
     }
-    
+
     img.viewsource {
       content: url("viewsource.png");
       height: 16px;
@@ -845,6 +874,9 @@
     <input type="radio" id="tab1" name="tab" checked />
     <label for="tab1">
       <button class="view content1" onclick="show(this);"><img class="viewsource" /></button>2 columns, long text</label>
+    <input type="radio" id="tab10" name="tab" checked />
+    <label for="tab10">
+      <button class="view content10" onclick="show(this);"><img class="viewsource" /></button>1 row, 2 cols with 1st/2nd swapped</label>
     <input type="radio" id="tab2" name="tab" checked />
     <label for="tab2">
       <button class="view content2" onclick="show(this);"><img class="viewsource" /></button>2 columns, short text</label>
@@ -888,6 +920,32 @@
           </div>
           <div class="production-col2-item">
             <p>Salami ham hock ham, hamburger corned beef short ribs sirloin ground round fatback, cow pancetta boudin t-bone pig. Ham short ribs cow tri-tip ribeye tenderloin turkey chicken pork chop filet mignon boudin.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tab content10">
+
+      <div class="device-wrapper">
+        <p>Default behavior</p>
+        <div class="mck-container production-col2-container">
+          <div class="production-col2-item">
+            <p>Left shark</p>
+          </div>
+          <div class="production-col2-item">
+            <p>Right hook</p>
+          </div>
+        </div>
+
+        <p>Force right cell atop left when in one column</p>
+        <div class="mck-container production-col2-container">
+          <div class="production-col2-item production-second">
+            <p>Lefty Frizzell</p>
+          </div>
+          <div class="production-col2-item production-first">
+            <p>Right Said Fred</p>
           </div>
         </div>
       </div>

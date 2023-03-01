@@ -769,7 +769,7 @@
         return value !== "view";
       })[0];
       var container = document.querySelector("div." + target + " > div.device-wrapper");
-      document.getElementById('htmlsource').innerHTML = container.innerHTML.replace(/\bmck-container\s*/, '');
+      document.getElementById('htmlsource').innerHTML = container.innerHTML.replaceAll(/\bmck-container\s*/g, '');
       document.querySelector("div.overlay").style.display = "block";
     }
 

@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Language" content="en-US" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta content="text/html;charset=utf-8" http-equiv="Content-type" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <title>Ad Hoc User Selection</title>
+    <style>
+      body {
+        font-family: 'Lato', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+      }
+      details div {
+      margin-left: 2em;
+      }
+    </style>
+    <script>
+      const doAllClick = ( input ) => {
+        const c1Input = document.getElementById( 'c1' );
+        const g1Input = document.getElementById( 'g1' );
+        const g2Input = document.getElementById( 'g2' );
+
+        input.indeterminate = false;
+        if (input.checked) {
+          c1Input.checked = true;
+          g1Input.checked = true;
+          g2Input.checked = true;
+        } else {
+          c1Input.checked = false;
+          g1Input.checked = false;
+          g2Input.checked = false;
+        }
+        doGroupClick(c1Input);
+        doGroupClick(g1Input);
+        doGroupClick(g2Input);
+      }
+
+      const doGroupClick = ( input ) => {
+        // console.log(input, input.id, input.checked, input.indeterminate);
+        input.indeterminate = false;
+        forceSelect(input.id, input.checked);
+      }
+
+      const doStudentClick = ( input ) => {
+        const parentId = input.id.substring(0, 2);
+        const parentInput = document.getElementById(parentId);
+        const students = countSelected( parentInput );
+        // console.log(input, parentInput, students);
+        if (input.checked) {
+          if (students.selected == students.total) {
+            parentInput.indeterminate = false;
+            parentInput.checked = true;
+          } else {
+            parentInput.indeterminate = true;
+          }
+        } else {
+          if (students.selected == 0) {
+            parentInput.indeterminate = false;
+            parentInput.checked = false;
+          } else {
+            parentInput.indeterminate = true;
+          }
+        }
+      }
+
+      const forceSelect = ( id, state ) => {
+        let s = 1;
+        while ( true ) {
+          const input = document.getElementById(`${id}s${s}`);
+          if (input ) {
+            input.checked = state;
+            s = s + 1;
+          } else {
+            return;
+          }
+        }
+      }
+
+      const countSelected = ( parentInput ) => {
+        let s = 1;
+        const students = {};
+        students.selected = 0;
+        while ( true ) {
+          const input = document.getElementById(`${parentInput.id}s${s}`);
+          if (input ) {
+            if (input.checked) {
+              students.selected = students.selected + 1;
+            }
+            s = s + 1;
+          } else {
+            students.total = s - 1;
+            return students;
+          }
+        }
+      }
+
+      const updateSelected = () => {
+        const c1Input = document.getElementById( 'c1' );
+        const g1Input = document.getElementById( 'g1' );
+        const g2Input = document.getElementById( 'g2' );
+
+        // first update control
+        const allInput = document.getElementById( 'all' );
+        if (c1Input.indeterminate || g1Input.indeterminate || g2Input.indeterminate) {
+          allInput.indeterminate = true;
+        } else {
+          if (c1Input.checked && g1Input.checked && g2Input.checked) {
+            allInput.indeterminate = false;
+            allInput.checked = true;
+          } else {
+            if (!(c1Input.checked || g1Input.checked || g2Input.checked)) {
+              allInput.indeterminate = false;
+              allInput.checked = false;
+            } else {
+              allInput.indeterminate = true;
+            }
+          }
+        }
+
+        // then update label
+        const c1 = countSelected( c1Input );
+        const g1 = countSelected( g1Input );
+        const g2 = countSelected( g2Input );
+        // console.log(c1, g1, g2);
+
+        let desc = 'Assigned: ';
+        if (c1.selected == 0) {
+          desc += 'no classes';
+        } else {
+          if (c1.selected == c1.total) {
+            desc += '1 class';
+          } else {
+            desc += `1 partial class (${c1.selected}/${c1.total})`;
+          }
+        }
+        desc += ', ';
+        if (g1.selected == 0) {
+          if (g2.selected == 0) {
+            desc += 'no groups';
+          } else {
+            if (g2.selected == g2.total) {
+              desc += '1 group';
+            } else {
+              desc += `1 partial group (${g2.selected}/${g2.total})`;
+            }
+          }
+        } else {
+          if (g1.selected == g1.total) {
+            if (g2.selected == 0) {
+              desc += '1 group';
+            } else {
+              if (g2.selected == g2.total) {
+                desc += '2 groups';
+              } else {
+                desc += `1 group, 1 partial group (${g2.selected}/${g2.total})`;
+              }
+            }
+          } else {
+            if (g2.selected == 0) {
+              desc += `1 partial group (${g1.selected}/${g1.total})`;
+            } else {
+              if (g2.selected == g2.total) {
+                desc += `1 group, 1 partial group (${g1.selected}/${g1.total})`;
+              } else {
+                desc += `2 partial groups (${g1.selected}/${g1.total}, ${g2.selected}/${g2.total})`;
+              }
+            }
+          }
+        }
+
+        const label = document.getElementById("l-all");
+        label.innerHTML = desc;
+      }
+    </script>
+  </head>
+  <body onload="updateSelected()">
+    <h1>Ad Hoc User Selection Proposal</h1>
+    <fieldset>
+      <legend>Select students</legend>
+      <div>
+        <input type="checkbox" id="all" value="all" onclick="doAllClick(this);updateSelected()" />
+        <label id="l-all" for="all">Please wait...</label>
+      </div>
+      <hr />
+      <details>
+        <summary>
+          <input type="checkbox" id="c1" value="c1" onclick="doGroupClick(this); updateSelected()" />
+          <label for="c1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 15" width="15px" height="17px">
+              <path d="M 8.56 15.001 L 16.997 15.001 L 16.997 15 L 8.56 15 Z M 12.531 10.079 C 10.748 10.079 7.169 10.976 7.169 12.761 L 7.169 14.954 L 16.997 14.954 L 16.997 11.339 C 15.818 10.5 13.753 10.079 12.531 10.079 Z M 12.531 8.129 C 13.877 8.129 14.96 7.037 14.96 5.691 C 14.96 4.345 13.877 3.254 12.531 3.254 C 11.185 3.254 10.094 4.345 10.094 5.691 C 10.094 7.037 11.185 8.129 12.531 8.129 Z" style="fill: rgb(68, 68, 68);"></path>
+              <path d="M 0 14.954 L 5.216 14.954 L 5.216 12.761 C 5.216 11.932 5.538 10.48 7.527 9.377 C 6.678 9.201 5.86 9.104 5.216 9.104 C 3.821 9.104 1.566 9.535 0.033 10.393 L 0.033 14.952 L 0 14.952 Z M 6.167 15 L 0 15 L 0 15.004 L 6.167 15.004 Z M 5.216 7.154 C 6.835 7.154 8.132 5.848 8.132 4.229 C 8.132 2.61 6.835 1.304 5.216 1.304 C 3.597 1.304 2.291 2.61 2.291 4.229 C 2.291 5.848 3.597 7.154 5.216 7.154 Z" style="fill: rgb(34, 103, 152);"></path>
+            </svg>
+            Mason - Algebra I (1977-78) &mdash; Rydell High School, Algebra I
+          </label>
+        </summary>
+        <div>
+          <input type="checkbox" id="c1s1" value="c1s1" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s1">
+            Thomas Chisum
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s2" value="c1s2" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s2">
+            Ronnie Dell
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s3" value="c1s3" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s3">
+            Jan Donnelly
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s4" value="c1s4" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s4">
+            Francesca Facciano
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s5" value="c1s5" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s5">
+            Eugene Felsnic
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s6" value="c1s6" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s6">
+            Dominic LaTierri
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s7" value="c1s7" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s7">
+            Marty Maraschino
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s8" value="c1s8" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s8">
+            Kenickie Murdoch
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s9" value="c1s9" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s9">
+            Sandy Olsson
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s10" value="c1s10" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s10">
+            Roger Putzie
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s11" value="c1s11" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s11">
+            Betty Rizzo
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s12" value="c1s12" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s12">
+            Patricia Simcox
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="c1s13" value="c1s13" onclick="doStudentClick(this); updateSelected()" />
+          <label for="c1s13">
+            Danny Zuko
+          </label>
+        </div>
+      </details>
+      <details>
+        <summary>
+          <input type="checkbox" id="g1" value="g1" onclick="doGroupClick(this); updateSelected()" />
+          <label for="g1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="15" viewBox="0 0 17 15">
+              <path d="M 8.437 15.001 L 0 15.001 L 0 15 L 8.437 15 Z M 4.466 10.079 C 6.249 10.079 9.828 10.976 9.828 12.761 L 9.828 14.954 L 0 14.954 L 0 11.339 C 1.179 10.5 3.244 10.079 4.466 10.079 Z M 4.466 8.129 C 3.12 8.129 2.037 7.037 2.037 5.691 C 2.037 4.345 3.12 3.254 4.466 3.254 C 5.812 3.254 6.903 4.345 6.903 5.691 C 6.903 7.037 5.812 8.129 4.466 8.129 Z" style="fill: rgb(149, 144, 177);"></path>
+              <path d="M 16.997 14.954 L 11.781 14.954 L 11.781 12.761 C 11.781 11.932 11.459 10.48 9.47 9.377 C 10.319 9.201 11.137 9.104 11.781 9.104 C 13.176 9.104 15.431 9.535 16.964 10.393 L 16.964 14.952 L 16.997 14.952 Z M 10.83 15 L 16.997 15 L 16.997 15.004 L 10.83 15.004 Z M 11.781 7.154 C 10.162 7.154 8.865 5.848 8.865 4.229 C 8.865 2.61 10.162 1.304 11.781 1.304 C 13.4 1.304 14.706 2.61 14.706 4.229 C 14.706 5.848 13.4 7.154 11.781 7.154 Z" style="fill: rgb(56, 52, 77);"></path>
+            </svg>
+            Pink Ladies &mdash; Rydell High School, Algebra I
+          </label>
+        </summary>
+        <div>
+          <input type="checkbox" id="g1s1" value="g1s1" onclick="doStudentClick(this); updateSelected()" />
+          <label for="g1s1">
+            Jan Donnelly
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="g1s2" value="g1s2" onclick="doStudentClick(this); updateSelected()" />
+          <label for="g1s2">
+            Francesca Facciano
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="g1s3" value="g1s3" onclick="doStudentClick(this); updateSelected()" />
+          <label for="g1s3">
+            Marty Maraschino
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="g1s4" value="g1s4" onclick="doStudentClick(this); updateSelected()" />
+          <label for="g1s4">
+            Betty Rizzo
+          </label>
+        </div>
+      </details>
+      <details>
+        <summary>
+          <input type="checkbox" id="g2" value="g2" onclick="doGroupClick(this); updateSelected()" />
+          <label for="g2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="15" viewBox="0 0 17 15">
+              <path d="M 8.437 15.001 L 0 15.001 L 0 15 L 8.437 15 Z M 4.466 10.079 C 6.249 10.079 9.828 10.976 9.828 12.761 L 9.828 14.954 L 0 14.954 L 0 11.339 C 1.179 10.5 3.244 10.079 4.466 10.079 Z M 4.466 8.129 C 3.12 8.129 2.037 7.037 2.037 5.691 C 2.037 4.345 3.12 3.254 4.466 3.254 C 5.812 3.254 6.903 4.345 6.903 5.691 C 6.903 7.037 5.812 8.129 4.466 8.129 Z" style="fill: rgb(149, 144, 177);"></path>
+              <path d="M 16.997 14.954 L 11.781 14.954 L 11.781 12.761 C 11.781 11.932 11.459 10.48 9.47 9.377 C 10.319 9.201 11.137 9.104 11.781 9.104 C 13.176 9.104 15.431 9.535 16.964 10.393 L 16.964 14.952 L 16.997 14.952 Z M 10.83 15 L 16.997 15 L 16.997 15.004 L 10.83 15.004 Z M 11.781 7.154 C 10.162 7.154 8.865 5.848 8.865 4.229 C 8.865 2.61 10.162 1.304 11.781 1.304 C 13.4 1.304 14.706 2.61 14.706 4.229 C 14.706 5.848 13.4 7.154 11.781 7.154 Z" style="fill: rgb(56, 52, 77);"></path>
+            </svg>
+            T-Birds &mdash; Rydell High School, Algebra I
+          </label>
+        </summary>
+        <div>
+          <input type="checkbox" id="g2s1" value="g2s1" onclick="doStudentClick(this); updateSelected()" />
+          <label for="g2s1">
+            Ronnie Dell <!-- Doodie -->
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="g2s2" value="g2s2" onclick="doStudentClick(this); updateSelected()" />
+          <label for="g2s2">
+            Dominic LaTierri <!-- Sonny -->
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="g2s3" value="g2s3" onclick="doStudentClick(this); updateSelected()" />
+          <label for="g2s3">
+            Kenickie Murdoch
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="g2s4" value="g2s4" onclick="doStudentClick(this); updateSelected()" />
+          <label for="g2s4">
+            Roger Putzie
+          </label>
+        </div>
+        <div>
+          <input type="checkbox" id="g2s5" value="g2s5" onclick="doStudentClick(this); updateSelected()" />
+          <label for="g2s5">
+            Danny Zuko
+          </label>
+        </div>
+      </details>
+    </fieldset>
+  </body>
+</html>

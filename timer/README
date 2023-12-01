@@ -1,0 +1,6 @@
+From this directory, to test first launch
+ $ node_modules/http-server/bin/http-server -c-1
+
+Then visiting http://localhost:8080/ will serve up the page.
+
+Otherwise the sound will fail because of CORS violations.

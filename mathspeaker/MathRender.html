@@ -396,7 +396,8 @@
           var d = url.searchParams.get("domain") || "clearspeak";
           var s = url.searchParams.get("style") || "default";
           var x = url.searchParams.get("locale") || "en";
-          SRE.setupEngine({domain: d, style: s, locale: x});
+          var m = url.searchParams.get("modality") || "speech";
+          SRE.setupEngine({domain: d, style: s, locale: x, modality: m});
 
           var math = seedMath();
           window.history.replaceState({"mathML": math || "", "param": url.searchParams.get("math")}, "", url.href);

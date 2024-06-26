@@ -90,6 +90,7 @@
     .layout > #tab6:checked ~ label > .view.content6,
     .layout > #tab7:checked ~ label > .view.content7,
     .layout > #tab8:checked ~ label > .view.content8,
+    .layout > #tab11:checked ~ label > .view.content11,
     .layout > #tab9:checked ~ label > .view.content9 {
       display: inline-block;
     }
@@ -107,6 +108,7 @@
     .layout > #tab6:checked ~ .tab.content6,
     .layout > #tab7:checked ~ .tab.content7,
     .layout > #tab8:checked ~ .tab.content8,
+    .layout > #tab11:checked ~ .tab.content11,
     .layout > #tab9:checked ~ .tab.content9 {
       display: block;
     }
@@ -651,7 +653,6 @@
       background-color: #fff;
       margin: 8px 0 8px 0;
       align-self: flex-start;
-      xwidth: 100%;
       display: none;
     }
 
@@ -895,6 +896,9 @@
     <input type="radio" id="tab7" name="tab" />
     <label for="tab7">
       <button class="view content7" onclick="show(this);"><img class="viewsource" /></button>3 columns, icon</label>
+    <input type="radio" id="tab11" name="tab" checked />
+    <label for="tab11">
+      <button class="view content11" onclick="show(this);"><img class="viewsource" /></button>3 columns, big responsive images</label>
     <input type="radio" id="tab8" name="tab" />
     <label for="tab8">
       <button class="view content8" onclick="show(this);"><img class="viewsource" /></button>Click and reveal</label>
@@ -1149,6 +1153,24 @@
 
     </div>
 
+    <div class="tab content11">
+
+      <div class="device-wrapper">
+        <div class="mck-container production-col3-container">
+          <div class="production-col3-item">
+            <img class="responsive_image" src="batman.png" />
+          </div>
+          <div class="production-col3-item">
+            <img class="responsive_image" src="wonderwoman.png" />
+          </div>
+          <div class="production-col3-item">
+            <img class="responsive_image" src="superman.png" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     <div class="tab content9">
 
       <div class="device-wrapper">
@@ -1212,3 +1234,5 @@
 </body>
 
 </html>
+
+

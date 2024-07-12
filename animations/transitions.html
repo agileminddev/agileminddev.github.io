@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Language" content="en-US" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta content="text/html;charset=utf-8" http-equiv="Content-type" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" href="../favicon.ico" type="image/x-icon" />
+	<title>Animation Transitions</title>
+	<style>
+		@font-face {
+			font-family: 'Lato';
+			src: url(Lato-Regular.ttf) format("truetype");
+			font-style: normal
+		}
+
+		body {
+			background-color: #FAF9F6;
+			color: black;
+			font-family: 'Lato', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+			min-width: 800px;
+		}
+
+		span.nowrap {
+			white-space: nowrap;
+		}
+
+		#outer {
+			margin-left: auto;
+			margin-right: auto;
+			max-width: 800px;
+		}
+
+		#container {
+			max-width: 800px;
+			min-width: 536px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-evenly;
+			font-size: 11.5pt;
+		}
+
+		.math-author {
+			vertical-align: baseline;
+			font-family: STIX-Web, 'Times New Roman', Times, Roboto, serif;
+			font-style: italic;
+			font-size: 1.1670000553131104em;
+			line-height: 1em;
+		}
+
+		#animation1,
+		#panel1-end-caption {
+			width: 698px;
+		}
+
+		#panel1-end-caption {
+			visibility: hidden;
+			background-color: #ffffd7;
+			box-sizing: border-box;
+			padding: 8px;
+			border-style: none;
+			border-color: #000;
+			border-width: 1px;
+		}
+
+		.reverse-text {
+			color: #fff;
+			text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+		}
+
+		#current-speed1,
+		#current-speed2,
+		#current-border-width {
+			min-width: 3em;
+			display: inline-block;
+		}
+
+		.animate {
+			animation-name: fly-in;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 3s;
+			visibility: visible !important;
+		}
+
+		@keyframes fly-in {
+			0% {
+				opacity: 0;
+				translate: 0 -20em;
+				scale: 0.5;
+			}
+
+			75% {
+				opacity: 1;
+			}
+
+			100% {
+				translate: 0 0;
+				scale: 1;
+			}
+		}
+
+		label+select,
+		label+span,
+		label+input {
+			margin-left: 1em;
+		}
+
+		.controls {
+			display: flex;
+			width: 100hw;
+		}
+
+		.controls div {
+			flex-grow: 1;
+			flex-wrap: wrap;
+		}
+
+		fieldset {
+			display: grid;
+			grid-template-columns: max-content 1fr;
+			row-gap: 1ch;
+		}
+
+
+		body.good {
+			animation: copy-good 1s;
+		}
+
+		body.bad {
+			animation: copy-bad 1s;
+		}
+
+		@keyframes copy-good {
+			from {
+				background-color: green;
+			}
+
+			to {
+				background-color: #FAF9F6;
+			}
+		}
+
+		@keyframes copy-bad {
+			from {
+				background-color: red;
+			}
+
+			to {
+				background-color: #FAF9F6;
+			}
+		}
+
+		#buttons {
+			display: flex;
+			width: 100hw;
+		}
+
+		#buttons button {
+			flex-grow: 1;
+		}
+
+		#buttons span {
+			flex-grow: 2;
+		}
+
+		#activate1,
+		#activate2,
+		#copy {
+			min-width: 15em;
+		}
+
+		#animation2 {
+			background-color: #000000;
+			position: relative;
+			width: 600px;
+			height: 320px;
+		}
+
+		#image2 {
+			position: absolute;
+			left: 0;
+			top: 0;
+			opacity: 1;
+		}
+
+		#image2.animate {
+			animation-name: overlay;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 1s;
+			opacity: 0.4;
+		}
+
+		@keyframes overlay {
+			0% {
+				opacity: 1;
+			}
+
+			100% {
+				opacity: 0.4;
+			}
+		}
+
+		#text2 {
+			display: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			font-size: larger;
+			transform: translateX(-50%) translateY(-50%);
+			color: #ffffff;
+		}
+
+		.outline {
+			text-shadow: 1px 0 0 #000000, 0 -1px 0 #000000, 0 1px 0 #000000, -1px 0 0 #000000;
+		}
+	</style>
+	<script>
+		const onlyNumbers = (s) => {
+			const n = (typeof s === 'string') ? s.replace(/[^0-9.]/g, '') : '';
+			return n == '' ? null : n;
+		};
+
+		let curSpeed1;
+		const updateSpeed1 = (value) => {
+			const span = document.getElementById('current-speed1');
+			curSpeed1 = `${onlyNumbers(value) || 3}s`;
+			span.textContent = curSpeed1;
+		};
+
+		let curSpeed2;
+		const updateSpeed2 = (value) => {
+			const span = document.getElementById('current-speed2');
+			curSpeed2 = `${onlyNumbers(value) || 1}s`;
+			span.textContent = curSpeed2;
+		};
+
+		let curBgColor;
+		const updateBgColor = (value) => {
+			const cap = document.getElementById('panel1-end-caption');
+			curBgColor = value;
+			cap.style['background-color'] = curBgColor;
+		};
+
+		let curFontColor;
+		const updateFontColor = (value) => {
+			const cap = document.getElementById('panel1-end-caption');
+			curFontColor = value;
+			cap.style.color = curFontColor;
+		};
+
+		let curBorderColor;
+		const updateBorderColor = (value) => {
+			const cap = document.getElementById('panel1-end-caption');
+			curBorderColor = value;
+			cap.style['border-color'] = curBorderColor;
+		};
+
+		let curBorderStyle;
+		const updateBorderStyle = (value) => {
+			const cap = document.getElementById('panel1-end-caption');
+			curBorderStyle = value;
+			cap.style['border-style'] = curBorderStyle;
+		};
+
+		let curBorderWidth;
+		const updateBorderWidth = (value) => {
+			const cap = document.getElementById('panel1-end-caption');
+			curBorderWidth = `${onlyNumbers(value) || 1}px`;
+			cap.style['border-width'] = curBorderWidth;
+			const span = document.getElementById('current-border-width');
+			span.textContent = curBorderWidth;
+		};
+
+		let curTextStyle;
+		const updateTextStyle = (value) => {
+			const text = document.getElementById('text2');
+			curTextStyle = value;
+			if (value === 'white') {
+				text.classList.remove('outline');
+			} else {
+				text.classList.add('outline');
+			}
+		};
+
+		let curImageChoice;
+		const updateImageChoice = (value) => {
+			const image = document.getElementById('image2');
+			curImageChoice = value;
+			image.src = `${curImageChoice}.png`;
+		};
+
+		const copyURL = () => {
+			// build URL
+			var url = new URL(window.location);
+			url.searchParams.set('speed1', curSpeed1);
+			url.searchParams.set('bgcolor', curBgColor);
+			url.searchParams.set('fontcolor', curFontColor);
+			url.searchParams.set('bordercolor', curBorderColor);
+			url.searchParams.set('borderwidth', curBorderWidth);
+			url.searchParams.set('borderstyle', curBorderStyle);
+			url.searchParams.set('speed2', curSpeed2);
+			url.searchParams.set('textstyle', curTextStyle);
+			url.searchParams.set('image', curImageChoice);
+			console.log(url);
+
+			const b = document.getElementById('body');
+			b.addEventListener('animationend', () => {
+				b.classList.remove('good');
+				b.classList.remove('bad');
+			}, true);
+			navigator.clipboard.writeText(url).then(
+				() => {
+					b.classList.add('good');
+				},
+				() => {
+					b.classList.add('bad');
+				});
+		};
+
+		const activate1 = () => {
+			const cap = document.getElementById('panel1-end-caption');
+			cap.style['animation-duration'] = curSpeed1;
+			const button = document.getElementById('activate1');
+			if (cap.classList.toggle('animate')) {
+				button.textContent = 'Reset Animation';
+				button.disabled = true;
+				cap.addEventListener('animationend', () => {
+					button.disabled = false;
+				}, true);
+			} else {
+				button.textContent = 'Play Animation';
+			}
+		};
+
+		const activate2 = () => {
+			const img = document.getElementById('image2');
+			img.style['animation-duration'] = curSpeed2;
+			const button = document.getElementById('activate2');
+			const text = document.getElementById('text2');
+			if (img.classList.toggle('animate')) {
+				button.textContent = 'Reset Animation';
+				button.disabled = true;
+				img.addEventListener('animationend', () => {
+					button.disabled = false;
+					text.style.display = 'block';
+				}, true);
+			} else {
+				text.style.display = 'none';
+				document.getElementById('activate2').textContent = 'Play Animation';
+			}
+		};
+
+		const setParams1 = (speed, bgcolor, fontcolor, bordercolor, borderwidth, borderstyle) => {
+			//!! speed and borderwidth sliders don't update properly?
+			document.getElementById('speed1').value = speed;
+			document.getElementById('bgcolor').value = bgcolor;
+			document.getElementById('fontcolor').value = fontcolor;
+			document.getElementById('bordercolor').value = bordercolor;
+			document.getElementById('borderwidth').value = borderwidth;
+			document.getElementById('borderstyle').value = borderstyle;
+
+			updateSpeed1(speed);
+			updateBgColor(bgcolor);
+			updateFontColor(fontcolor);
+			updateBorderColor(bordercolor);
+			updateBorderWidth(borderwidth);
+			updateBorderStyle(borderstyle);
+		};
+
+		const setParams2 = (speed2, textstyle, imagechoice) => {
+			//!! speed sliders don't update properly?
+			document.getElementById('speed2').value = speed2;
+			document.getElementById(textstyle).checked = true;
+			document.getElementById(imagechoice).checked = true;
+			document.getElementById('image2').src = `${imagechoice}.png`;
+
+			updateSpeed2(speed2);
+			updateTextStyle(textstyle);
+			updateImageChoice(imagechoice);
+		};
+
+		const decodeAndSet = (from) => {
+			console.log(from);
+			const url = new URL(from);
+			const speed1 = url.searchParams.get('speed1') || '4s';
+			const bgcolor = url.searchParams.get('bgcolor') || '#a83743';
+			const fontcolor = url.searchParams.get('fontcolor') || '#c5b35a';
+			const bordercolor = url.searchParams.get('bordercolor') || '#622226';
+			const borderwidth = url.searchParams.get('borderwidth') || '8px';
+			const borderstyle = url.searchParams.get('borderstyle') || 'dotted';
+
+			const speed2 = url.searchParams.get('speed2') || '1s';
+			const textstyle = url.searchParams.get('textstyle') || 'outline';
+			const imagechoice = url.searchParams.get('image') || 'busy1';
+
+			setParams1(speed1, bgcolor, fontcolor, bordercolor, borderwidth, borderstyle);
+			setParams2(speed2, textstyle, imagechoice);
+		};
+
+		const init = () => {
+			// check url for parameters
+			decodeAndSet(window.location);
+
+			// do we have clipboard access?
+			if (navigator.permissions) { // stupid safari
+				navigator.permissions.query({
+						name: 'clipboard-write'
+					})
+					.then((p) => {
+						document.getElementById('copy').disabled = false;
+					})
+					.catch((ex) => {
+						// stupid firefox
+					});
+			}
+
+		};
+	</script>
+</head>
+<body onload="init();" id="body">
+	<datalist id="durations">
+		<option value="0"></option>
+		<option value="2"></option>
+		<option value="4"></option>
+		<option value="6"></option>
+		<option value="8"></option>
+	</datalist>
+	<datalist id="widths">
+		<option value="1"></option>
+		<option value="3"></option>
+		<option value="5"></option>
+		<option value="7"></option>
+		<option value="9"></option>
+	</datalist>
+	<h1>
+		This page shows possible animation transitions.
+	</h1>
+	<h2>
+		Fly in to current positioning for feedback messages
+	</h2>
+	<div>
+		<div>
+			<div class="controls">
+				<div>
+					<fieldset>
+						<legend>Animation</legend>
+						<label for="speed1">Transition speed:</label>
+						<span class="nowrap">
+						<input type="range" id="speed1" name="speed1" list="durations" min="0" max="8" step="0.25" value="3" oninput="updateSpeed1(value)" \>
+						<span id="current-speed1">3s</span>
+						</span>
+					</fieldset>
+				</div>
+				<div>
+					<fieldset>
+						<legend>Text</legend>
+						<label for="bgcolor">Background:</label>
+						<input type="color" id="bgcolor" name="bgcolor" value="#ffffd7" onchange="updateBgColor(value)" />
+						<label for="fontcolor">Foreground:</label>
+						<input type="color" id="fontcolor" name="fontcolor" value="#000000" onchange="updateFontColor(value)" />
+					</fieldset>
+				</div>
+				<div>
+					<fieldset>
+						<legend>Border</legend>
+						<label for="borderstyle">Style:</label>
+						<select name="borderstyle" id="borderstyle" onchange="updateBorderStyle(value)">
+							<option value="none">None</option>
+							<option value="solid">Single line</option>
+							<option value="double">Double line</option>
+							<option value="dotted">Dotted line</option>
+							<option value="dashed">Dashed line</option>
+						</select>
+						<label for="bordercolor">Color:</label>
+						<input type="color" id="bordercolor" name="bordercolor" value="#000000" onchange="updateBorderColor(value)" />
+						<label for="borderwidth">Width:</label>
+						<span class="nowrap">
+						<input type="range" id="borderwidth" name="borderwidth" list="widths" min="1" max="9" step="1" value="2" oninput="updateBorderWidth(value)" \>
+						<span id="current-border-width">2px</span>
+						</span>
+					</fieldset>
+				</div>
+			</div>
+			<br />
+			<div id="buttons">
+				<button id="activate1" onclick="activate1()">Play Animation</button>
+				<span>&nbsp;</span>
+				<span style="text-align: right">Presets:</span>
+				<button onclick="setParams1('2s', '#ffffd7', '#000000', '#00ff00', '2px', 'none');">Yellow</button>
+				<button onclick="setParams1('2s', '#ffffff', '#000000', '#c0fce6', '4px', 'solid');">Cyan</button>
+			</div>
+		</div>
+		<br />
+		<div id="outer">
+			<div id="container">
+				<div id="animation1">
+					<img src="matthew.png" width="100%" />
+				</div>
+				<div id="panel1-end-caption" class="caption"> The height of the baseball depends on the time that has elapsed since Matthew threw it. The mathematical function that models this relationship is approximately <span class="nowrap"><span class="math-author">height</span> = 16(<span class="math-author">time</span>)<sup>2</sup> + 24(<span class="math-author">time</span>) + 7</span>. How would you graph this function using graphing technology? </div>
+			</div>
+		</div>
+	</div>
+	<h2
+		>Fade in overlay for end captions
+	</h2>
+	<div>
+		<div>
+			<div class="controls">
+				<div>
+					<fieldset>
+						<legend>Animation</legend>
+						<label for="speed2">Transition speed:</label>
+						<span class="nowrap">
+						<input type="range" id="speed2" name="speed2" list="durations" min="0" max="8" step="0.25" value="3" oninput="updateSpeed2(value)" \>
+						<span id="current-speed2">1s</span>
+						</span>
+					</fieldset>
+				</div>
+				<div>
+					<fieldset>
+						<legend>Text</legend>
+						<span class="nowrap">
+						<input type="radio" id="outline" name="text-style" value="outline" onchange="updateTextStyle(value);" checked /> <label for="outline">Solid outline</label>
+						</span>
+						<br />
+						<span class="nowrap">
+						<input type="radio" id="white" name="text-style" value="white" onchange="updateTextStyle(value);" /> <label for="white">Solid white</label>
+						</span>
+					</fieldset>
+				</div>
+				<div>
+					<fieldset>
+						<legend>Image</legend>
+						<span class="nowrap">
+						<input type="radio" id="busy1" name="image-choice" value="busy1" onchange="updateImageChoice(value);" /> <label for="busy1">Elevators</label>
+						</span>
+						<br />
+						<span class="nowrap">
+						<input type="radio" id="busy2" name="image-choice" value="busy2" onchange="updateImageChoice(value);" /> <label for="busy2">Pool</label>
+						</span>
+						<br />
+						<span class="nowrap">
+						<input type="radio" id="busy3" name="image-choice" value="busy3" onchange="updateImageChoice(value);" /> <label for="busy3">Graph</label>
+						</span>
+					</fieldset>
+				</div>
+			</div>
+			<br />
+			<button id="activate2" onclick="activate2()">Play Animation</button>
+		</div>
+		<br />
+		<div id="outer">
+			<div id="container">
+				<div id="animation2">
+					<img id="image2" src="busy1.png" width="100%" />
+					<div id="text2">
+						<p>The US doesn't have a floor zero as shown on the graph, so this animation clearly takes place in Europe. In British English, the floor level with the ground is the ground floor, and taking the stairs (or here, an elevator) one flight up puts you on the first floor. In American English, the floor level with the ground is the first floor because most people start counting at one.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="height: 10em"></div>
+	<button id="copy" onclick="copyURL()" disabled>Copy URL to Clipboard</button>
+</body>
+</html>

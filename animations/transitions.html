@@ -2,6 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+<!--
+	This is basically one giant hack and not very good code. Try not to cringe too badly...
+-->
 <head>
 	<meta http-equiv="Content-Language" content="en-US" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -30,13 +33,13 @@
 			white-space: nowrap;
 		}
 
-		#outer {
+		.outer {
 			margin-left: auto;
 			margin-right: auto;
 			max-width: 800px;
 		}
 
-		#container {
+		.container {
 			max-width: 800px;
 			min-width: 536px;
 			display: flex;
@@ -58,6 +61,7 @@
 			width: 698px;
 		}
 
+		#text3,
 		#panel1-end-caption {
 			visibility: hidden;
 			background-color: #ffffd7;
@@ -80,7 +84,7 @@
 			display: inline-block;
 		}
 
-		.animate {
+		#panel1-end-caption.animate {
 			animation-name: fly-in;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-in-out;
@@ -175,11 +179,20 @@
 			min-width: 15em;
 		}
 
+		#text3 {
+			z-index: -10;
+		}
+
+		#text3,
+		#animation2 {
+			width: 600px;
+		}
+
 		#animation2 {
 			background-color: #000000;
 			position: relative;
-			width: 600px;
 			height: 320px;
+			overflow-y: hidden;
 		}
 
 		#image2 {
@@ -189,15 +202,28 @@
 			opacity: 1;
 		}
 
-		#image2.animate {
-			animation-name: overlay;
-			animation-iteration-count: 1;
-			animation-timing-function: ease-in-out;
-			animation-duration: 1s;
+		#image2.gray {
 			opacity: 0.4;
 		}
 
-		@keyframes overlay {
+		#image2.animate {
+			animation-name: overlay-gray;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 3s;
+			opacity: 0.4;
+		}
+
+		#image2.animate2 {
+			animation-direction: reverse;
+			animation-name: overlay-gray;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 3s;
+			opacity: 1;
+		}
+
+		@keyframes overlay-gray {
 			0% {
 				opacity: 1;
 			}
@@ -208,18 +234,95 @@
 		}
 
 		#text2 {
-			display: none;
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			font-size: larger;
 			transform: translateX(-50%) translateY(-50%);
 			color: #ffffff;
+			opacity: 0;
+			width: 100%;
+		}
+
+		#text2.animate {
+			animation-name: overlay-text;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 3s;
+			opacity: 1;
+		}
+
+		#text2.animate2 {
+			animation-name: bye-text;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 3s;
+			opacity: 1;
+		}
+
+		@keyframes overlay-text {
+			0% {
+				opacity: 0;
+			}
+
+			100% {
+				opacity: 1;
+			}
+		}
+
+		@keyframes bye-text {
+			0% {
+				translate: 0 0;
+			}
+
+			100% {
+				translate: 0 320px;
+			}
 		}
 
 		.outline {
 			text-shadow: 1px 0 0 #000000, 0 -1px 0 #000000, 0 1px 0 #000000, -1px 0 0 #000000;
 		}
+
+		#text2 p {
+			padding: 0 2em;
+		}
+
+		#text2 button {
+			border: solid 1px transparent;
+			color: inherit;
+			font-weight: bolder;
+			font-size: larger;
+			text-shadow: inherit;
+			background-color: inherit;
+			position: absolute;
+			right: 1em;
+			top: -2.5em;
+			display: none;
+		}
+
+		#text2 button:hover {
+			border: solid 1px #ffffff;
+		}
+
+		#text3.animate {
+			animation-name: hello-text;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-out;
+			animation-duration: 3s;
+			visibility: visible !important;
+		}
+
+		@keyframes hello-text {
+			0% {
+				translate: 0 -100%;
+			}
+
+			100% {
+				translate: 0 0;
+			}
+		}
+
 	</style>
 	<script>
 		const onlyNumbers = (s) => {
@@ -246,6 +349,8 @@
 			const cap = document.getElementById('panel1-end-caption');
 			curBgColor = value;
 			cap.style['background-color'] = curBgColor;
+			const text = document.getElementById('text3');
+			text.style['background-color'] = curBgColor;
 		};
 
 		let curFontColor;
@@ -253,6 +358,8 @@
 			const cap = document.getElementById('panel1-end-caption');
 			curFontColor = value;
 			cap.style.color = curFontColor;
+			const text = document.getElementById('text3');
+			text.style.color = curFontColor;
 		};
 
 		let curBorderColor;
@@ -260,6 +367,8 @@
 			const cap = document.getElementById('panel1-end-caption');
 			curBorderColor = value;
 			cap.style['border-color'] = curBorderColor;
+			const text = document.getElementById('text3');
+			text.style['border-color'] = curBorderColor;
 		};
 
 		let curBorderStyle;
@@ -267,6 +376,8 @@
 			const cap = document.getElementById('panel1-end-caption');
 			curBorderStyle = value;
 			cap.style['border-style'] = curBorderStyle;
+			const text = document.getElementById('text3');
+			text.style['border-style'] = curBorderStyle;
 		};
 
 		let curBorderWidth;
@@ -276,6 +387,8 @@
 			cap.style['border-width'] = curBorderWidth;
 			const span = document.getElementById('current-border-width');
 			span.textContent = curBorderWidth;
+			const text = document.getElementById('text3');
+			text.style['border-width'] = curBorderWidth;
 		};
 
 		let curTextStyle;
@@ -339,22 +452,55 @@
 			}
 		};
 
+		let activated = false;
 		const activate2 = () => {
 			const img = document.getElementById('image2');
-			img.style['animation-duration'] = curSpeed2;
-			const button = document.getElementById('activate2');
 			const text = document.getElementById('text2');
-			if (img.classList.toggle('animate')) {
+			const button = document.getElementById('activate2');
+			if (activated) {
+				activated = false;
+				button.textContent = 'Play Animation';
+				img.classList.remove('animate2');
+				const t3 = document.getElementById('text3');
+				t3.classList.remove('animate');
+			} else {
+				activated = true;
+				img.style['animation-duration'] = curSpeed2;
+				text.style['animation-duration'] = curSpeed2;
+				img.classList.add('animate', 'gray');
+				text.classList.add('animate');
 				button.textContent = 'Reset Animation';
 				button.disabled = true;
-				img.addEventListener('animationend', () => {
-					button.disabled = false;
-					text.style.display = 'block';
-				}, true);
-			} else {
-				text.style.display = 'none';
-				document.getElementById('activate2').textContent = 'Play Animation';
+				text.addEventListener('animationend', () => {
+					const xxx = document.getElementById('xxx');
+					xxx.style.display = 'inline-block';
+				}, { once : true, capture: true });
 			}
+		};
+
+		const moveOverlay = (closeButton) => {
+			closeButton.style.display = 'none';
+			const img = document.getElementById('image2');
+			img.classList.remove('animate');
+			setTimeout(() => {
+				img.classList.add('animate2');
+				img.classList.remove('gray');
+			}, 0);
+			const text = document.getElementById('text2');
+			text.classList.toggle('animate2');
+			const s = Number(onlyNumbers(curSpeed2));
+			console.log(s);
+			setTimeout(() => {
+				const t3 = document.getElementById('text3');
+				t3.style['animation-duration'] = `${s * 2 / 3}s`;
+				t3.classList.add('animate');
+			}, s * 500 );
+			text.addEventListener('animationend', () => {
+				closeButton.disabled = false;
+				text.classList.remove('animate', 'animate2');
+				const button = document.getElementById('activate2');
+				button.disabled = false;
+			}, { once : true, capture: true });
 		};
 
 		const setParams1 = (speed, bgcolor, fontcolor, bordercolor, borderwidth, borderstyle) => {
@@ -390,11 +536,11 @@
 			console.log(from);
 			const url = new URL(from);
 			const speed1 = url.searchParams.get('speed1') || '4s';
-			const bgcolor = url.searchParams.get('bgcolor') || '#a83743';
-			const fontcolor = url.searchParams.get('fontcolor') || '#c5b35a';
+			const bgcolor = url.searchParams.get('bgcolor') || '#ffffff';
+			const fontcolor = url.searchParams.get('fontcolor') || '#000000';
 			const bordercolor = url.searchParams.get('bordercolor') || '#622226';
 			const borderwidth = url.searchParams.get('borderwidth') || '8px';
-			const borderstyle = url.searchParams.get('borderstyle') || 'dotted';
+			const borderstyle = url.searchParams.get('borderstyle') || 'none';
 
 			const speed2 = url.searchParams.get('speed2') || '1s';
 			const textstyle = url.searchParams.get('textstyle') || 'outline';
@@ -420,7 +566,6 @@
 						// stupid firefox
 					});
 			}
-
 		};
 	</script>
 </head>
@@ -440,10 +585,10 @@
 		<option value="9"></option>
 	</datalist>
 	<h1>
-		This page shows possible animation transitions.
+		This page shows two possible animation transitions.
 	</h1>
 	<h2>
-		Fly in to current positioning for feedback messages
+		Fly in to current positioning for end captions.
 	</h2>
 	<div>
 		<div>
@@ -500,8 +645,8 @@
 			</div>
 		</div>
 		<br />
-		<div id="outer">
-			<div id="container">
+		<div class="outer">
+			<div id="container1" class="container">
 				<div id="animation1">
 					<img src="matthew.png" width="100%" />
 				</div>
@@ -509,8 +654,9 @@
 			</div>
 		</div>
 	</div>
-	<h2
-		>Fade in overlay for end captions
+	<h2>
+		Fade in overlay for end captions.
+		<p style="font-size: small">Second phase after closing might be useful for feedback messages?</p>
 	</h2>
 	<div>
 		<div>
@@ -535,7 +681,11 @@
 						<span class="nowrap">
 						<input type="radio" id="white" name="text-style" value="white" onchange="updateTextStyle(value);" /> <label for="white">Solid white</label>
 						</span>
+						<br />
 					</fieldset>
+					<p style="padding: 0 1em">
+						Colors for text below control bar are set by controls in first example
+					</p>
 				</div>
 				<div>
 					<fieldset>
@@ -566,14 +716,20 @@
 			<button id="activate2" onclick="activate2()">Play Animation</button>
 		</div>
 		<br />
-		<div id="outer">
-			<div id="container">
+		<div class="outer">
+			<div id="container2" class="container">
 				<div id="animation2">
 					<img id="image2" src="busy1.png" width="100%" />
 					<div id="text2">
+						<button onclick="moveOverlay(this);" id="xxx">X</button>
 						<p>The US doesn't have a floor zero as shown on the graph, so this animation clearly takes place in Europe. In British English, the floor level with the ground is the ground floor, and taking the stairs (or here, an elevator) one flight up puts you on the first floor. In American English, the floor level with the ground is the first floor because most people start counting at one.
 						</p>
 					</div>
+				</div>
+				<img src="controls.png" width="600px" height="26px" />
+				<div id="text3">
+					<p>The US doesn't have a floor zero as shown on the graph, so this animation clearly takes place in Europe. In British English, the floor level with the ground is the ground floor, and taking the stairs (or here, an elevator) one flight up puts you on the first floor. In American English, the floor level with the ground is the first floor because most people start counting at one.
+					</p>
 				</div>
 			</div>
 		</div>

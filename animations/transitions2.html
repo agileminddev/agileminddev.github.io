@@ -319,7 +319,7 @@
 		}
 
 		.end-frame span {
-			color: #aa6c39;
+			color: #ef6e02;
 		}
 
 		.active-frame {
@@ -334,6 +334,32 @@
 		#done,
 		#speed {
 			vertical-align: top;
+		}
+
+		.fancy-underline span {
+			display: inline-block;
+			position: relative;
+			padding: 0.2em 0;
+		}
+
+		.fancy-underline span::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 0.2em;
+			x-background-color: # aa6c39;
+			background-color: #fd7b0d;
+			opacity: 0;
+			transition: opacity 300ms, transform 300ms;
+			transform: scale(0);
+			transform-origin: center;
+		}
+
+		.fancy-underline.active span::after {
+			opacity: 1;
+			transform: scale(1);
 		}
 
 		.shimmer {
@@ -358,6 +384,18 @@
 
 			100% {
 				background-position: top right;
+			}
+		}
+
+		.glow {
+			x-background: 50% 100%/50% 50% no-repeat radial-gradient(ellipse at bottom, #fff, transparent, transparent);
+			x-background-clip: text;
+			animation: glow 2500ms linear infinite 2000ms;
+		}
+
+		@keyframes glow {
+			40% {
+				text-shadow: 0 0 8px #fd7b0d;
 			}
 		}
 
@@ -389,12 +427,87 @@
 			color: #0b5394;
 		}
 
-		#waiting-effect {
+		#waiting-message.dots {
+			padding-right: 0.5em;
+			color: #555;
+			line-height: 25px;
+			font-size: smaller;
+		}
+
+		.scanner {
+			text-transform: uppercase;
+			position: relative;
+			padding-left: 4em;
+		}
+
+		.scanner span {
+			position: relative;
+			z-index: 999;
+		}
+
+		.scanner:before {
+			content: '';
+			background: #61bdb6;
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 1.3em;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+			width: 10em;
+			animation: 2s scannerBefore infinite ease-in-out;
+		}
+
+		@keyframes scannerBefore {
+			0% {
+				transform: translateX(-14px);
+			}
+
+			50% {
+				transform: translateX(14px);
+			}
+
+			100% {
+				transform: translateX(-14px);
+			}
+		}
+
+		.scanner:after {
+			content: '';
+			background: #ff3600;
+			width: 14px;
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+			opacity: .5;
+			animation: 2s scannerAfter infinite ease-in-out;
+		}
+
+		@keyframes scannerAfter {
+			0% {
+				transform: translateX(-1em);
+			}
+
+			50% {
+				transform: translateX(4em);
+			}
+
+			100% {
+				transform: translateX(-1em);
+			}
+		}
+
+		#waiting-bubbles {
 			display: flex;
 			align-items: center;
 		}
 
-		#waiting-effect span {
+		#waiting-bubbles span {
 			display: inline-block;
 			width: 15px;
 			height: 15px;
@@ -403,7 +516,7 @@
 			position: relative;
 		}
 
-		#waiting-effect span::before {
+		#waiting-bubbles span::before {
 			content: "";
 			position: absolute;
 			width: 100%;
@@ -411,95 +524,95 @@
 			background-color: inherit;
 			border-radius: 50%;
 			z-index: -1;
-			animation-name: ripples;
+			animation-name: bubbles;
 			animation-iteration-count: infinite;
 			animation-timing-function: ease-out;
 			animation-duration: 2.5s;
 		}
 
-		#waiting-effect span:first-child {
+		#waiting-bubbles span:first-child {
 			background-color: #23649e;
 			transform: scale(1);
 		}
 
-		#waiting-effect span:first-child::before {
+		#waiting-bubbles span:first-child::before {
 			animation-delay: 0s;
 		}
 
-		#waiting-effect span:nth-child(2) {
+		#waiting-bubbles span:nth-child(2) {
 			background-color: #3b75a9;
 			transform: scale(0.95);
 		}
 
-		#waiting-effect span:nth-child(2)::before {
+		#waiting-bubbles span:nth-child(2)::before {
 			animation-delay: 0.2s;
 		}
 
-		#waiting-effect span:nth-child(3) {
+		#waiting-bubbles span:nth-child(3) {
 			background-color: #5486b4;
 			transform: scale(0.9);
 		}
 
-		#waiting-effect span:nth-child(3)::before {
+		#waiting-bubbles span:nth-child(3)::before {
 			animation-delay: 0.4s;
 		}
 
-		#waiting-effect span:nth-child(4) {
+		#waiting-bubbles span:nth-child(4) {
 			background-color: #6c97be;
 			transform: scale(0.85);
 		}
 
-		#waiting-effect span:nth-child(4)::before {
+		#waiting-bubbles span:nth-child(4)::before {
 			animation-delay: 0.6s;
 		}
 
-		#waiting-effect span:nth-child(5) {
+		#waiting-bubbles span:nth-child(5) {
 			background-color: #85a9c9;
 			transform: scale(0.8);
 		}
 
-		#waiting-effect span:nth-child(5)::before {
+		#waiting-bubbles span:nth-child(5)::before {
 			animation-delay: 0.8s;
 		}
 
-		#waiting-effect span:nth-child(6) {
+		#waiting-bubbles span:nth-child(6) {
 			background-color: #9dbad4;
 
 			transform: scale(0.75);
 		}
 
-		#waiting-effect span:nth-child(6)::before {
+		#waiting-bubbles span:nth-child(6)::before {
 			animation-delay: 1.0s;
 		}
 
-		#waiting-effect span:nth-child(7) {
+		#waiting-bubbles span:nth-child(7) {
 			background-color: #b5cbde;
 			transform: scale(0.7);
 		}
 
-		#waiting-effect span:nth-child(7)::before {
+		#waiting-bubbles span:nth-child(7)::before {
 			animation-delay: 1.2s;
 		}
 
-		#waiting-effect span:nth-child(8) {
+		#waiting-bubbles span:nth-child(8) {
 			background-color: #cedce9;
 			transform: scale(0.65);
 		}
 
-		#waiting-effect span:nth-child(8)::before {
+		#waiting-bubbles span:nth-child(8)::before {
 			animation-delay: 1.4s;
 		}
 
-		#waiting-effect span:last-child {
+		#waiting-bubbles span:last-child {
 			background-color: #e6edf4;
 			transform: scale(0.6);
 		}
 
-		#waiting-effect span:last-child::before {
+		#waiting-bubbles span:last-child::before {
 			animation-delay: 1.6s;
 		}
 
-		@keyframes ripples {
+		@keyframes bubbles {
 			from {
 				opacity: 1;
 				transform: scale(0);
@@ -507,6 +620,41 @@
 			to {
 				opacity: 0;
 				transform: scale(2);
+			}
+		}
+
+		#waiting-dots {
+			display: inline-flex;
+			vertical-align: middle;
+			padding-right: 8px;
+			min-width: 30px;
+		}
+
+		#waiting-dots div {
+			display: inline-block;
+			height: 6px;
+			width: 6px;
+			margin: 10px 1px 0;
+			opacity: 0;
+			background: #61676a;
+			animation: waiting-dots 0.8s infinite;
+		}
+
+		#waiting-dots div:nth-child(2) {
+			animation-delay: 0.18s;
+		}
+
+		#waiting-dots div:nth-child(3) {
+			animation-delay: 0.36s;
+		}
+
+		@keyframes waiting-dots {
+			0% {
+				opacity: 0;
+			}
+
+			100% {
+				opacity: 1;
 			}
 		}
 
@@ -542,6 +690,43 @@
 
 		const updateTransportChoice = (value) => {
 			document.documentElement.style.setProperty('--transport-animation-name', value);
+		};
+
+		const updateWaitingChoice = (value) => {
+			const wm = document.getElementById('waiting-message');
+			const wb = document.getElementById('waiting-bubbles');
+			const wd = document.getElementById('waiting-dots');
+			wm.classList.remove('scanner');
+			wm.classList.remove('bubbles');
+			wm.classList.remove('dots');
+			wb.style.display = 'none';
+			wd.style.display = 'none';
+			setTimeout(() => {
+				switch (value) {
+					case 'scanner':
+						wm.classList.add('scanner');
+						break;
+					case 'bubbles':
+						wm.classList.add('bubbles');
+						wb.style.display = 'block';
+						break;
+					default:
+						console.error(`unknown waiting animation: ${value}`);
+					case 'dots':
+						wm.classList.add('dots');
+						wd.style.display = 'block';
+				}
+			}, 0);
+		};
+
+		const updateDoneChoice = (value) => {
+			const d = document.getElementById('done');
+			d.classList.remove('glow');
+			d.classList.remove('shimmer');
+			d.classList.remove('fancy-underline');
+			setTimeout(() => {
+				d.classList.add(value);
+			}, 0);
 		};
 
 		let initialSlideIn = false;
@@ -828,13 +1013,33 @@
 			resetStage();
 
 			bumpSpeed();
+
+			// hack for fancy-underline on done message
+			const blink = () => {
+				const done = document.getElementById('done');
+				done.classList.add('active');
+				setTimeout(() => {
+					done.classList.remove('active');
+					setTimeout(() => {
+						blink();
+					}, 300);
+				}, 1500);
+			};
+			setTimeout(blink, 0);
 		};
 	</script>
 </head>
 <body onload="init();" id="body">
 	<h1>
-		Example animation.
+		Example animation
 	</h1>
+	<p>
+		Roughly mimicking
+		<a href="https://staging.agilemind.com/LMS/lmswrapper/LMS.html#/C/course_ms_math6_ccss_z/CCSS%20Mathematics%206//////c/T/topic_08m6_10z_RationalNumbersOps/RES_lesson7_activities/lesson_pages_7/page5.html">
+			CCSS Mathematics 6, 1. Operations with whole numbers, Using common multiples and factors, Lesson activities (page 5)
+		</a>
+	</p>
+	<hr />
 	<div>
 		<div class="outer">
 			<div id="container" class="container">
@@ -879,10 +1084,11 @@
 						</div>
 					</div>
 					<div id="waiting" class="loading">
-						<div id="waiting-message">
-							Waiting
+						<div id="waiting-message" class="dots">
+							<span>Waiting</span>
 						</div>
-						<div id="waiting-effect">
+						<div id="waiting-dots"><div></div><div></div><div></div></div>
+						<div id="waiting-bubbles" style="display: none">
 							<span></span>
 							<span></span>
 							<span></span>
@@ -905,7 +1111,7 @@
 							<button id="skip-button" onclick="nextStage();">
 								<span class="material-symbols-outlined">skip_next</span>
 							</button>
-							<div id="done" class="display-off shimmer">Done</div>
+							<div id="done" class="display-off fancy-underline"><span>Done</span></div>
 						</div>
 						<div id="frames">
 							<button id="b_frame1" onclick="jumpToStage(1)">
@@ -936,32 +1142,73 @@
 	<button id="addBag" class="display-off" onclick="addBag();">Add a bag</button>
 	<button id="fillBags" class="display-off" onclick="fillBags();">Fill bags</button>
 	<p id="status" class="display-off">Page loading...</p>
-	<details class="display-off">
-		<summary>Configuration</summary>
-		<div>
-			<fieldset>
-				<legend>Initial frame on load</legend>
-				<span class="nowrap">
-					<input type="checkbox" id="initialSlideIn" name="slidein-choice" onchange="updateSlideInChoice(this.checked);" />
-					<label for="initialSlideIn">Slide in</label>
-				</span>
-			</fieldset>
-		</div>
-		<div>
-			<fieldset>
-				<legend>Big transport control icon exit animation</legend>
-				<span class="nowrap">
-					<input type="radio" id="transport1" name="transport-choice" value="fade-out" onchange="updateTransportChoice(value);" checked />
-					<label for="transport1">Fade out</label>
-				</span>
-				<br />
-				<span class="nowrap">
-					<input type="radio" id="transport2" name="transport-choice" value="spin-out" onchange="updateTransportChoice(value);" />
-					<label for="transport2">Spin out</label>
-				</span>
-			</fieldset>
-		</div>
-		<button onclick="resetStage();">Reset</button>
-	</details>
+	<div style="display: none">
+		<hr />
+		<details>
+			<summary>Configuration</summary>
+			<div>
+				<fieldset>
+					<legend>Initial frame on load</legend>
+					<span class="nowrap">
+						<input type="checkbox" id="initialSlideIn" name="slidein-choice" onchange="updateSlideInChoice(this.checked);" />
+						<label for="initialSlideIn">Slide in</label>
+					</span>
+				</fieldset>
+			</div>
+			<div>
+				<fieldset>
+					<legend>Big transport control icon exit animation</legend>
+					<span class="nowrap">
+						<input type="radio" id="transport1" name="transport-choice" value="fade-out" onchange="updateTransportChoice(value);" checked />
+						<label for="transport1">Fade out</label>
+					</span>
+					<br />
+					<span class="nowrap">
+						<input type="radio" id="transport2" name="transport-choice" value="spin-out" onchange="updateTransportChoice(value);" />
+						<label for="transport2">Spin out</label>
+					</span>
+				</fieldset>
+			</div>
+			<div>
+				<fieldset>
+					<legend>Waiting animation</legend>
+					<span class="nowrap">
+						<input type="radio" id="waiting1" name="waiting-choice" value="scanner" onchange="updateWaitingChoice(value);" />
+						<label for="waiting1">Scanner</label>
+					</span>
+					<br />
+					<span class="nowrap">
+						<input type="radio" id="waiting2" name="waiting-choice" value="bubbles" onchange="updateWaitingChoice(value);" />
+						<label for="waiting2">Bubbles</label>
+					</span>
+					<br />
+					<span class="nowrap">
+						<input type="radio" id="waiting3" name="waiting-choice" value="dots" onchange="updateWaitingChoice(value);" checked />
+						<label for="waiting3">Dots</label>
+					</span>
+				</fieldset>
+			</div>
+			<div>
+				<fieldset>
+					<legend>Done animation</legend>
+					<span class="nowrap">
+						<input type="radio" id="done1" name="done-choice" value="glow" onchange="updateDoneChoice(value);" />
+						<label for="done1">Glow</label>
+					</span>
+					<br />
+					<span class="nowrap">
+						<input type="radio" id="done2" name="done-choice" value="shimmer" onchange="updateDoneChoice(value);" />
+						<label for="done2">Shimmer</label>
+					</span>
+					<br />
+					<span class="nowrap">
+						<input type="radio" id="done3" name="done-choice" value="fancy-underline" onchange="updateDoneChoice(value);" checked />
+						<label for="done3">Fancy underline</label>
+					</span>
+				</fieldset>
+			</div>
+			<button onclick="resetStage();">Reset</button>
+		</details>
+	</div>
 </body>
 </html>

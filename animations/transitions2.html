@@ -23,8 +23,15 @@
 			font-style: normal
 		}
 
+		:root {
+			/* reasonable-ish default values */
+			--message-height: 80px;
+			--waiting-height: 30px;
+			--transport-animation-name: 'fade-out';
+		}
+
 		body {
-			background-color: #FAF9F6;
+			background-color: #faf9f6;
 			color: black;
 			font-family: 'Lato', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
 			min-width: 800px;
@@ -38,7 +45,7 @@
 			margin-left: auto;
 			margin-right: auto;
 			max-width: 800px;
-			background-color: #FFFFFF;
+			background-color: #ffffff;
 			line-height: 1.6em;
 		}
 
@@ -69,6 +76,7 @@
 			cursor: pointer;
 		}
 
+		.panel-hide,
 		.big-play-hide {
 			opacity: 0;
 		}
@@ -76,12 +84,12 @@
 		.big-play-in {
 			animation-name: fade-in;
 			animation-iteration-count: 1;
-			animation-timing-function: ease-in-out;
-			animation-duration: 0.25s;
+			animation-timing-function: ease-out;
+			animation-duration: 0.5s;
 		}
 
 		.big-play-out {
-			animation-name: spin-out;
+			animation-name: var(--transport-animation-name);
 			animation-iteration-count: 1;
 			animation-timing-function: ease-in;
 			animation-duration: 0.5s;
@@ -97,11 +105,10 @@
 
 		.animation {
 			margin-top: 1em;
-			visibility: hidden;
+			visibility: visible;
 		}
 
 		.animation-in {
-			visibility: visible;
 			animation-name: slide-in-from-right;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-in-out;
@@ -113,6 +120,20 @@
 
 		.panel {
 			justify-content: center;
+		}
+
+		.panel-in {
+			animation-name: fade-in;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-out;
+			animation-duration: 1s;
+		}
+
+		.panel-out {
+			animation-name: fade-out;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 0.5s;
 		}
 
 		.panel img {
@@ -127,21 +148,64 @@
 			overflow: hidden;
 		}
 
-		.message.animate {
-			animation-name: hello-text;
-			animation-iteration-count: 1;
-			animation-timing-function: ease-out;
-			animation-duration: 2s;
-			max-height: 80px; /* make up a max height */
+		.loading {
+			max-height: none !important;
+			visibility: hidden !important;
+			opacity: 0 !important;
 		}
 
-		@keyframes hello-text {
+		.message.show {
+			animation-name: hello-message;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 1s;
+			max-height: var(--message-height);
+		}
+
+		.message.hide {
+			animation-name: goodbye-message;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-out;
+			animation-duration: 1s;
+		}
+
+		@keyframes hello-message {
 			0% {
 				max-height: 0;
 			}
 
 			100% {
-				max-height: 80px;
+				max-height: var(--message-height);
+			}
+		}
+
+		@keyframes goodbye-message {
+			0% {
+				max-height: var(--message-height);
+			}
+
+			100% {
+				max-height: 0;
+			}
+		}
+
+		@keyframes hello-waiting {
+			0% {
+				max-height: 0;
+			}
+
+			100% {
+				max-height: var(--waiting-height);
+			}
+		}
+
+		@keyframes goodbye-waiting {
+			0% {
+				max-height: var(--waiting-height);
+			}
+
+			100% {
+				max-height: 0;
 			}
 		}
 
@@ -155,13 +219,23 @@
 			}
 		}
 
+		@keyframes fade-out {
+			0% {
+				opacity: 1;
+			}
+
+			100% {
+				opacity: 0;
+			}
+		}
+
 		@keyframes spin-out {
 			0% {
 				transform: translateX(-50%) translateY(-50%) rotateY(0deg);
 				opacity: 1;
 			}
 
-			95% {
+			99% {
 				opacity: 0;
 			}
 
@@ -189,7 +263,7 @@
 			align-items: center;
 		}
 
-		#controlbar > span {
+		#controlbar > div {
 			margin-top: 3px;
 		}
 
@@ -244,13 +318,47 @@
 			font-variation-settings: 'FILL' 1, 'opsz' 40;
 		}
 
+		.end-frame span {
+			color: #aa6c39;
+		}
+
 		.active-frame {
 			font-variation-settings: 'FILL' 1, 'opsz' 48;
 			cursor: default !important;
 		}
 
+		#done {
+			font-weight: bold;
+		}
+
+		#done,
 		#speed {
 			vertical-align: top;
+		}
+
+		.shimmer {
+			text-align: center;
+			color: rgba(255,255,255,0.1);
+			background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c);
+			background-size: 125px 100%;
+			background-clip: text;
+			animation-name: shimmer;
+			animation-duration: 4s;
+			animation-direction: alternate;
+			animation-iteration-count: infinite;
+			background-repeat: no-repeat;
+			background-position: 0 0;
+			background-color: #222;
+		}
+
+		@keyframes shimmer {
+			0% {
+				background-position: top left;
+			}
+
+			100% {
+				background-position: top right;
+			}
 		}
 
 		#waiting {
@@ -261,11 +369,18 @@
 		}
 
 		#waiting.show {
-			animation-name: hello-text;
+			animation-name: hello-waiting;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-out;
-			animation-duration: 2s;
-			max-height: 80px;
+			animation-duration: 0.5s;
+			max-height: var(--waiting-height);
+		}
+
+		#waiting.hide {
+			animation-name: goodbye-waiting;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 0.5s;
 		}
 
 		#waiting-message {
@@ -394,6 +509,18 @@
 				transform: scale(2);
 			}
 		}
+
+		.display-off {
+			display: none;
+		}
+
+		.display-block {
+			display: block !important;
+		}
+
+		.display-inline-block {
+			display: inline-block !important;
+		}
 	</style>
 	<script>
 		const updateStatus = (text) => {
@@ -413,25 +540,38 @@
 			}
 		};
 
+		const updateTransportChoice = (value) => {
+			document.documentElement.style.setProperty('--transport-animation-name', value);
+		};
+
+		let initialSlideIn = false;
+		const updateSlideInChoice = (value) => {
+			initialSlideIn = value;
+		};
+
 		const showStage = (s) => {
 			for (let i = 1; i <= 3; i++) {
 				const f = document.getElementById(`frame${i}`);
-				if (f) {
-					f.style.display = i === s ? 'block' : 'visible';
+				const b = document.getElementById(`b_frame${i}`);
+				b.classList.remove('end-frame');
+				if (i === s) {
+					f.style.display = 'block';
+					b.classList.add('active-frame');
+				} else {
+					f.style.display = 'none';
+					b.classList.remove('active-frame');
 				}
 			}
 		};
 
-		// config: { play: hide|disable|active, pause: ..., replay: ..., skip: ...}
+		// config: { play: hide|disable|active, pause: ..., skip: ... }
 		const buttonBar= (config) => {
 			const defaults = {
 				play: 'hide',
 				pause: 'hide',
-				replay: 'hide',
 				skip: 'hide',
 			};
 			const control = { ...defaults, ...config };
-			console.log(control);
 			for (const c in defaults) {
 				const b = document.getElementById(`${c}-button`);
 				switch (control[c]) {
@@ -453,68 +593,241 @@
 			}
 		};
 
-		const stage12 = () => {
-			showStage(1);
+		const stage11 = () => {
+			buttonBar({play: 'active', skip: 'active'});
+
 			const i = document.getElementById('image1');
-			i.src = 'bags1-2.png';
-			const m = document.getElementById('message1');
-			m.classList.add('animate');
-			m.addEventListener('animationend', () => {
-				const w = document.getElementById('waiting');
-				w.classList.add('show');
+			i.src = 'bags1-1.png';
+
+			const b = document.getElementById('big-play')
+			b.classList.add('big-play-in');
+
+			const go = () => {
+				const f = document.getElementById('frame1');
+				f.classList.add('pointer');
+				updateStatus('Animation ready');
+			};
+
+			if (initialSlideIn) {
+				const a = document.getElementById('animation');
+				a.classList.add('animation-in');
+				a.addEventListener('animationend', () => {
+					go();
+				}, { once : true, capture: true });
+			} else {
+				go();
+			}
+		};
+
+		const stage12 = () => {
+			buttonBar({pause: 'disable', skip: 'active'});
+			const p = document.getElementById('panel');
+			p.classList.add('panel-out');
+			p.addEventListener('animationend', () => {
+				p.classList.add('panel-hide');
+				const i = document.getElementById('image1');
+				i.src = 'bags1-2.png';
+				setTimeout(() => {
+					p.classList.add('panel-in');
+					p.classList.remove('panel-hide');
+				}, 0);
+
+				document.documentElement.style.setProperty('--message-height', m11height);
+				const m11 = document.getElementById('message11');
+				m11.classList.add('show');
+				m11.addEventListener('animationend', () => {
+					p.classList.remove('panel-out');
+					p.classList.remove('panel-in');
+
+					const w = document.getElementById('waiting');
+					w.classList.add('show');
+
+					const button = document.getElementById('addBag');
+					button.classList.add('display-block');
+				}, { once : true, capture: true });
+			}, { once : true, capture: true });
+		};
+
+		const stage13 = () => {
+			buttonBar({pause: 'disable', skip: 'active'});
+			const w = document.getElementById('waiting');
+			w.classList.add('hide');
+			w.addEventListener('animationend', () => {
+				w.classList.remove('show');
+				w.classList.remove('hide');
+
+				const i = document.getElementById('image1');
+				i.src = 'bags1-3.png';
+
+				document.documentElement.style.setProperty('--message-height', m11height);
+				const m11 = document.getElementById('message11');
+				m11.classList.add('hide');
+				m11.addEventListener('animationend', () => {
+					m11.classList.remove('show');
+					m11.classList.remove('hide');
+
+					const button = document.getElementById('fillBags');
+					button.classList.add('display-block');
+
+					document.documentElement.style.setProperty('--message-height', m12height);
+					const m12 = document.getElementById('message12');
+					m12.classList.add('show');
+				}, { once : true, capture: true });
 			}, { once : true, capture: true });
 		}
 
-		const jumpToStage = (s) => {
-			const f = `stage${s}`;
-			console.log(f);
+		const stage14 = () => {
+			buttonBar({pause: 'disable', skip: 'active'});
+			const bf = document.getElementById('b_frame1');
+			bf.classList.add('end-frame');
+
+			const i = document.getElementById('image1');
+			i.src = 'bags1-4.png';
+
+			document.documentElement.style.setProperty('--message-height', m12height);
+			const m12 = document.getElementById('message12');
+			m12.classList.add('hide');
+			m12.addEventListener('animationend', () => {
+				m12.classList.remove('show');
+				m12.classList.remove('hide');
+
+				document.documentElement.style.setProperty('--message-height', m13height);
+				const m13 = document.getElementById('message13');
+				m13.classList.add('show');
+			}, { once : true, capture: true });
+		}
+
+		const stage21 = () => {
+			buttonBar({play: 'disable', skip: 'active'});
+			const bf = document.getElementById('b_frame2');
+			bf.classList.add('end-frame');
+		}
+
+		const stage31 = () => {
+			buttonBar({play: 'disable', skip: 'hide'});
+			const bf = document.getElementById('b_frame3');
+			bf.classList.add('end-frame');
+			const done = document.getElementById('done');
+			done.classList.add('display-inline-block');
+		}
+
+		const addBag = () => {
+			const button = document.getElementById('addBag');
+			button.classList.remove('display-block');
+			stage13();
+		}
+
+		const fillBags = () => {
+			const button = document.getElementById('fillBags');
+			button.classList.remove('display-block');
+			stage14();
+		}
+
+		let stage = 0;
+		const jumpToStage = (s,force) => {
+			if (s === stage && !force) {
+				return;
+			}
+			stage = s;
+
+			// reset all classes
+			const f1 = document.getElementById('frame1');
+			f1.classList.remove('pointer');
+
+			const m11 = document.getElementById('message11');
+			m11.classList.remove('show');
+			const m12 = document.getElementById('message12');
+			m12.classList.remove('show');
+			const m13 = document.getElementById('message13');
+			m13.classList.remove('show');
+
+			const w = document.getElementById('waiting');
+			w.classList.remove('show');
+			const b = document.getElementById('big-play')
+			b.classList.remove('big-play-out');
+			b.classList.remove('big-play-hide');
+			b.classList.remove('big-play-in');
+			const p = document.getElementById('panel');
+			p.classList.remove('panel-out');
+			p.classList.remove('panel-in');
+
+			const bAdd = document.getElementById('addBag');
+			bAdd.classList.remove('display-block');
+			const bFill = document.getElementById('fillBags');
+			bFill.classList.remove('display-block');
+
+			const done = document.getElementById('done');
+			done.classList.remove('display-inline-block');
+
+			showStage(stage);
+
+			// jump to first panel of stage
+			const f = `stage${s}1`;
 			const fn = new Function(`return ${f}()`);
 			fn();
 		}
 
-		let stage = 11;
 		const nextStage = () => {
+			jumpToStage(stage % 3 + 1);
+		}
+
+		const resetStage = () => {
+			jumpToStage(1, true);
+		};
+
+		const play = () => {
 			switch (stage) {
-				case 11:
-					stage = 12;
+				case 1:
+					updateStatus('Animation launching...');
+					const b = document.getElementById('big-play')
+					b.classList.remove('big-play-in');
+					b.classList.add('big-play-out');
+					b.addEventListener('animationend', () => {
+						b.classList.add('big-play-hide');
+						b.classList.remove('big-play-out');
+						const f = document.getElementById('frame1');
+						f.classList.remove('pointer');
+						updateStatus('Animation playing...');
+						stage12();
+					}, { once : true, capture: true });
 					break;
 				default:
 					console.error(`Unknown stage: ${stage}`);
-					stage = 11;
 			}
-			jumpToStage (stage);
-		}
-
-		const play = () => {
-			updateStatus('Animation launching...');
-			const b = document.getElementById('big-play')
-			b.classList.remove('big-play-in');
-			b.classList.add('big-play-out');
-			b.addEventListener('animationend', () => {
-				b.classList.add('big-play-hide');
-				const f = document.getElementById('frame1');
-				f.classList.remove('pointer');
-				updateStatus('Animation playing...');
-				nextStage();
-			}, { once : true, capture: true });
 		};
 
+		let m11height, m12height, m13height;
+		const getHeight = (id) => {
+			const m = document.getElementById(id);
+			const h = `${m.clientHeight}px`;
+			m.classList.remove('loading');
+			return h;
+		}
+
 		const init = () => {
-			updateStatus('Animation loading...');
-			// start initial slide in
+			updateStatus('Animation initializing...');
+
+			// find the heights of various things while they are rendered but invisible
+			m11height = getHeight('message11');
+			m12height = getHeight('message12');
+			m13height = getHeight('message13');
+
+			document.documentElement.style.setProperty('--message-height', m11height);
+
+			const w = document.getElementById('waiting');
+			document.documentElement.style.setProperty('--waiting-height', `${w.clientHeight}px`);
+			w.classList.remove('loading');
+
+			document.documentElement.style.setProperty('--transport-animation-name', 'fade-out');
+
 			const a = document.getElementById('animation');
-			a.classList.add('animation-in');
-			a.addEventListener('animationend', () => {
-				// when fully visible, show the big play button in the middle
-				const b = document.getElementById('big-play')
-				b.classList.add('big-play-in');
-				b.classList.remove('big-play-hide');
-				const f = document.getElementById('frame1');
-				f.classList.add('pointer');
-				updateStatus('Animation ready');
-			}, { once : true, capture: true });
+			a.classList.remove('loading');
+
+			updateStatus('Animation loading...');
+
+			resetStage();
+
 			bumpSpeed();
-			buttonBar({play: 'active', skip: 'active'});
 		};
 	</script>
 </head>
@@ -528,7 +841,7 @@
 				<div class="text">
 					Two local businesses donated items for the party. They donated 18 glow sticks and 12 popular DVDs. Amir and Maria decide to assemble prize bags to give away to one or more lucky winners at the party. They want all of the prize bags to have the same number of DVDs and the same number of glow sticks, and they do not want to have any leftover items. What is the greatest number of prize bags they can make?
 				</div>
-				<div id="animation" class="animation">
+				<div id="animation" class="animation loading">
 					<button id="big-play" class="big-play big-play-hide" onclick="play();">
 						<img src="play.png" \>
 					</button>
@@ -536,14 +849,36 @@
 						<div class="text">
 							In your own words, restate the problem to a neighbor. Then discuss a few of your initial ideas and possible strategies for solving the problem. Remember that you do not want any prizes left over.
 						</div>
-						<div class="panel">
+						<div id="panel" class="panel">
 							<img id="image1" src="bags1-1.png" />
 						</div>
-						<div id="message1" class="message">
+						<div id="message11" class="message loading">
 							Start by clicking the Add a bag button to add as many bags as you think you will need. Then enter the number of glow sticks and DVDs for each bag. To remove a bag, click on the bag and then click Delete. When you are finished, click Fill bags.
 						</div>
+						<div id="message12" class="message loading">
+							Add as many bags as you think you will need. To remove a bag, click on the bag and then click Delete. Enter the number of glow sticks and DVDs for each bag. When you are finished, click Fill bags.
+						</div>
+						<div id="message13" class="message loading">
+							Excellent. You found one way to package the prizes. Can you find another number of prize bags that will work? If you think you found all of the possible combinations, move on to the next panel.
+						</div>
 					</div>
-					<div id="waiting">
+					<div id="frame2" class=frame">
+						<div class="text">
+							Placeholder for panel 2
+						</div>
+						<div id="panel" class="panel">
+							<img id="image1" src="bags2-1.png" />
+						</div>
+					</div>
+					<div id="frame3" class=frame">
+						<div class="text">
+							Placeholder for panel 3
+						</div>
+						<div id="panel" class="panel">
+							<img id="image1" src="bags3-1.png" />
+						</div>
+					</div>
+					<div id="waiting" class="loading">
 						<div id="waiting-message">
 							Waiting
 						</div>
@@ -560,42 +895,73 @@
 						</div>
 					</div>
 					<div id="controlbar">
-						<span id="buttons">
+						<div id="buttons">
 							<button id="play-button" onclick="play();">
 								<span class="material-symbols-outlined">play_arrow</span>
 							</button>
-							<button id="pause-button" disabled>
+							<button id="pause-button">
 								<span class="material-symbols-outlined">pause</span>
 							</button>
-							<button id="replay-button" disabled>
-								<span class="material-symbols-outlined">reply</span>
-							</button>
-							<button id="skip-button">
+							<button id="skip-button" onclick="nextStage();">
 								<span class="material-symbols-outlined">skip_next</span>
 							</button>
-						</span>
-						<span id="frames">
-							<button id="b_frame1" class="active-frame">
+							<div id="done" class="display-off shimmer">Done</div>
+						</div>
+						<div id="frames">
+							<button id="b_frame1" onclick="jumpToStage(1)">
 								<span class="material-symbols-outlined">counter_1</span>
 							</button>
-							<button id="b_frame2">
+							<button id="b_frame2" onclick="jumpToStage(2)">
 								<span class="material-symbols-outlined">counter_2</span>
 							</button>
-							<button id="b_frame3">
+							<button id="b_frame3" onclick="jumpToStage(3)">
 								<span class="material-symbols-outlined">counter_3</span>
 							</button>
-						</span>
-						<span id="controls">
-							<span id="speed" style="vertical-align: top"></span>
+						</div>
+						<div id="controls">
+							<span id="speed"></span>
 							<button onclick="bumpSpeed();">
 								<span class="material-symbols-outlined">slow_motion_video</span>
 							</button>
-						</span>
+							&nbsp;
+							<button id="replay-button">
+								<span class="material-symbols-outlined" onclick="resetStage();">replay</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<p id="status">Page loading...</p>
+	<button id="addBag" class="display-off" onclick="addBag();">Add a bag</button>
+	<button id="fillBags" class="display-off" onclick="fillBags();">Fill bags</button>
+	<p id="status" class="display-off">Page loading...</p>
+	<details class="display-off">
+		<summary>Configuration</summary>
+		<div>
+			<fieldset>
+				<legend>Initial frame on load</legend>
+				<span class="nowrap">
+					<input type="checkbox" id="initialSlideIn" name="slidein-choice" onchange="updateSlideInChoice(this.checked);" />
+					<label for="initialSlideIn">Slide in</label>
+				</span>
+			</fieldset>
+		</div>
+		<div>
+			<fieldset>
+				<legend>Big transport control icon exit animation</legend>
+				<span class="nowrap">
+					<input type="radio" id="transport1" name="transport-choice" value="fade-out" onchange="updateTransportChoice(value);" checked />
+					<label for="transport1">Fade out</label>
+				</span>
+				<br />
+				<span class="nowrap">
+					<input type="radio" id="transport2" name="transport-choice" value="spin-out" onchange="updateTransportChoice(value);" />
+					<label for="transport2">Spin out</label>
+				</span>
+			</fieldset>
+		</div>
+		<button onclick="resetStage();">Reset</button>
+	</details>
 </body>
 </html>

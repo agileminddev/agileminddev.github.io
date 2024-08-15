@@ -11,6 +11,24 @@
 			}
 		};
 
+		const addOnce = (list, token) => {
+			if (list.contains(token)) {
+				return false;
+			}
+			list.add(token);
+			return true;
+		};
+
+		const removeAll = (list, token) => {
+			if (!list.contains(token)) {
+				return false;
+			}
+			while (list.contains(token)) {
+				list.remove(token);
+			}
+			return true;
+		};
+
 		const showStage = (s, skipAnimation) => {
 			let aIn, aOut;
 			if (s >= stage) {
@@ -60,11 +78,11 @@
 
 				fIn.style.display = 'block';
 				if (!skipAnimation) {
-					fIn.classList.add(aIn);
+					addOnce(fIn.classList, aIn);
 					fIn.addEventListener('animationend', () => {
-						fIn.classList.remove(aIn);
-						cb.classList.add('controlbar-in');
-						cb.classList.remove('controlbar-out');
+						removeAll(fIn.classList, aIn);
+						addOnce(cb.classList, 'controlbar-in');
+						removeAll(cb.classList, 'controlbar-out');
 						if (showPlay) {
 							showBigButton('big-play', 3000);
 						}
@@ -76,9 +94,9 @@
 						fOut.style.display = 'none';
 						hideMessages();
 					} else {
-						fOut.classList.add(aOut);
+						addOnce(fOut.classList, aOut);
 						fOut.addEventListener('animationend', () => {
-							fOut.classList.remove(aOut);
+							removeAll(fOut.classList, aOut);
 							fOut.style.display = 'none';
 							hideMessages();
 						}, { once : true, capture: true });
@@ -89,7 +107,7 @@
 			if (skipAnimation) {
 				update();
 			} else {
-				cb.classList.add('controlbar-out');
+				addOnce(cb.classList, 'controlbar-out');
 				cb.addEventListener('animationend', () => {
 					update();
 					hideMessages();
@@ -126,41 +144,60 @@
 			}
 		};
 
-		let bigTimer;
-		const clearBigTimer = () => {
-			// return false if there was no timer running, true if there was one
-			if (!bigTimer) {
-				return false;
-			}
-
-			clearTimeout(bigTimer);
-			bigTimer = null;
-			return true;
+		let bigTimer = [];
+		const clearBigTimer = (id) => {
+			const t = bigTimer[id];
+			clearTimeout(bigTimer[id]);
+			bigTimer[id] = null;
+			console.log('timer', id, t && t !== -1);
+			return t && t !== -1;
 		};
 
 		const showBigButton = (id, delay) => {
-			clearBigTimer();
+			console.log('show', id, delay);
+			clearBigTimer(id);
+			const b = document.getElementById(id)
 			const show = () => {
-				const b = document.getElementById(id)
-				b.classList.remove('big-button-hide');
-				b.classList.add('big-button-in');
+				removeAll(b.classList, 'big-button-out');
+				removeAll(b.classList, 'big-button-hide');
+				addOnce(b.classList, 'big-button-in');
 				b.disabled = false;
 			};
 			if (delay) {
-				bigTimer = setTimeout(show, delay);
+				bigTimer[id] = setTimeout(show, delay);
 			} else {
+				bigTimer[id] = -1;
 				show();
 			}
+			return b;
+		};
+
+		const clearBigButton = (id) => {
+			console.log('clear', id);
+			clearBigTimer(id);
+			const b = typeof id === 'string' ? document.getElementById(id) : id;
+			addOnce(b.classList, 'big-button-hide');
+			removeAll(b.classList, 'big-button-out');
+			removeAll(b.classList, 'big-button-in');
 		};
 
 		const hideBigButton = (id) => {
-			if (!clearBigTimer()) {
-				const b = typeof id === 'string' ? document.getElementById(id) : id;
-				b.classList.add('big-button-hide');
-				b.classList.remove('big-button-out');
-				b.classList.remove('big-button-in');
-				b.disabled = true;
+			const b = typeof id === 'string' ? document.getElementById(id) : id;
+			const name = b.id;
+			console.log('hide', name);
+			if (clearBigTimer(name)) {
+				clearBigButton(name);
+			} else {
+				removeAll(b.classList, 'big-button-in');
+				addOnce(b.classList, 'big-button-out');
+				b.addEventListener('animationend', () => {
+					console.log('hiding', name)
+					addOnce(b.classList, 'big-button-hide');
+					removeAll(b.classList, 'big-button-out');
+				}, { once : true, capture: true });
 			}
+			b.disabled = true;
+			return b;
 		};
 
 		const stage11 = () => {
@@ -171,7 +208,7 @@
 			i.src = 'bags1-1.png';
 
 			const f = document.getElementById('frame1');
-			f.classList.add('pointer');
+			addOnce(f.classList, 'pointer');
 
 			const b1 = document.getElementById('b_frame1');
 			b1.classList.add('active-frame');
@@ -181,28 +218,28 @@
 			subStage = 12;
 			buttonBar({pause: 'disable', skip: 'active'});
 			const p = document.getElementById('panel1');
-			p.classList.add('panel-out');
+			addOnce(p.classList, 'panel-out');
 			p.addEventListener('animationend', () => {
-				p.classList.add('panel-hide');
+				addOnce(p.classList, 'panel-hide');
 				const i = document.getElementById('image1');
 				i.src = 'bags1-2.png';
 				setTimeout(() => {
-					p.classList.add('panel-in');
-					p.classList.remove('panel-hide');
+					addOnce(p.classList, 'panel-in');
+					removeAll(p.classList, 'panel-hide');
 				}, 0);
 
 				document.documentElement.style.setProperty('--message-height', m11height);
 				const m11 = document.getElementById('message11');
 				m11.classList.add('show');
 				m11.addEventListener('animationend', () => {
-					p.classList.remove('panel-out');
-					p.classList.remove('panel-in');
+					removeAll(p.classList, 'panel-out');
+					removeAll(p.classList, 'panel-in');
 
 					const w = document.getElementById('waiting');
-					w.classList.add('show');
+					addOnce(w.classList, 'show');
 
 					const button = document.getElementById('addBag');
-					button.classList.add('display-block');
+					addOnce(button.classList, 'display-block');
 				}, { once : true, capture: true });
 			}, { once : true, capture: true });
 		};
@@ -211,10 +248,10 @@
 			subStage = 13;
 			buttonBar({pause: 'disable', skip: 'active'});
 			const w = document.getElementById('waiting');
-			w.classList.add('hide');
+			addOnce(w.classList, 'hide');
 			w.addEventListener('animationend', () => {
-				w.classList.remove('show');
-				w.classList.remove('hide');
+				removeAll(w.classList, 'show');
+				removeAll(w.classList, 'hide');
 
 				const i = document.getElementById('image1');
 				i.src = 'bags1-3.png';
@@ -227,7 +264,7 @@
 					m11.classList.remove('hide');
 
 					const button = document.getElementById('fillBags');
-					button.classList.add('display-block');
+					addOnce(button.classList, 'display-block');
 
 					document.documentElement.style.setProperty('--message-height', m12height);
 					const m12 = document.getElementById('message12');
@@ -251,7 +288,7 @@
 				m12.classList.remove('hide');
 
 				const bf = document.getElementById('b_frame2');
-				bf.classList.add('end-frame');
+				addOnce(bf.classList, 'end-frame');
 				showBigButton('big-next', 3000);
 
 				document.documentElement.style.setProperty('--message-height', m13height);
@@ -280,7 +317,7 @@
 			i.src = 'bags3-1.png';
 
 			const f = document.getElementById('frame3');
-			f.classList.add('pointer');
+			addOnce(f.classList, 'pointer');
 
 			const b3 = document.getElementById('b_frame3');
 			b3.classList.add('active-frame');
@@ -290,38 +327,38 @@
 			subStage = 32;
 			buttonBar({play: 'disable', skip: 'hide'});
 			const p = document.getElementById('panel3');
-			p.classList.add('panel-out');
+			addOnce(p.classList, 'panel-out');
 			p.addEventListener('animationend', () => {
-				p.classList.add('panel-hide');
+				addOnce(p.classList, 'panel-hide');
 				const i = document.getElementById('image3');
 				i.src = 'bags3-2.png';
 				setTimeout(() => {
-					p.classList.add('panel-in');
-					p.classList.remove('panel-hide');
+					addOnce(p.classList, 'panel-in');
+					removeAll(p.classList, 'panel-hide');
 				}, 0);
 
 				document.documentElement.style.setProperty('--message-height', m31height);
 				const m31 = document.getElementById('message31');
 				m31.classList.add('show');
 				m31.addEventListener('animationend', () => {
-					p.classList.remove('panel-out');
-					p.classList.remove('panel-in');
+					removeAll(p.classList, 'panel-out');
+					removeAll(p.classList, 'panel-in');
 
 					const done = document.getElementById('done');
-					done.classList.add('display-inline-block');
+					addOnce(done.classList, 'display-inline-block');
 				}, { once : true, capture: true });
 			}, { once : true, capture: true });
 		}
 
 		const addBag = () => {
 			const button = document.getElementById('addBag');
-			button.classList.remove('display-block');
+			removeAll(button.classList, 'display-block');
 			stage13();
 		}
 
 		const fillBags = () => {
 			const button = document.getElementById('fillBags');
-			button.classList.remove('display-block');
+			removeAll(button.classList, 'display-block');
 			stage14();
 		}
 
@@ -339,11 +376,10 @@
 			f3.classList.remove('pointer');
 
 			const w = document.getElementById('waiting');
-			w.classList.remove('show');
+			removeAll(w.classList, 'show');
 
-			clearBigTimer();
-			hideBigButton('big-play');
-			hideBigButton('big-next');
+			clearBigButton('big-play');
+			clearBigButton('big-next');
 
 			const p1 = document.getElementById('panel1');
 			p1.classList.remove('panel-out');
@@ -356,29 +392,28 @@
 			p3.classList.remove('panel-in');
 
 			const bAdd = document.getElementById('addBag');
-			bAdd.classList.remove('display-block');
+			removeAll(bAdd.classList, 'display-block');
 			const bFill = document.getElementById('fillBags');
-			bFill.classList.remove('display-block');
+			removeAll(bFill.classList, 'display-block');
 
 			const done = document.getElementById('done');
-			done.classList.remove('display-inline-block');
+			removeAll(done.classList, 'display-inline-block');
 
 			showStage(s);
 			stage = s;
 		}
 
 		const nextStage = (fade) => {
-			console.log('nextStage pushed');
 			const jump = () => {
 				jumpToStage(stage % 3 + 1);
 			}
 
 			if (fade) {
 				const b = document.getElementById('big-next')
-				b.classList.remove('big-button-in');
-				b.classList.add('big-button-out');
+				removeAll(b.classList, 'big-button-in');
+				addOnce(b.classList, 'big-button-out');
 				b.addEventListener('animationend', () => {
-					hideBigButton(b);
+					clearBigButton(b);
 					jump();
 				}, { once : true, capture: true });
 			} else {
@@ -391,7 +426,6 @@
 		};
 
 		const play = () => {
-			console.log('play pushed');
 			let fName, sName;
 			switch (subStage) {
 				case 11:
@@ -408,13 +442,20 @@
 					return;
 			}
 
-			const b = document.getElementById('big-play')
-			b.classList.remove('big-button-in');
-			b.classList.add('big-button-out');
-			b.addEventListener('animationend', () => {
-				hideBigButton(b);
+			const b = hideBigButton('big-play');
+			console.log(b);
+			//!! hack
+			const x = setTimeout(() => {
+				console.log('hack!', fName);
 				const f = document.getElementById(fName);
-				f.classList.remove('pointer');
+				removeAll(f.classList, 'pointer');
+				sName();
+			}, 1500);
+			b.addEventListener('animationend', () => {
+				console.log(fName);
+				clearTimeout(x);
+				const f = document.getElementById(fName);
+				removeAll(f.classList, 'pointer');
 				setTimeout(() => {
 					sName();
 				}, 0);
@@ -425,7 +466,7 @@
 		const getHeight = (id) => {
 			const m = document.getElementById(id);
 			const h = `${m.clientHeight}px`;
-			m.classList.remove('loading');
+			removeAll(m.classList, 'loading');
 			return h;
 		}
 
@@ -440,7 +481,7 @@
 
 			const w = document.getElementById('waiting');
 			document.documentElement.style.setProperty('--waiting-height', `${w.clientHeight}px`);
-			w.classList.remove('loading');
+			removeAll(w.classList, 'loading');
 
 			const f2 = document.getElementById('frame2');
 			f2.style.display = 'none';
@@ -448,7 +489,7 @@
 			f3.style.display = 'none';
 
 			const a = document.getElementById('animation');
-			a.classList.remove('loading');
+			removeAll(a.classList, 'loading');
 
 			showStage(1, true);
 			showBigButton('big-play');
@@ -458,9 +499,9 @@
 			// hack for fancy-underline on done message
 			const blink = () => {
 				const done = document.getElementById('done');
-				done.classList.add('active');
+				addOnce(done.classList, 'active');
 				setTimeout(() => {
-					done.classList.remove('active');
+					removeAll(done.classList, 'active');
 					setTimeout(() => {
 						blink();
 					}, 500);

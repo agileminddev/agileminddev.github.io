@@ -1,0 +1,664 @@
+
+		@font-face {
+			font-family: 'Lato';
+			src: url(Lato-Regular.ttf) format("truetype");
+			font-style: normal
+		}
+
+		:root {
+			/* reasonable-ish default values */
+			--message-height: 80px;
+			--waiting-height: 30px;
+		}
+
+		body {
+			background-color: #faf9f6;
+			color: black;
+			font-family: 'Lato', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+			min-width: 800px;
+		}
+
+		summary {
+		padding: 0.5em;
+		}
+
+		span.nowrap {
+			white-space: nowrap;
+		}
+
+		.outer {
+			margin-left: auto;
+			margin-right: auto;
+			max-width: 800px;
+			background-color: #ffffff;
+			line-height: 1.6em;
+		}
+
+		.container {
+			max-width: 800px;
+			min-width: 536px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-evenly;
+			font-size: 11.5pt;
+			margin: 1em;
+			overflow: clip;
+			position: relative;
+		}
+
+		.break {
+			width: 100%;
+			margin-top: 1em;
+		}
+
+		.break #orange hr {
+			height: 4px;
+			background-color: #f89349;
+			border: none;
+		}
+
+		.break #icon-title {
+			line-height: 18px;
+			color: #1c3b60;
+			padding: 1em 0 0.25em;
+		}
+
+		.break #icon-title svg {
+			vertical-align: bottom;
+		}
+
+		.big-button {
+			position: absolute;
+			top: 20em;
+			left: 50%;
+			transform: translateX(-50%) translateY(-50%);
+			z-index: 10;
+			background-color: transparent;
+			border: none;
+		}
+
+		.big-button,
+		.pointer {
+			cursor: pointer;
+		}
+
+		.panel-hide {
+			opacity: 0;
+		}
+
+		.big-button-hide {
+			display: none;
+		}
+
+		.big-button-in {
+			animation-name: fade-in;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-out;
+			animation-duration: 0.5s;
+		}
+
+		.big-button-out {
+			animation-name: fade-out;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 0.5s;
+		}
+
+		.big-button img {
+			height: 5em;
+			width: 5em;
+		}
+
+		.text {
+			padding: 0.5em 0;
+		}
+
+		.animation {
+			visibility: visible;
+		}
+
+		.animation-in-wipe-from-right,
+		.animation-in-push-from-right {
+			animation-name: slide-in-from-right;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 1s;
+		}
+
+		.animation-in-wipe-from-left,
+		.animation-in-push-from-left {
+			animation-name: slide-in-from-left;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 1s;
+		}
+
+		.animation-in-blur-from-right,
+		.animation-in-blur-from-left {
+			animation-name: blur-in;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-out;
+			animation-duration: 1s;
+		}
+
+		.animation-out-blur-to-right,
+		.animation-out-blur-to-left {
+			animation-name: blur-out;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 1s;
+		}
+
+		.animation-out-wipe-to-right,
+		.animation-out-wipe-to-left {
+			animation-name: noop;
+			animation-iteration-count: 1;
+			animation-duration: 1s;
+		}
+
+		.animation-out-push-to-right {
+			animation-name: slide-out-to-right;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 1s;
+		}
+
+		.animation-out-push-to-left {
+			animation-name: slide-out-to-left;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 1s;
+		}
+
+		.frameset {
+			display: grid;
+			grid-template-columns: 1fr;
+		}
+
+		.frame {
+			grid-column: 1;
+			grid-row: 1;
+			background-color: white;
+		}
+
+		.panel {
+			justify-content: center;
+		}
+
+		.panel-in {
+			animation-name: fade-in;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-out;
+			animation-duration: 1s;
+		}
+
+		.panel-out {
+			animation-name: fade-out;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 0.5s;
+		}
+
+		.controlbar-in {
+			animation-name: fade-in;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-out;
+			animation-duration: 0.5s;
+		}
+
+		.controlbar-out {
+			animation-name: fade-out;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 0.5s;
+			opacity: 0;
+		}
+
+		.panel img {
+			display: block;
+			margin: auto;
+			width: 80%;
+		}
+
+		.message {
+			max-height: 0;
+			height: auto;
+			overflow: hidden;
+		}
+
+		.loading {
+			max-height: none !important;
+			visibility: hidden !important;
+			opacity: 0 !important;
+		}
+
+		.message.show {
+			animation-name: hello-message, slide-in-from-left;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 0.3s, 1s;
+			padding: 0.5em 0;
+			max-height: var(--message-height);
+		}
+
+		.message.hide {
+			animation-name: goodbye-message;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-out;
+			animation-duration: 0.3s;
+		}
+
+		@keyframes hello-message {
+			0% {
+				max-height: 0;
+			}
+
+			100% {
+				max-height: var(--message-height);
+			}
+		}
+
+		@keyframes goodbye-message {
+			0% {
+				max-height: var(--message-height);
+			}
+
+			100% {
+				max-height: 0;
+			}
+		}
+
+		@keyframes hello-waiting {
+			0% {
+				max-height: 0;
+			}
+
+			100% {
+				max-height: var(--waiting-height);
+			}
+		}
+
+		@keyframes goodbye-waiting {
+			0% {
+				max-height: var(--waiting-height);
+			}
+
+			100% {
+				max-height: 0;
+			}
+		}
+
+		@keyframes fade-in {
+			0% {
+				opacity: 0;
+			}
+
+			100% {
+				opacity: 1;
+			}
+		}
+
+		@keyframes fade-out {
+			0% {
+				opacity: 1;
+			}
+
+			100% {
+				opacity: 0;
+			}
+		}
+
+		@keyframes noop {
+		}
+
+		@keyframes blur-in {
+			0% {
+				opacity: 0;
+			}
+
+			25% {
+				opacity: 0;
+				filter: blur(2rem);
+			}
+
+			50% {
+				opacity: 0;
+			}
+
+			75% {
+				opacity: 1;
+			}
+
+			100% {
+				filter: blur(0);
+			}
+		}
+
+		@keyframes blur-out {
+			0% {
+				filter: blur(0);
+				opacity: 1;
+			}
+
+			50% {
+				opacity: 1;
+			}
+
+			75% {
+				filter: blur(2rem);
+			}
+
+			100% {
+				opacity: 0;
+			}
+		}
+
+		@keyframes slide-in-from-right {
+			0% {
+				translate: 800px 0;
+			}
+
+			100% {
+				translate: 0 0;
+			}
+		}
+
+		@keyframes slide-out-to-left {
+			0% {
+				translate: 0 0;
+			}
+
+			100% {
+				translate: -800px 0;
+			}
+		}
+
+		@keyframes slide-in-from-left {
+			0% {
+				translate: -800px 0;
+			}
+
+			100% {
+				translate: 0 0;
+			}
+		}
+
+		@keyframes slide-out-to-right {
+			0% {
+				translate: 0 0;
+			}
+
+			100% {
+				translate: 800px 0;
+			}
+		}
+
+		#controlbar {
+			width: 100%;
+			height: 40px;
+			background: url('controlbarslice.png') repeat-x;
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			align-items: center;
+		}
+
+		#controlbar > div {
+			margin-top: 3px;
+		}
+
+		#controlbar #buttons {
+			justify-self: start;
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		#controlbar #frames {
+			justify-self: center;
+			grid-column: 2;
+			grid-row: 1;
+		}
+
+		#controlbar #controls {
+			justify-self: end;
+			grid-column: 3;
+			grid-row: 1;
+		}
+
+		#controlbar button {
+			background-color: transparent;
+			border: none;
+			cursor: pointer;
+			padding: 2px;
+		}
+
+		#controlbar button:active {
+			transform: scale(0.98);
+			box-shadow: 0 0 2px 2px rgba(213, 230, 247, 0.75);
+			background-color: rgba(213, 230, 247, 0.75);
+			border-radius: 50%;
+		}
+
+		#controlbar button:disabled {
+			cursor: default;
+		}
+
+		#play-button,
+		#pause-button {
+			font-size: 48px;
+			font-variation-settings: 'FILL' 1, 'opsz' 48;
+		}
+
+		#pause-button {
+			display: none;
+		}
+
+		#skip-button {
+			font-size: 40px;
+			font-variation-settings: 'FILL' 1, 'opsz' 40;
+		}
+
+		.end-frame span {
+			content: '';
+			border-radius: 100%;
+			animation: ripples 5s ease-in-out infinite;
+		}
+
+		@keyframes ripples {
+			0% {
+				border: 1px solid transparent;
+			}
+
+			25% {
+				border: 1px solid #5e5e5e;
+			}
+
+			50% {
+				border: 1px solid #f1f1f1;
+			}
+
+			75% {
+				border: 1px solid #5e5e5e;
+			}
+
+			100% {
+				border: 1px solid transparent;
+			}
+		}
+
+		button.active-frame {
+			cursor: default !important;
+		}
+
+		button:active.active-frame {
+			transform: none !important;
+			box-shadow: none !important;
+			background-color: revert !important;
+			border-radius: revert !important;
+		}
+
+		.active-frame span {
+			font-weight: 900 !important;
+			background-color: white !important;
+			color: #5e5e5e !important;
+		}
+
+		#frames span {
+			border-radius: 50%;
+			border: 0;
+			margin: 1px 5px 0;
+			padding: 4px 8px;
+			background-color: #faf9f9;
+			color: #6c6d6c;
+			font-size: 15px;
+			font-weight: 100;
+		}
+
+		#done {
+			font-weight: bold;
+		}
+
+		#done,
+		#speed {
+			vertical-align: top;
+		}
+
+		#speed {
+			font-size: smaller;
+		}
+
+		#speedChange {
+			font-size: 16px;
+			vertical-align: super;
+		}
+
+		.fancy-underline span {
+			display: inline-block;
+			position: relative;
+		}
+
+		.fancy-underline span::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 0.1em;
+			background-color: #5e5e5e;
+			opacity: 0;
+			transition: opacity 500ms, transform 500ms;
+			transform: scale(0);
+			transform-origin: center;
+		}
+
+		.fancy-underline.active span::after {
+			opacity: 1;
+			transform: scale(1);
+		}
+
+		#waiting {
+			display: flex;
+			max-height: 0;
+			height: auto;
+			overflow: hidden;
+		}
+
+		#waiting.show {
+			animation-name: hello-waiting;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-out;
+			animation-duration: 0.1s;
+			max-height: var(--waiting-height);
+		}
+
+		#waiting.hide {
+			animation-name: goodbye-waiting;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in;
+			animation-duration: 0.1s;
+		}
+
+		#waiting-message {
+			font-size: larger;
+			padding-right: 0.5em;
+			color: #0b5394;
+		}
+
+		#waiting-message.dots {
+			padding-right: 0.5em;
+			color: #555;
+			line-height: 25px;
+			font-size: smaller;
+		}
+
+		#waiting-dots {
+			display: inline-flex;
+			vertical-align: middle;
+			padding-right: 8px;
+			min-width: 30px;
+		}
+
+		#waiting-dots div {
+			display: inline-block;
+			height: 6px;
+			width: 6px;
+			margin: 10px 1px 0;
+			opacity: 0;
+			background: #61676a;
+			animation: waiting-dots 0.8s infinite;
+		}
+
+		#waiting-dots div:nth-child(2) {
+			animation-delay: 0.18s;
+		}
+
+		#waiting-dots div:nth-child(3) {
+			animation-delay: 0.36s;
+		}
+
+		@keyframes waiting-dots {
+			0% {
+				opacity: 0;
+			}
+
+			100% {
+				opacity: 1;
+			}
+		}
+
+		.display-off {
+			display: none;
+		}
+
+		.display-block {
+			display: block !important;
+		}
+
+		.display-inline-block {
+			display: inline-block !important;
+		}
+
+		label + select,
+		label + span,
+		label + input {
+			margin-left: 1em;
+		}
+
+		input[type = 'radio']:disabled + label {
+			color: lightgrey;
+		}
+
+		.controls {
+			display: flex;
+			width: 100%;
+		}
+
+		.controls div {
+			flex-grow: 1;
+			flex-wrap: wrap;
+		}
+
+		fieldset {
+			display: grid;
+			grid-template-columns: max-content 1fr;
+			row-gap: 1ch;
+		}

@@ -18,6 +18,9 @@
 	<title>Animation Transitions</title>
 	<link rel="stylesheet" href="transitions3.css" />
 	<script src="transitions3.js" type=""></script>
+	<script type="text/javascript"
+					src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=MML_HTMLorMML-full">
+	</script>
 </head>
 <body onload="init();">
 	<h1>
@@ -30,12 +33,12 @@
 				<fieldset>
 					<legend>Animation mockup</legend>
 					<span class="nowrap">
-							<input type="radio" id="mockup1" name="mockup-choice" value="1" onchange="updateMockup(value);" checked />
+							<input type="radio" id="mockup1" name="mockup-choice" value="glow" onchange="updateMockup(value);" checked />
 							<label for="mockup1">Glow sticks and DVDs</label>
 					</span>
 					<br />
 					<span class="nowrap">
-							<input type="radio" id="mockup2" name="mockup-choice" value="2" onchange="updateMockup(value);" disabled />
+							<input type="radio" id="mockup2" name="mockup-choice" value="rise" onchange="updateMockup(value);" />
 							<label for="mockup2">Rise over run for parallel lines</label>
 					</span>
 				</fieldset>
@@ -91,16 +94,69 @@
 		</div>
 	</details>
 	<hr />
-	<p>
+	<p id="mimic1">
 		Roughly mimicking
-		<a href="https://staging.agilemind.com/LMS/lmswrapper/LMS.html#/C/course_ms_math6_ccss_z/CCSS%20Mathematics%206//////c/T/topic_08m6_10z_RationalNumbersOps/RES_lesson7_activities/lesson_pages_7/page5.html">CCSS Mathematics 6, 1. Operations with whole numbers, Using common multiples and factors, Lesson activities (page 5)</a>. As this isn't a real animation, the blue buttons do not work. Buttons that allow the animation to proceed will appear at the bottom of the page when available.
+		<a href="https://staging.agilemind.com/LMS/lmswrapper/LMS.html#/C/course_ms_math6_ccss_z/CCSS%20Mathematics%206//////c/T/topic_08m6_10z_RationalNumbersOps/RES_lesson7_activities/lesson_pages_7/page5.html">
+			CCSS Mathematics 6,
+			1. Operations with whole numbers,
+			Using common multiples and factors,
+			Lesson activities (page 5)</a>.
+		<br />
+		<br />
+		As this isn't a real animation, the blue buttons do not work. Buttons that allow the animation to proceed will appear at the bottom of the page when available.
+	</p>
+	<p id="mimic2" style="display: none">
+		Roughly mimicking
+		<a href="https://staging.agilemind.com/LMS/lmswrapper/LMS.html#/C/course_geometry_ccss_z/CCSS%20Geometry//////c/T/topic_04_06z_LinesTranversalsAngles/RES_lesson7_activities/lesson7_activities/page7.html">
+			CCSS Geometry,
+			6. Lines and transversals,
+			Lines and algebra,
+			Lesson activities (page 7)</a>.
 	</p>
 	<hr />
 	<div>
 		<div class="outer">
 			<div id="container" class="container">
-				<div class="text" style="padding: 0">
+				<div id="intro1" class="text" style="padding: 0">
 					Two local businesses donated items for the party. They donated 18 glow sticks and 12 popular DVDs. Amir and Maria decide to assemble prize bags to give away to one or more lucky winners at the party. They want all of the prize bags to have the same number of DVDs and the same number of glow sticks, and they do not want to have any leftover items. What is the greatest number of prize bags they can make?
+				</div>
+				<div id="intro2" class="text" style="padding: 0; display: none">
+					In algebra, you learned that the slope of a line represents the <b>rate of change</b>,
+					the ratio of the change in <i>y</i> to the change in <i>x</i>. This ratio is written as
+					<math>
+						<mstyle displaystyle="true">
+							<mrow>
+								<mfrac>
+									<mrow>
+										<mstyle mathvariant="normal"><mtext>change in </mtext></mstyle>
+										<mi>y</mi>
+									</mrow>
+									<mrow>
+										<mstyle mathvariant="normal"><mtext>change in </mtext></mstyle>
+										<mi>x</mi>
+									</mrow>
+								</mfrac>
+							</mrow>
+						</mstyle>
+					</math>
+					or
+					<math>
+						<mstyle displaystyle="true">
+							<mrow>
+								<mfrac>
+									<mrow>
+										<mo>Δ</mo>
+										<mi>y</mi>
+									</mrow>
+									<mrow>
+										<mo>Δ</mo>
+										<mi>x</mi>
+									</mrow>
+								</mfrac>
+							</mrow>
+						</mstyle>
+					</math>.
+					Play the animation to compare the rate of change of a line to the geometry of parallel lines.
 				</div>
 				<div id="break" class="break" style="display: none">
 					<div id="none"></div>
@@ -109,9 +165,9 @@
 					<div id="orange"><hr /></div>
 					<div id="icon-title">
 						<svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M 13.935 2.685 L 15.535 5.885 L 13.135 5.885 L 11.535 2.685 L 9.935 2.685 L 11.535 5.885 L 9.135 5.885 L 7.535 2.685 L 5.935 2.685 L 7.535 5.885 L 5.135 5.885 L 3.535 2.685 L 2.735 2.685 C 1.855 2.685 1.143 3.405 1.143 4.285 L 1.135 13.885 C 1.135 14.765 1.855 15.485 2.735 15.485 L 15.535 15.485 C 16.415 15.485 17.135 14.765 17.135 13.885 L 17.135 2.685 L 13.935 2.685 Z" style="fill: rgb(36, 77, 115);"></path></svg>
-						<span id="title">Glow sticks and DVDs</span>
+						<span id="title1">Glow sticks and DVDs</span>
+						<span id="title2" style="display: none">Rise over run for parallel lines</span>
 					</div>
-
 				</div>
 				<div id="animation" class="animation loading">
 					<button id="big-play" class="big-button big-button-hide" onclick="play();" disabled>
@@ -120,41 +176,81 @@
 					<button id="big-next" class="big-button big-button-hide" onclick="nextStage(true);" disabled>
 						<img src="next.png" alt="Next frame">
 					</button>
-					<div class="frameset">
-						<div id="frame1" class="frame" onclick="play();">
+					<div id="frameset1" class="frameset">
+						<div id="frame11" class="frame" onclick="play();">
 							<div class="text">
 								In your own words, restate the problem to a neighbor. Then discuss a few of your initial ideas and possible strategies for solving the problem. Remember that you do not want any prizes left over.
 							</div>
-							<div id="panel1" class="panel">
-								<img id="image1" src="bags1-1.png" alt="Frame 1">
+							<div id="panel11" class="panel">
+								<img id="image11" src="bags1-1.png" alt="Frame 1">
 							</div>
-							<div id="message11" class="message loading">
+							<div id="message111" class="message loading">
 								Start by clicking the Add a bag button to add as many bags as you think you will need. Then enter the number of glow sticks and DVDs for each bag. To remove a bag, click on the bag and then click Delete. When you are finished, click Fill bags.
 							</div>
-							<div id="message12" class="message loading">
+							<div id="message112" class="message loading">
 								Add as many bags as you think you will need. To remove a bag, click on the bag and then click Delete. Enter the number of glow sticks and DVDs for each bag. When you are finished, click Fill bags.
 							</div>
-							<div id="message13" class="message loading">
+							<div id="message113" class="message loading">
 								Excellent. You found one way to package the prizes. Can you find another number of prize bags that will work? If you think you found all of the possible combinations, move on to the next panel.
 							</div>
 						</div>
-						<div id="frame2" class="frame">
+						<div id="frame12" class="frame">
 							<div class="text">
 								Which numbers of bags were possible? How are these numbers related to the original numbers in the problem?
 							</div>
-							<div id="panel2" class="panel">
-								<img id="image2" src="bags2-1.png" alt="Frame 2">
+							<div id="panel12" class="panel">
+								<img id="image12" src="bags2-1.png" alt="Frame 2">
 							</div>
 						</div>
-						<div id="frame3" class="frame" onclick="play();">
+						<div id="frame13" class="frame" onclick="play();">
 							<div class="text">
 								You may have noticed that the factors of 18 and 12 were important in this situation.
 							</div>
-							<div id="panel3" class="panel">
-								<img id="image3" src="bags3-1.png" alt="Frame 3">
+							<div id="panel13" class="panel">
+								<img id="image13" src="bags3-1.png" alt="Frame 3">
 							</div>
-							<div id="message31" class="message loading">
+							<div id="message131" class="message loading">
 								You could make 1 bag, 2 bags, 3 bags, or 6 bags.
+							</div>
+						</div>
+					</div>
+					<div id="frameset2" class="frameset">
+						<div id="frame21" class="frame" onclick="play();">
+							<div class="text">
+								Lines AB and CD are parallel.
+							</div>
+							<div id="panel21" class="panel">
+								<img id="image21" src="rise1-1.png" alt="Frame 1">
+							</div>
+							<div id="message211" class="message loading">
+								Are the lines still parallel?
+							</div>
+						</div>
+						<div id="frame22" class="frame">
+							<div id="panel22" class="panel">
+								<img id="image22" src="rise1-3.png" alt="Frame 2">
+							</div>
+							<div id="message221" class="message loading">
+								The lines rotated up by the same angle measure, so the corresponding angles adjacent to the angle of rotation are congruent and the lines are still parallel.
+							</div>
+						</div>
+						<div id="frame23" class="frame">
+							<div class="text">
+								Now compare this with the algebraic method.
+							</div>
+							<div id="panel23" class="panel">
+								<img id="image23" src="rise2-3.png" alt="Frame 3">
+							</div>
+							<div id="message231" class="message loading">
+								In each case, what is the ratio of the change in <i>y</i> to the change in <i>x</i>?
+							</div>
+						</div>
+						<div id="frame24" class="frame">
+							<div id="panel24" class="panel">
+								<img id="image24" src="rise3-4.png" alt="Frame 4">
+							</div>
+							<div id="message241" class="message loading">
+								The ratio of the change in <i>y</i> to the change in <i>x</i> is the slope of the lines. Because the slopes are equal, the lines are parallel.
 							</div>
 						</div>
 					</div>
@@ -186,6 +282,9 @@
 							</button>
 							<button id="b_frame3" onclick="jumpToStage(3)">
 								<span>3</span>
+							</button>
+							<button id="b_frame4" onclick="jumpToStage(4)">
+								<span>4</span>
 							</button>
 						</div>
 						<div id="controls">

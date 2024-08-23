@@ -976,7 +976,7 @@
 			showBigButton('big-play');
 
 			bumpSpeed();
-			updateBreak('none');
+			updateBreak('orange');
 
 			// hack for fancy-underline on done message
 			const blink = () => {

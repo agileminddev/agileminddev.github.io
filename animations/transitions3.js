@@ -245,6 +245,14 @@
 			return control;
 		};
 
+		let playing = [];
+		const cancelPlay = () => {
+			while (playing.length > 0) {
+				const t = playing.pop();
+				clearTimeout(t);
+			}
+		};
+
 		// control == [{img: name, delay: ms}]
 		const playImages = (image, control, last) => {
 			let lastDelay = 0;
@@ -257,12 +265,13 @@
 				const lastIter = i === control.length - 1;
 
 				if (delay >= 0) {
-					setTimeout(() => {
+					const t = setTimeout(() => {
 						image.src = img;
 						if (lastIter) {
 							last();
 						}
 					}, totalDelay);
+					playing.push(t);
 				}
 			}
 		};
@@ -703,6 +712,7 @@
 			}
 
 			// reset all classes
+			cancelPlay();
 			resetFrames();
 			resetPanels();
 
@@ -850,6 +860,7 @@
 				e.style.display = 'none';
 			}
 			hideMessages();
+			cancelPlay();
 
 			const w = document.getElementById('waiting');
 			removeAll(w.classList, 'show');

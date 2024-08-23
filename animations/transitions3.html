@@ -41,6 +41,11 @@
 							<input type="radio" id="mockup2" name="mockup-choice" value="rise" onchange="updateMockup(value);" />
 							<label for="mockup2">Rise over run for parallel lines</label>
 					</span>
+					<br />
+					<span class="nowrap">
+							<input type="radio" id="mockup3" name="mockup-choice" value="dist" onchange="updateMockup(value);" />
+							<label for="mockup3">Solving a linear equation two-ways</label>
+					</span>
 				</fieldset>
 			</div>
 			<div>
@@ -63,7 +68,7 @@
 					<br />
 					<span class="nowrap">
 							<input type="radio" id="break4" name="break-choice" value="orange" onchange="updateBreak(value);" />
-							<label for="break4">Orange line</label>
+							<label for="break4">Thin orange line</label>
 					</span>
 					<br />
 					<span class="nowrap">
@@ -76,12 +81,12 @@
 				<fieldset>
 					<legend>Panel switch animation</legend>
 					<span class="nowrap">
-							<input type="radio" id="switch1" name="switch-choice" value="push" onchange="updateTransition(value);" checked />
+							<input type="radio" id="switch1" name="switch-choice" value="push" onchange="updateTransition(value);" />
 							<label for="switch1">Push transition</label>
 					</span>
 					<br />
 					<span class="nowrap">
-							<input type="radio" id="switch2" name="switch-choice" value="wipe" onchange="updateTransition(value);" />
+							<input type="radio" id="switch2" name="switch-choice" value="wipe" onchange="updateTransition(value);" checked />
 							<label for="switch2">Wipe transition</label>
 					</span>
 					<br />
@@ -112,6 +117,14 @@
 			6. Lines and transversals,
 			Lines and algebra,
 			Lesson activities (page 7)</a>.
+	</p>
+	<p id="mimic3" style="display: none">
+		Roughly mimicking
+		<a href="https://explore.agilemind.com/LMS/lmswrapper/LMS.html#/C/course_ms_math7_ccss_z/CCSS%20Mathematics%207//////c/T/topic_17_12z_EquationsInequalities/RES_lesson5_activities/lesson5_activities/page3.html">
+			CCSS Mathematics 7,
+			8. Equations and inequalities,
+			Solving equations using the Distributive Property,
+			Lesson activities (page 3)</a>.
 	</p>
 	<hr />
 	<div>
@@ -158,6 +171,24 @@
 					</math>.
 					Play the animation to compare the rate of change of a line to the geometry of parallel lines.
 				</div>
+				<div id="intro3" class="text" style="padding: 0; display: none">
+					You developed different algebraic equations to represent or count the growth of the Ultimate Invaders. Similarly, there can be different solution steps to solve an equation. Explore two different ways to solve the equation
+					<math>
+						<mstyle displaystyle="true">
+							<mrow>
+								<mo>−</mo>
+								<mn>9</mn>
+								<mo>=</mo>
+								<mn>2</mn>
+								<mo>(</mo>
+								<mi>x</mi>
+								<mo>−</mo>
+								<mn>4</mn>
+								<mo>)</mo>
+							</mrow>
+						</mstyle>
+					</math>.
+				</div>
 				<div id="break" class="break" style="display: none">
 					<div id="none"></div>
 					<div id="whitespace"><br /></div>
@@ -167,6 +198,7 @@
 						<svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M 13.935 2.685 L 15.535 5.885 L 13.135 5.885 L 11.535 2.685 L 9.935 2.685 L 11.535 5.885 L 9.135 5.885 L 7.535 2.685 L 5.935 2.685 L 7.535 5.885 L 5.135 5.885 L 3.535 2.685 L 2.735 2.685 C 1.855 2.685 1.143 3.405 1.143 4.285 L 1.135 13.885 C 1.135 14.765 1.855 15.485 2.735 15.485 L 15.535 15.485 C 16.415 15.485 17.135 14.765 17.135 13.885 L 17.135 2.685 L 13.935 2.685 Z" style="fill: rgb(36, 77, 115);"></path></svg>
 						<span id="title1">Glow sticks and DVDs</span>
 						<span id="title2" style="display: none">Rise over run for parallel lines</span>
+						<span id="title3" style="display: none">Solving a linear equation two-ways</span>
 					</div>
 				</div>
 				<div id="animation" class="animation loading">
@@ -254,6 +286,77 @@
 							</div>
 						</div>
 					</div>
+					<div id="frameset3" class="frameset">
+						<div id="frame31" class="frame" onclick="play();">
+							<div class="text">
+								There are two approaches to solving the equation
+								<math>
+									<mstyle displaystyle="true">
+										<mrow>
+											<mo>−</mo>
+											<mn>9</mn>
+											<mo>=</mo>
+											<mn>2</mn>
+											<mo>(</mo>
+											<mi>x</mi>
+											<mo>−</mo>
+											<mn>4</mn>
+											<mo>)</mo>
+										</mrow>
+									</mstyle>
+								</math>.
+								To isolate the variable x, you might start by distributing the 2 over subtraction.
+							</div>
+							<div id="panel31" class="panel">
+								<img id="image31" src="dist1-1.png" alt="Frame 1">
+							</div>
+						</div>
+						<div id="frame32" class="frame">
+							<div class="text">
+								Like in the previous example, dividing by the coefficient of x will isolate it on one side of the equation. Since x is multiplied by 2, divide by 2 to isolate x. As before, to keep the two sides equal, divide each side by 2.
+							</div>
+							<div id="panel32" class="panel">
+								<img id="image32" src="dist2-1.png" alt="Frame 2">
+							</div>
+						</div>
+						<div id="frame33" class="frame">
+							<div class="text">
+								The coefficient of x simplifies to 1.
+							</div>
+							<div id="panel33" class="panel">
+								<img id="image33" src="dist3-1.png" alt="Frame 3">
+							</div>
+							<div id="message331" class="message loading">
+								x is equal to −0.5.
+							</div>
+						</div>
+						<div id="frame34" class="frame">
+							<div class="text">
+								Consider a second way to solve the equation. Is there a way to cancel out the 2 on the right side?
+							</div>
+							<div id="panel34" class="panel">
+								<img id="image34" src="dist4-1.png" alt="Frame 4">
+							</div>
+							<div id="message341" class="message loading">
+								Multiply both sides by
+								<math> <mstyle displaystyle="true"> <mrow> <mfrac> <mn>1</mn> <mn>2</mn> </mfrac> </mrow> </mstyle> </math>
+								or divide both sides by 2.
+							</div>
+						</div>
+						<div id="frame35" class="frame">
+							<div class="text">
+								Simplify.
+							</div>
+							<div id="panel35" class="panel">
+								<img id="image35" src="dist4-7.png" alt="Frame 5">
+							</div>
+							<div id="message351" class="message loading">
+								The solution is
+								<math> <mstyle displaystyle="true"> <mrow> <mi>x</mi> <mo>=</mo> <mo>−</mo> <mn>0.5</mn> </mrow> </mstyle> </math>.
+								Which method did you prefer?
+							</div>
+						</div>
+					</div>
 					<div id="waiting" class="loading">
 						<div id="waiting-message" class="dots">
 							<span>Waiting</span>
@@ -285,6 +388,9 @@
 							</button>
 							<button id="b_frame4" onclick="jumpToStage(4)">
 								<span>4</span>
+							</button>
+							<button id="b_frame5" onclick="jumpToStage(5)">
+								<span>5</span>
 							</button>
 						</div>
 						<div id="controls">

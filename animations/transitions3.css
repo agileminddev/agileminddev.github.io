@@ -52,7 +52,7 @@
 		}
 
 		.break #orange hr {
-			height: 4px;
+			height: 1px;
 			background-color: #f89349;
 			border: none;
 		}
@@ -122,7 +122,7 @@
 			animation-name: slide-in-from-right;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-in-out;
-			animation-duration: 1s;
+			animation-duration: 0.3s;
 		}
 
 		.animation-in-wipe-from-left,
@@ -130,7 +130,7 @@
 			animation-name: slide-in-from-left;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-in-out;
-			animation-duration: 1s;
+			animation-duration: 0.3s;
 		}
 
 		.animation-in-blur-from-right,
@@ -138,7 +138,7 @@
 			animation-name: blur-in;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-out;
-			animation-duration: 1s;
+			animation-duration: 0.3s;
 		}
 
 		.animation-out-blur-to-right,
@@ -146,28 +146,28 @@
 			animation-name: blur-out;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-in;
-			animation-duration: 1s;
+			animation-duration: 0.3s;
 		}
 
 		.animation-out-wipe-to-right,
 		.animation-out-wipe-to-left {
 			animation-name: noop;
 			animation-iteration-count: 1;
-			animation-duration: 1s;
+			animation-duration: 0.3s;
 		}
 
 		.animation-out-push-to-right {
 			animation-name: slide-out-to-right;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-in-out;
-			animation-duration: 1s;
+			animation-duration: 0.3s;
 		}
 
 		.animation-out-push-to-left {
 			animation-name: slide-out-to-left;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-in-out;
-			animation-duration: 1s;
+			animation-duration: 0.3s;
 		}
 
 		.frameset {

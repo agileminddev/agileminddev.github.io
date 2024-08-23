@@ -33,6 +33,54 @@
 			document.getElementById('scrollUp').scrollIntoView({ behavior: 'smooth' });
 		};
 
+		const idsShow = [
+			'message111', 'message112', 'message113', 'message131',
+			'message211', 'message221', 'message231', 'message241',
+			'message331', 'message341', 'message351',
+		];
+		const hideMessages = () => {
+			for (const id of idsShow) {
+				const e = document.getElementById(id);
+				removeAll(e.classList, 'show');
+			}
+		};
+
+		const bFrames = [
+			'b_frame1', 'b_frame2', 'b_frame3', 'b_frame4', 'b_frame5',
+		];
+		const resetBFrames = () => {
+			for (const id of bFrames) {
+				const e = document.getElementById(id);
+				removeAll(e.classList, 'active-frame');
+				removeAll(e.classList, 'end-frame');
+			}
+		};
+
+		const frameIds = [
+			'frame11', 'frame12', 'frame13',
+			'frame21', 'frame22', 'frame23', 'frame24',
+			'frame31', 'frame32', 'frame33', 'frame34', 'frame35'
+		];
+		const resetFrames = () => {
+			for (const id of frameIds) {
+				const e = document.getElementById(id);
+				removeAll(e.classList, 'pointer');
+			}
+		}
+
+		const panelIds = [
+			'panel11', 'panel12', 'panel13',
+			'panel21', 'panel22', 'panel23', 'panel24',
+			'panel31', 'panel32', 'panel33', 'panel34', 'panel35'
+		];
+		const resetPanels = () => {
+			for (const id of panelIds) {
+				const e = document.getElementById(id);
+				removeAll(e.classList, 'panel-out');
+				removeAll(e.classList, 'panel-in');
+			}
+		}
+
 		const showStage = (s, skipAnimation) => {
 			let aIn, aOut;
 			if (s >= stage) {
@@ -43,7 +91,6 @@
 				aOut = `animation-out-${transitionType}-to-right`;
 			}
 			const same = s === stage;
-			console.log('show', stage, s, skipAnimation);
 			const fIn = document.getElementById(`frame${s}`);
 			const fOut = document.getElementById(`frame${stage}`);
 			const cb = document.getElementById('controlbar');
@@ -54,39 +101,9 @@
 				fOut.style['z-index'] = '1';
 			}
 
-			const hideMessages = () => {
-        const m111 = document.getElementById('message111');
-        m111.classList.remove('show');
-        const m112 = document.getElementById('message112');
-        m112.classList.remove('show');
-        const m113 = document.getElementById('message113');
-        m113.classList.remove('show');
-        const m131 = document.getElementById('message131');
-        m131.classList.remove('show');
-        const m211 = document.getElementById('message211');
-        m211.classList.remove('show');
-        const m221 = document.getElementById('message221');
-        m221.classList.remove('show');
-        const m231 = document.getElementById('message231');
-        m231.classList.remove('show');
-        const m241 = document.getElementById('message241');
-        m241.classList.remove('show');
-			};
-
 			const update = () => {
 				// reset frame buttons
-				const b1 = document.getElementById('b_frame1');
-				b1.classList.remove('active-frame');
-				b1.classList.remove('end-frame');
-				const b2 = document.getElementById('b_frame2');
-				b2.classList.remove('active-frame');
-				b2.classList.remove('end-frame');
-				const b3 = document.getElementById('b_frame3');
-				b3.classList.remove('active-frame');
-				b3.classList.remove('end-frame');
-				const b4 = document.getElementById('b_frame4');
-				b4.classList.remove('active-frame');
-				b4.classList.remove('end-frame');
+				resetBFrames();
 
 				// jump to first panel of stage
 				const f = `stage${s}1`;
@@ -211,6 +228,43 @@
 			}
 			b.disabled = true;
 			return b;
+		};
+
+		// build a list of images and times as a param to playImages()
+		const buildControl = (stub, count, delay) => {
+			const control = [];
+			const dArray = delay || [];
+			for (let i = 0; i < count; i++) {
+				const img = `${stub}${i + 1}.png`;
+				const d = i < dArray.length ? dArray[i] : undefined;
+				control.push({
+					img: img,
+					...(d && {delay: d})
+				});
+			}
+			return control;
+		};
+
+		// control == [{img: name, delay: ms}]
+		const playImages = (image, control, last) => {
+			let lastDelay = 0;
+			let totalDelay = 0;
+			for (const [i, id] of control.entries()) {
+				const img = id.img;
+				const delay = id.delay || lastDelay;
+				lastDelay = delay;
+				totalDelay += delay;
+				const lastIter = i === control.length - 1;
+
+				if (delay >= 0) {
+					setTimeout(() => {
+						image.src = img;
+						if (lastIter) {
+							last();
+						}
+					}, totalDelay);
+				}
+			}
 		};
 
 		const stage111 = () => {
@@ -364,7 +418,6 @@
 		}
 
 		const stage211 = () => {
-			console.log('stage211', stage);
 			subStage = 211;
 			buttonBar({play: 'active', skip: 'active'});
 
@@ -379,15 +432,13 @@
 		};
 
 		const stage212 = () => {
-			console.log('stage212', stage);
 			subStage = 212;
 			buttonBar({pause: 'active', skip: 'active'});
-			setTimeout(() => {
-				const i = document.getElementById('image21');
-				i.src = 'rise1-2.png';
-				setTimeout(() => {
-					i.src = 'rise1-3.png';
 
+			playImages(
+				document.getElementById('image21'),
+				buildControl('rise1-', 3, [-1, 100, 500]),
+				() => {
 					document.documentElement.style.setProperty('--message-height', m211height);
 					const m211 = document.getElementById('message211');
 					m211.classList.add('show');
@@ -395,49 +446,40 @@
 					const bf = document.getElementById('b_frame2');
 					addOnce(bf.classList, 'end-frame');
 
-          buttonBar({pause: 'disable', skip: 'active'});
+					buttonBar({pause: 'disable', skip: 'active'});
 					showBigButton('big-next', 3000);
-				}, 500);
-			}, 100);
+				}
+			);
 		};
 
 		const stage221 = () => {
-			console.log('stage221', stage);
 			subStage = 221;
       buttonBar({pause: 'active', skip: 'active'});
 
 			const i = document.getElementById('image22');
 			i.src = 'rise1-3.png';
 
-			const f = document.getElementById('frame22');
-			addOnce(f.classList, 'pointer');
-
 			const b2 = document.getElementById('b_frame2');
 			b2.classList.add('active-frame');
 
-			setTimeout(() => {
-				i.src = 'rise2-1.png';
-				setTimeout(() => {
-					i.src = 'rise2-2.png';
-					setTimeout(() => {
-						i.src = 'rise2-3.png';
+			playImages(
+				i,
+				buildControl('rise2-', 3, [1500, 300]),
+				() => {
+					document.documentElement.style.setProperty('--message-height', m221height);
+					const m221 = document.getElementById('message221');
+					m221.classList.add('show');
 
-						document.documentElement.style.setProperty('--message-height', m221height);
-						const m221 = document.getElementById('message221');
-						m221.classList.add('show');
+					const b3 = document.getElementById('b_frame3');
+					b3.classList.add('end-frame');
 
-						const b3 = document.getElementById('b_frame3');
-						b3.classList.add('end-frame');
-
-            buttonBar({pause: 'disable', skip: 'active'});
-						showBigButton('big-next', 3000);
-					}, 300);
-				}, 300);
-			}, 1500);
+					buttonBar({pause: 'disable', skip: 'active'});
+					showBigButton('big-next', 3000);
+				}
+			);
 		};
 
 		const stage231 = () => {
-			console.log('stage231', stage);
 			subStage = 231;
       buttonBar({pause: 'active', skip: 'active'});
 
@@ -450,35 +492,24 @@
 			const b3 = document.getElementById('b_frame3');
 			b3.classList.add('active-frame');
 
-			setTimeout(() => {
-				i.src = 'rise1-3.png';
-				setTimeout(() => {
-					i.src = 'rise3-1.png';
-					setTimeout(() => {
-						i.src = 'rise3-2.png';
-						setTimeout(() => {
-							i.src = 'rise3-3.png';
-							setTimeout(() => {
-								i.src = 'rise3-4.png';
+			playImages(
+				i,
+				buildControl('rise3-', 5, [1500, 300]),
+				() => {
+					document.documentElement.style.setProperty('--message-height', m231height);
+					const m231 = document.getElementById('message231');
+					m231.classList.add('show');
 
-								document.documentElement.style.setProperty('--message-height', m231height);
-								const m231 = document.getElementById('message231');
-								m231.classList.add('show');
+					const b4 = document.getElementById('b_frame4');
+					b4.classList.add('end-frame');
 
-								const b4 = document.getElementById('b_frame4');
-								b4.classList.add('end-frame');
-
-                buttonBar({pause: 'disable', skip: 'active'});
-								showBigButton('big-next', 3000);
-							}, 300);
-						}, 300);
-					}, 300);
-				}, 300);
-			}, 1500);
+					buttonBar({pause: 'disable', skip: 'active'});
+					showBigButton('big-next', 3000);
+				}
+			);
 		};
 
     const stage241 = () => {
-      console.log('stage241', stage);
       subStage = 241;
       buttonBar({pause: 'active', skip: 'active'});
 
@@ -491,27 +522,162 @@
       const b4 = document.getElementById('b_frame4');
       b4.classList.add('active-frame');
 
-      setTimeout(() => {
-        i.src = 'rise4-1.png';
-        setTimeout(() => {
-          i.src = 'rise4-2.png';
-          setTimeout(() => {
-            i.src = 'rise4-3.png';
-            setTimeout(() => {
-              i.src = 'rise4-4.png';
+			playImages(
+				i,
+				buildControl('rise4-', 4, [1500, 300]),
+				() => {
+					document.documentElement.style.setProperty('--message-height', m241height);
+					const m241 = document.getElementById('message241');
+					m241.classList.add('show');
 
-              document.documentElement.style.setProperty('--message-height', m241height);
-              const m241 = document.getElementById('message241');
-              m241.classList.add('show');
-
-              buttonBar({play: 'disable', skip: 'hide'});
-              const done = document.getElementById('done');
-              addOnce(done.classList, 'display-inline-block');
-            }, 300);
-          }, 300);
-        }, 300);
-      }, 1500);
+					buttonBar({play: 'disable', skip: 'hide'});
+					const done = document.getElementById('done');
+					addOnce(done.classList, 'display-inline-block');
+				}
+			);
     };
+
+		const stage311 = () => {
+			subStage = 311;
+			buttonBar({play: 'active', skip: 'active'});
+
+			const i = document.getElementById('image31');
+			i.src = 'dist1-1.png';
+
+			const f = document.getElementById('frame31');
+			addOnce(f.classList, 'pointer');
+
+			const b1 = document.getElementById('b_frame1');
+			b1.classList.add('active-frame');
+		};
+
+		const stage312 = () => {
+			subStage = 312;
+			buttonBar({pause: 'active', skip: 'active'});
+
+			playImages(
+				document.getElementById('image31'),
+				buildControl('dist1-', 20, [-1, 300]),
+				() => {
+					const bf = document.getElementById('b_frame2');
+					addOnce(bf.classList, 'end-frame');
+
+					buttonBar({pause: 'disable', skip: 'active'});
+					showBigButton('big-next', 3000);
+				}
+			);
+		};
+
+		const stage321 = () => {
+			subStage = 321;
+			buttonBar({play: 'active', skip: 'active'});
+
+			const i = document.getElementById('image32');
+			i.src = 'dist1-20.png';
+
+			const f = document.getElementById('frame32');
+			addOnce(f.classList, 'pointer');
+
+			const b2 = document.getElementById('b_frame2');
+			b2.classList.add('active-frame');
+		};
+
+		const stage322 = () => {
+			subStage = 322;
+			buttonBar({pause: 'active', skip: 'active'});
+
+			playImages(
+				document.getElementById('image32'),
+				buildControl('dist2-', 6, [300]),
+				() => {
+					const bf = document.getElementById('b_frame3');
+					addOnce(bf.classList, 'end-frame');
+
+					buttonBar({pause: 'disable', skip: 'active'});
+					showBigButton('big-next', 3000);
+				}
+			);
+		};
+
+		const stage331 = () => {
+			subStage = 331;
+			buttonBar({pause: 'active', skip: 'active'});
+
+			const b3 = document.getElementById('b_frame3');
+			b3.classList.add('active-frame');
+
+			playImages(
+				document.getElementById('image33'),
+				buildControl('dist3-', 15, [1000, 300]),
+				() => {
+					document.documentElement.style.setProperty('--message-height', m331height);
+					const m331 = document.getElementById('message331');
+					m331.classList.add('show');
+
+					const bf = document.getElementById('b_frame4');
+					addOnce(bf.classList, 'end-frame');
+
+					buttonBar({pause: 'disable', skip: 'active'});
+					showBigButton('big-next', 3000);
+				}
+			);
+		};
+
+    const stage341 = () => {
+      subStage = 341;
+      buttonBar({play: 'active', skip: 'active'});
+
+      const i = document.getElementById('image34');
+      i.src = 'dist4-1.png';
+
+      const f = document.getElementById('frame34');
+      addOnce(f.classList, 'pointer');
+
+      const b4 = document.getElementById('b_frame4');
+      b4.classList.add('active-frame');
+    };
+
+    const stage342 = () => {
+      subStage = 342;
+      buttonBar({pause: 'active', skip: 'active'});
+
+      playImages(
+        document.getElementById('image34'),
+        buildControl('dist4-', 7, [0, 300]),
+        () => {
+          const bf = document.getElementById('b_frame5');
+          addOnce(bf.classList, 'end-frame');
+
+          buttonBar({pause: 'disable', skip: 'active'});
+          showBigButton('big-next', 3000);
+        }
+      );
+    };
+
+    const stage351 = () => {
+			subStage = 351;
+			buttonBar({pause: 'active', skip: 'active'});
+
+			const i = document.getElementById('image35');
+			i.src = 'dist4-7.png';
+
+			const b5 = document.getElementById('b_frame5');
+			b5.classList.add('active-frame');
+
+			playImages(
+				i,
+				buildControl('dist5-', 36, [300]),
+				() => {
+					document.documentElement.style.setProperty('--message-height', m351height);
+					const m351 = document.getElementById('message351');
+					m351.classList.add('show');
+
+					buttonBar({play: 'disable', skip: 'hide'});
+					const done = document.getElementById('done');
+					addOnce(done.classList, 'display-inline-block');
+				}
+			);
+		};
 
 		const addBag = () => {
 			const button = document.getElementById('addBag');
@@ -535,49 +701,16 @@
 			if (s === stage && !force) {
 				return;
 			}
-			console.log('jump', stage, s);
 
 			// reset all classes
-			const f11 = document.getElementById('frame11');
-			f11.classList.remove('pointer');
-			const f13 = document.getElementById('frame13');
-			f13.classList.remove('pointer');
-			const f21 = document.getElementById('frame21');
-			f21.classList.remove('pointer');
-			const f22 = document.getElementById('frame22');
-			f22.classList.remove('pointer');
-			const f23 = document.getElementById('frame23');
-			f23.classList.remove('pointer');
-      const f24 = document.getElementById('frame24');
-      f24.classList.remove('pointer');
+			resetFrames();
+			resetPanels();
 
 			const w = document.getElementById('waiting');
 			removeAll(w.classList, 'show');
 
 			clearBigButton('big-play');
 			clearBigButton('big-next');
-
-			const p11 = document.getElementById('panel11');
-			p11.classList.remove('panel-out');
-			p11.classList.remove('panel-in');
-			const p12 = document.getElementById('panel12');
-			p12.classList.remove('panel-out');
-			p12.classList.remove('panel-in');
-			const p13 = document.getElementById('panel13');
-			p13.classList.remove('panel-out');
-			p13.classList.remove('panel-in');
-			const p21 = document.getElementById('panel21');
-			p21.classList.remove('panel-out');
-			p21.classList.remove('panel-in');
-			const p22 = document.getElementById('panel22');
-			p22.classList.remove('panel-out');
-			p22.classList.remove('panel-in');
-			const p23 = document.getElementById('panel23');
-			p23.classList.remove('panel-out');
-			p23.classList.remove('panel-in');
-      const p24 = document.getElementById('panel24');
-      p24.classList.remove('panel-out');
-      p24.classList.remove('panel-in');
 
 			const bAdd = document.getElementById('addBag');
 			removeAll(bAdd.classList, 'display-block');
@@ -593,9 +726,7 @@
 
 		const nextStage = (fade) => {
 			const jump = () => {
-				const max = stage % 10 === 1 ? 3 : 4;
-				const s = (stage % 10) % max + 1;
-				console.log('next', stage, max, s);
+				const s = (stage % 10) % maxFrames + 1;
 				jumpToStage(s);
 			}
 
@@ -634,20 +765,32 @@
 					sName = stage212;
 					break;
 
-				default:
+				case 311:
+					fName = 'frame31';
+					sName = stage312;
+					break;
+
+				case 321:
+					fName = 'frame32';
+					sName = stage322;
+					break;
+
+        case 341:
+          fName = 'frame34';
+          sName = stage342;
+          break;
+
+        default:
 					return;
 			}
-			console.log('play', subStage, fName);
 
 			const b = hideBigButton('big-play');
 			//!! hack
 			const x = setTimeout(() => {
-				console.log('hack firing', fName);
 				b.removeEventListener('animationend', doit, { once : true, capture: true });
 				doit();
 			}, 1100);
 			const doit = () => {
-				console.log('doit', fName);
 				clearTimeout(x);
 				const f = document.getElementById(fName);
 				removeAll(f.classList, 'pointer');
@@ -658,11 +801,12 @@
 			b.addEventListener('animationend', doit, { once : true, capture: true });
 		};
 
-		let m111height, m112height, m113height, m131height, m211height, m221height, m231height, m241height;
+		let m111height, m112height, m113height, m131height,
+			m211height, m221height, m231height, m241height,
+			m331height, m341height, m351height;
 		const getHeight = (id) => {
 			const m = document.getElementById(id);
 			const h = `${m.clientHeight}px`;
-			// console.log(id, h);
 			removeAll(m.classList, 'loading');
 			return h;
 		}
@@ -678,35 +822,60 @@
 			parent.style.display = 'block';
 		};
 
-		let transitionType = 'push';
+		let transitionType = 'wipe';
 		const updateTransition = (choose) => {
 			transitionType = choose;
 		}
 
+		let maxFrames = 3;
 		const updateMockup = (choose) => {
 			const ids1Block = ['intro1', 'mimic1'];
 			const ids2Block = ['intro2', 'mimic2'];
+			const ids3Block = ['intro3', 'mimic3'];
 			const ids1Grid = ['frameset1'];
 			const ids2Grid = ['frameset2'];
+			const ids3Grid = ['frameset3'];
       const ids1Inline = ['title1'];
       const ids2Inline = ['title2'];
-			for (const id of Array.from(new Set([...ids1Block, ...ids2Block, ...ids1Grid, ...ids2Grid, ...ids1Inline, ...ids2Inline]))) {
+			const ids3Inline = ['title3'];
+			for (const id of Array.from(new Set([
+				...ids1Block, ...ids2Block, ...ids3Block,
+				...ids1Grid, ...ids2Grid, ...ids3Grid,
+				...ids1Inline, ...ids2Inline, ...ids3Inline
+			]))) {
 				const e = document.getElementById(id);
+				if (!e) {
+					console.error(`${id} not found`)
+				}
 				e.style.display = 'none';
 			}
-			const idsShow = [
-				'message111', 'message112', 'message113', 'message131', 'message211', 'message221', 'message231', 'message241'
-			];
-			for (const id of idsShow) {
-				const e = document.getElementById(id);
-				removeAll(e.classList, 'show');
-			}
+			hideMessages();
 
 			const w = document.getElementById('waiting');
 			removeAll(w.classList, 'show');
 
 			switch (choose) {
+				case 'dist':
+					maxFrames = 5;
+					for (const id of ids3Block) {
+						const e = document.getElementById(id);
+						e.style.display = 'block';
+					}
+					for (const id of ids3Grid) {
+						const e = document.getElementById(id);
+						e.style.display = 'grid';
+					}
+					for (const id of ids3Inline) {
+						const e = document.getElementById(id);
+						e.style.display = 'inline';
+					}
+					removeAll(document.getElementById('b_frame4').classList, 'display-off');
+					removeAll(document.getElementById('b_frame5').classList, 'display-off');
+					jumpToStage(31, true);
+					break;
+
 				case 'rise':
+					maxFrames = 4;
 					for (const id of ids2Block) {
 						const e = document.getElementById(id);
 						e.style.display = 'block';
@@ -720,6 +889,7 @@
             e.style.display = 'inline';
           }
 					removeAll(document.getElementById('b_frame4').classList, 'display-off');
+					addOnce(document.getElementById('b_frame5').classList, 'display-off');
 					jumpToStage(21, true);
 					break;
 
@@ -728,6 +898,7 @@
 					// fall-through
 
 				case 'glow':
+					maxFrames = 3;
 					for (const id of ids1Block) {
 						const e = document.getElementById(id);
 						e.style.display = 'block';
@@ -741,6 +912,7 @@
             e.style.display = 'inline';
           }
 					addOnce(document.getElementById('b_frame4').classList, 'display-off');
+					addOnce(document.getElementById('b_frame5').classList, 'display-off');
 					jumpToStage(11, true);
 					break;
 			}
@@ -756,6 +928,9 @@
 			m221height = getHeight('message221');
 			m231height = getHeight('message231');
       m241height = getHeight('message241');
+			m331height = getHeight('message331');
+			m341height = getHeight('message341');
+			m351height = getHeight('message351');
 
 			document.documentElement.style.setProperty('--message-height', m111height);
 
@@ -763,21 +938,21 @@
 			document.documentElement.style.setProperty('--waiting-height', `${w.clientHeight}px`);
 			removeAll(w.classList, 'loading');
 
-			const f12 = document.getElementById('frame12');
-			f12.style.display = 'none';
-			const f13 = document.getElementById('frame13');
-			f13.style.display = 'none';
-			const f22 = document.getElementById('frame22');
-			f22.style.display = 'none';
-			const f23 = document.getElementById('frame23');
-			f23.style.display = 'none';
-      const f24 = document.getElementById('frame24');
-      f24.style.display = 'none';
+			for (const id of frameIds) {
+				// wtf? why skip 1?
+				if (id.at(-1) !== '1') {
+					const e = document.getElementById(id);
+					e.style.display = 'none';
+				}
+			}
 
 			const fs2 = document.getElementById('frameset2');
 			fs2.style.display = 'none';
+			const fs3 = document.getElementById('frameset3');
+			fs3.style.display = 'none';
 
 			addOnce(document.getElementById('b_frame4').classList, 'display-off');
+			addOnce(document.getElementById('b_frame5').classList, 'display-off');
 
 			const a = document.getElementById('animation');
 			removeAll(a.classList, 'loading');

@@ -654,7 +654,11 @@
         document.getElementById('image34'),
         buildControl('dist4-', 7, [0, 300]),
         () => {
-          const bf = document.getElementById('b_frame5');
+					document.documentElement.style.setProperty('--message-height', m341height);
+					const m341 = document.getElementById('message341');
+					m341.classList.add('show');
+
+					const bf = document.getElementById('b_frame5');
           addOnce(bf.classList, 'end-frame');
 
           buttonBar({pause: 'disable', skip: 'active'});

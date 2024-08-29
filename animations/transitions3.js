@@ -96,7 +96,8 @@
 			const cb = document.getElementById('controlbar');
 			const showPlay = s === 1 || s === 3 || s === 21;
 
-			if (!skipAnimation) {
+			const skip = skipAnimation || transitionType === 'none';
+			if (!skip) {
 				fIn.style['z-index'] = '10';
 				fOut.style['z-index'] = '1';
 			}
@@ -110,22 +111,8 @@
 				const jump = new Function(`return ${f}()`);
 				jump();
 
-				fIn.style.display = 'block';
-				if (!skipAnimation) {
-					addOnce(fIn.classList, aIn);
-					fIn.addEventListener('animationend', () => {
-						fIn.style['z-index'] = '1';
-						removeAll(fIn.classList, aIn);
-						addOnce(cb.classList, 'controlbar-in');
-						removeAll(cb.classList, 'controlbar-out');
-						if (showPlay) {
-							showBigButton('big-play', 3000);
-						}
-					}, { once : true, capture: true });
-				}
-
 				if (!same) {
-					if (skipAnimation) {
+					if (skip || transitionType === 'fast') {
 						fOut.style.display = 'none';
 						hideMessages();
 					} else {
@@ -137,9 +124,23 @@
 						}, { once : true, capture: true });
 					}
 				}
+
+				fIn.style.display = 'block';
+				if (!skip) {
+					addOnce(fIn.classList, aIn);
+					fIn.addEventListener('animationend', () => {
+						fIn.style['z-index'] = '1';
+						removeAll(fIn.classList, aIn);
+						addOnce(cb.classList, 'controlbar-in');
+						removeAll(cb.classList, 'controlbar-out');
+						if (showPlay) {
+							showBigButton('big-play', 3000);
+						}
+					}, { once : true, capture: true });
+				}
 			};
 
-			if (skipAnimation) {
+			if (skip) {
 				update();
 			} else {
 				addOnce(cb.classList, 'controlbar-out');

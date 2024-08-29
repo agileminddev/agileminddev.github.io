@@ -117,6 +117,32 @@
 			visibility: visible;
 		}
 
+		.animation-in-none-from-right,
+		.animation-in-none-from-left,
+		.animation-out-none-to-left,
+		.animation-out-none-to-right {
+			animation-name: noop;
+			animation-iteration-count: 1;
+			animation-timing-function: linear;
+			animation-duration: 0.1s;
+		}
+
+		.animation-out-fast-to-left,
+		.animation-out-fast-to-right {
+			animation-name: vanish;
+			animation-iteration-count: 1;
+			animation-timing-function: linear;
+			animation-duration: 0.1s;
+		}
+
+		.animation-in-fast-from-right,
+		.animation-in-fast-from-left {
+			animation-name: fade-in;
+			animation-iteration-count: 1;
+			animation-timing-function: ease-in-out;
+			animation-duration: 1s;
+		}
+
 		.animation-in-wipe-from-right,
 		.animation-in-push-from-right {
 			animation-name: slide-in-from-right;
@@ -203,14 +229,14 @@
 			animation-name: fade-in;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-out;
-			animation-duration: 0.5s;
+			animation-duration: 0.3s;
 		}
 
 		.controlbar-out {
 			animation-name: fade-out;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-in;
-			animation-duration: 0.5s;
+			animation-duration: 0.3s;
 			opacity: 0;
 		}
 
@@ -309,6 +335,16 @@
 		}
 
 		@keyframes noop {
+		}
+
+		@keyframes vanish {
+			0% {
+				opacity: 0;
+			}
+
+			100% {
+				opacity: 0;
+			}
 		}
 
 		@keyframes blur-in {

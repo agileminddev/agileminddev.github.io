@@ -19,7 +19,7 @@
 	<link rel="stylesheet" href="transitions3.css" />
 	<script src="transitions3.js" type=""></script>
 	<script type="text/javascript"
-					src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=MML_HTMLorMML-full">
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=MML_HTMLorMML-full">
 	</script>
 </head>
 <body onload="init();">
@@ -81,6 +81,11 @@
 				<fieldset>
 					<legend>Panel switch animation</legend>
 					<span class="nowrap">
+							<input type="radio" id="switch0" name="switch-choice" value="none" onchange="updateTransition(value);" />
+							<label for="switch0">None</label>
+					</span>
+					<br />
+					<span class="nowrap">
 							<input type="radio" id="switch1" name="switch-choice" value="push" onchange="updateTransition(value);" />
 							<label for="switch1">Push transition</label>
 					</span>
@@ -93,6 +98,11 @@
 					<span class="nowrap">
 							<input type="radio" id="switch3" name="switch-choice" value="blur" onchange="updateTransition(value);" />
 							<label for="switch3">Blur transition</label>
+					</span>
+					<br />
+					<span class="nowrap">
+							<input type="radio" id="switch4" name="switch-choice" value="fast" onchange="updateTransition(value);" />
+							<label for="switch4">Fast fade-in transition</label>
 					</span>
 				</fieldset>
 			</div>

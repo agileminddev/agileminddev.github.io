@@ -140,7 +140,7 @@
 			animation-name: fade-in;
 			animation-iteration-count: 1;
 			animation-timing-function: ease-in-out;
-			animation-duration: 1s;
+			animation-duration: 0.25s;
 		}
 
 		.animation-in-wipe-from-right,

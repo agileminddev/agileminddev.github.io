@@ -1,0 +1,402 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Language" content="en-US" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta content="text/html;charset=utf-8" http-equiv="Content-type" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<title>Desmos Graphs</title>
+	<script src="calculator.min.js?lang=es,en"></script>
+
+	<script type="text/javascript" charset="UTF-8"
+ src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css" />
+
+<script src="NativeBrowserProperties.js"></script>
+<script src="am.js"></script>
+
+<script src="grapher.js"></script>
+
+<script src="GraphBridgeStatic.js"></script>
+
+<style>
+	body {
+		background-color: #FAF9F6;
+	}
+
+	#outer {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 800px;
+	}
+
+	#container {
+		max-width: 800px;
+		min-width: 536px;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+	}
+
+	#container > div {
+		margin: 1em;
+		font-family: 'Lato', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+		flex: 1 1 232px;
+	}
+
+	.labeled-graph {
+		display: grid;
+		grid-template-columns: 1em 1fr;
+	}
+
+	.title {
+		margin: 0.5em;
+		text-align: center;
+		font-weight: bold;
+		grid-column-start: 2;
+		grid-column-end: 3;
+	}
+
+	.x_axis {
+		margin: 3px 0 0 0;
+		text-align: center;
+		grid-column-start: 2;
+		grid-column-end: 3;
+	}
+
+	.y_axis {
+		margin: 0 0 0 -3px;
+		font-weight: normal;
+		text-align: center;
+		writing-mode: vertical-rl;
+		transform: rotate(180deg);
+	}
+
+
+
+	.graph {
+		height: 303px;
+		min-width: 200px;
+	}
+
+
+	#containerDiv{
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+
+	}
+
+	.graphHolder{
+		display: grid;
+		grid-template-columns: 1em 1fr;
+		margin-left: 25px;
+    	margin-bottom: 25px;
+	}
+
+</style>
+<script>
+	const graphs = {};
+
+	const newGraph = (id, yMinor, labelY, bounds) => {
+		const element = document.getElementById(id);
+		const desmos = Desmos.GraphingCalculator(element, {
+			keypad: false,
+			expressions: false,
+			settingsMenu: false,
+			expressionsTopbar: false,
+			projectorMode: false,
+			language: 'en',
+			labelOrientation: Desmos.LabelOrientations.BELOW,
+			// xAxisArrowMode: Desmos.AxisArrowModes.POSITIVE,
+			// yAxisArrowMode: Desmos.AxisArrowModes.POSITIVE,
+			xAxisStep: 1,
+			yAxisStep: 2,
+			// xAxisMinorSubdivisions: 0,
+			yAxisMinorSubdivisions: yMinor,
+			squareAxes: false,
+		});
+
+		// init the axes
+		desmos.setMathBounds(bounds);
+
+		// blue lines
+		desmos.setExpression({
+			id: 8,
+			type: "table",
+			columns: [{
+					values: [
+						2002,
+						2004,
+						2006,
+						2008,
+						2010
+					],
+					hidden: true,
+					id: 6,
+					color: "#2d70b3",
+					latex: "x_{1}"
+				},
+				{
+					values: [
+						10,
+						11,
+						12,
+						13,
+						14
+					],
+					id: 7,
+					color: "#2d70b3",
+					points: false,
+					lines: true,
+					latex: "y_{1}"
+				}
+			]
+		});
+
+		// red points
+		desmos.setExpression({
+			id: 4,
+			type: "table",
+			columns: [{
+					values: [
+						2002,
+						2004,
+						2006,
+						2008,
+						2010
+					],
+					hidden: true,
+					id: 2,
+					color: "#2d70b3",
+					latex: "x_{1}"
+				},
+				{
+					values: [
+						10,
+						11,
+						12,
+						13,
+						14
+					],
+					id: 3,
+					color: "#c74440",
+					latex: "y_{1}"
+				}
+			]
+		});
+
+		// allow home button to return to this particular state
+		desmos.setDefaultState(desmos.getState());
+
+		// save the element for later
+		graphs[id] = desmos;
+	}
+
+	const updateLanguage = (lang) => {
+		const bundle = {
+			en: {
+				title1: "Graph A",
+				title2: "Graph B",
+				title3: "Graph C",
+				x_axis: "Year",
+				y_axis: "Benton population in 1000s"
+			},
+			es: {
+				title1: "Gráfico A",
+				title2: "Gráfico B",
+				title3: "Gráfico C",
+				x_axis: "Año",
+				y_axis: "Población de Benton en 1000s"
+			}
+		};
+		['title1', 'title2', 'title3'].forEach((id) => {
+			const element = document.getElementById(id);
+			element.innerHTML = bundle[lang][id];
+		});
+		['x_axis', 'y_axis'].forEach((id) => {
+			Array.from(document.getElementsByClassName(id)).forEach((element) => {
+				element.innerHTML = bundle[lang][id];
+			});
+		});
+		['graph1', 'graph2', 'graph3'].forEach((id) => {
+			graphs[id].updateSettings({ language: lang });
+		});
+
+	}
+
+	const init = () => {
+		newGraph(
+			'graph1',
+			0,
+			28,
+			{
+				left: 1999,
+				bottom: 0,
+				right: 2011,
+				top: 30
+			}
+		);
+		newGraph(
+			'graph2',
+			2,
+			14,
+			{
+				left: 1999,
+				bottom: 0,
+				right: 2011,
+				top: 15
+			}
+		);
+		newGraph(
+			'graph3',
+			0,
+			56,
+			{
+				left: 1999,
+				bottom: 0,
+				right: 2011,
+				top: 60
+			}
+		);
+		updateLanguage("en");
+
+
+var obj = {};
+
+	//graphObject Stuff
+	obj.graphObj = {};
+
+
+	obj.graphObj.thisPanel = document.getElementById("containerDiv");
+	obj.graphObj.thisGraphDiv = document.getElementById('gbbox');
+	//obj.graphObj.underlayGraphDiv = document.getElementById('graph1-EFB92E6A-BA11-7605-C027-2D0EF8209C59-underlayGraph');
+	obj.graphObj.minX = 0.1;
+	obj.graphObj.maxX = 10;
+	obj.graphObj.minY = 0.1;
+	obj.graphObj.maxY = 30;
+
+	obj.graphObj.gridHLineDist =1;
+	obj.graphObj.gridVLineDist = 2;
+	obj.graphObj.hTickDist =2;
+	obj.graphObj.vTickDist = 4;
+
+	obj.graphObj.useDefaultLabelPos = true;
+
+	//obj.graphObj.offsetYAxis = 2000; 
+
+	obj.graphObj.axisLabels = [{inHtml:"Graph A", labelsUseSans:true}, {inHtml:""}, {inHtml:"Year", labelsUseSans:true}, {inHtml:"Benton population in 1000s", labelsUseSans:true}];
+
+	var gbStatic = new GraphBridgeStatic(obj.graphObj);
+	obj.graphObj.thisGraphDiv = document.getElementById('gbbox2');
+	obj.graphObj.axisLabels = [{inHtml:"Graph B", labelsUseSans:true}, {inHtml:""}, {inHtml:"Year", labelsUseSans:true}, {inHtml:"Benton population in 1000s", labelsUseSans:true}];
+
+	obj.graphObj.maxY = 15;
+	obj.graphObj.gridVLineDist = 1;
+	obj.graphObj.vTickDist = 2;
+
+
+	var gbStatic2 = new GraphBridgeStatic(obj.graphObj);
+
+	obj.graphObj.axisLabels = [{inHtml:"Graph C", labelsUseSans:true}, {inHtml:""}, {inHtml:"Year", labelsUseSans:true}, {inHtml:"Benton population in 1000s", labelsUseSans:true}];
+
+	obj.graphObj.thisGraphDiv = document.getElementById('gbbox3');
+
+	obj.graphObj.maxY = 56;
+	obj.graphObj.gridVLineDist = 4;
+	obj.graphObj.vTickDist = 8;
+
+	var gbStatic3 = new GraphBridgeStatic(obj.graphObj);
+
+
+	gbStatic.makePointsAndLine({pts:[{x: 2, y:10},{x: 4, y:11}, {x: 6, y:12}, {x: 8, y:13}, {x: 10, y:14}]});
+
+	gbStatic2.makePointsAndLine({pts:[{x: 2, y:10},{x: 4, y:11}, {x: 6, y:12}, {x: 8, y:13}, {x: 10, y:14}]});
+
+	gbStatic3.makePointsAndLine({pts:[{x: 2, y:10},{x: 4, y:11}, {x: 6, y:12}, {x: 8, y:13}, {x: 10, y:14}]});
+
+ /*gbStatic3.create('functiongraph',
+                               [ function(x){ return x; } ],
+                               { strokeWidth: 3,   opacity:0.6,  dash: 2 }
+                       );*/
+
+	}
+</script>
+</head>
+<body onload="init();">
+	<div id="outer">
+		<p>
+			This is a test to see how using Desmos graphs instead of static images could work.
+			The graphs chosen are from
+			<a href="https://explore.agilemind.com/LMS/lmswrapper/LMS.html#/C/course_algebra1_us_z/Algebra%20I//////c/T/topic_03_07z_GraphsConstruct/RES_lesson1_activities/lesson1_activities/page4.html">explore, Algebra I, 1. Constructing graphs, Overview and representing data, Lesson activities (page 4)</a>
+			which seems a reasonably common example.
+			<ul>
+				<li>The graphs are interactive; they can be panned and zoomed, with a home button appearing to reset to the default view.</li>
+				<li>The graphs react with the page size, useful for phones and varying window sizes.</li>
+				<li>The ability to swap languages also demonstrated; this could be useful for AA items.</li>
+				<li>The graphs have improved accessibility and screen reading behavior.</li>
+				<li>The background color of this page is off-white, showing how a less-harsh color could improve our look as well.</li>
+			</ul>
+		<h1>Current image</h1>
+		<center>
+			<img src="03_07_ov_1_3.gif" width="696px" height="303px" />
+		</center>
+
+		<h1>JSXGraph interactive graphs</h1>
+
+		<div id="containerDiv" style="width: 100%; position: relative;">
+			<div id="gbbox" class="graphHolder" style="width: 220px; height: 260px; user-select: none; overflow: hidden; display: inline-block; touch-action: none;"></div>
+
+
+		<div id="gbbox2" class="graphHolder" style="width: 220px; height: 260px; user-select: none; overflow: hidden; display: inline-block; touch-action: none;"></div>
+
+
+		<div id="gbbox3" class="graphHolder" style="width: 220px; height: 260px; user-select: none; overflow: hidden; display: inline-block; touch-action: none;"></div>
+
+
+	</div>
+
+
+		<h1>Desmos interactive graphs</h1>
+		<div class="toggle">
+			<input type="radio" name="language" value="en" id="en" checked="checked" onchange="updateLanguage(value)"/>
+			<label for="en">English</label>
+			<input type="radio" name="language" value="es" id="es" onchange="updateLanguage(value)"/>
+			<label for="es">Spanish</label>
+		</div>
+		<div id="container">
+			<div>
+				<div class="labeled-graph">
+					<p id="title1" class="title">Graph A</p>
+					<p class="y_axis">Benton population in 1000s</p>
+					<div id="graph1" class="graph"></div>
+					<p class="x_axis">Year</p>
+				</div>
+			</div>
+			<div>
+				<div class="labeled-graph">
+					<p id="title2" class="title">Graph B</p>
+					<p class="y_axis">Benton population in 1000s</p>
+					<div id="graph2" class="graph"></div>
+					<p class="x_axis">Year</p>
+				</div>
+			</div>
+			<div>
+				<div class="labeled-graph">
+					<p id="title3" class="title">Graph C</p>
+					<p class="y_axis">Benton population in 1000s</p>
+					<div id="graph3" class="graph"></div>
+					<p class="x_axis">Year</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

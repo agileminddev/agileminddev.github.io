@@ -144,6 +144,11 @@
 				update();
 			} else {
 				addOnce(cb.classList, 'controlbar-out');
+				setTimeout(() => {
+					// hack to force bar to reappear
+					addOnce(cb.classList, 'controlbar-in');
+					removeAll(cb.classList, 'controlbar-out');
+				}, 350);
 				cb.addEventListener('animationend', () => {
 					update();
 					hideMessages();
